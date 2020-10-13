@@ -72,30 +72,30 @@
 			</view>
 		</view>
 		<!-- 店铺信息 -->
-		<view class="shop" :style="'transform: translateY(-' + toBar + ');'">
+		<!-- <view class="shop" :style="'transform: translateY(-' + toBar + ');'">
 			<image class="shop_img" src="/static/images/log.png" mode="aspectFill"></image>
 			<view class="shop_center">
 				<view class="shop_name">北京零食店店</view>
 				<view class="shop_address">北京市海淀区苏家坨乡前沙润村北京市海淀区苏家坨乡前沙润村</view>
-			</view>
+			</view> -->
 			<!-- #ifdef MP -->
-			<view class="shoucang go_btn" @tap="nearAddress">
+			<!-- <view class="shoucang go_btn" @tap="nearAddress">
 				<view class="sc_icons">
 					<text class="iconfont icon-dizhi"></text>
 				</view>
 				<view class="sc_text">到这去</view>
-			</view>
+			</view> -->
 			<!-- #endif -->
 			<!-- #ifdef H5 -->
 			<!-- 直接打开地图需要传递店铺的经纬度 来获取店铺的位置 -->
-			<view class="shoucang go_btn" @tap="openMap">
+			<!-- <view class="shoucang go_btn" @tap="openMap">
 				<view class="sc_icons">
 					<text class="iconfont icon-dizhi"></text>
 				</view>
 				<view class="sc_text">到这去</view>
-			</view>
+			</view> -->
 			<!-- #endif -->
-		</view>
+		<!-- </view> -->
 		<!-- 选择规格和优惠券 -->
 		<view class="sku_pon" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="cell" @tap="openSku">

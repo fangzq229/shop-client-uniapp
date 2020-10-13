@@ -2,12 +2,14 @@
 import { getConfig, setConfig, getCart, getToken } from "./utils/auth";
 import myconfig from "./utils/config";
 import request from "./utils/request";
+import * as util from './utils/util.js';
 let colors = getConfig();
 let nowColor = ''
 if(colors){
 	nowColor = colors.color
 }
 uni.$ajax = request.request; //挂载全局请求方法
+uni.$util = util; //挂载全局方法
 export default {
   onLaunch: function () {
 	// #ifdef MP-WEIXIN

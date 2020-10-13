@@ -1,7 +1,7 @@
 <template>
 <view class="loading">
   <view class="bg-white">
-    <image src="https://image.weilanwl.com/gif/loading-white.gif" mode="aspectFit" class="gif-white response"></image>
+    <image src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif" mode="aspectFit" class="gif-white response"></image>
   </view>
 </view>
 </template>

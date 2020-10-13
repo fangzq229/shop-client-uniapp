@@ -51,6 +51,10 @@
 		background-color: #fff;
 		margin-bottom: 20upx;
 	}
+	
+	.footprint_box {
+		background-color: #fff;
+	}
 
 	.footprint .nodata {
 		padding: 48upx 0;
@@ -68,10 +72,14 @@
 	}
 
 	.footprint_scroll {
-		background-color: #F8F8F8;
+		background-color: #FFF;
 		width: auto;
 		overflow-x: scroll;
 		white-space: nowrap;
+		padding-left: 30upx;
+		padding-right: 30upx;
+		box-sizing: border-box;
+		margin-top: 20upx;
 	}
 
 	.scroll_box {

@@ -35,34 +35,7 @@ export default {
 		return {
 			colors: '',
 			scrollShow: false, //是否显示悬浮菜单
-			categoryList: [
-				{
-					//分类列表
-					id: 1,
-					name: '饼干',
-					img: '/static/images/class/food-cookie.png'
-				},
-				{
-					id: 2,
-					name: '布丁',
-					img: '/static/images/class/food-pudding.png'
-				},
-				{
-					id: 3,
-					name: '甜甜圈',
-					img: '/static/images/class/food-doughnut.png'
-				},
-				{
-					id: 4,
-					name: '面包',
-					img: '/static/images/class/food-bread.png'
-				},
-				{
-					id: 5,
-					name: '薯片',
-					img: '/static/images/class/food-chips.png'
-				}
-			],
+			categoryList: [],
 			// 商品列表
 			dataList: [
 				{
@@ -379,32 +352,8 @@ export default {
 			],
 			locations: {},
 			loading: true,
-			columnList: [
-				{
-					img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600401451540&di=570b9fa5a9140bb06b02ce12245ea637&imgtype=0&src=http%3A%2F%2Fimg.aiimg.com%2Fuploads%2Fallimg%2F181025%2F263915-1Q025104041.jpg',
-					url: '/'
-				},
-				{
-					img: 'https://img.zcool.cn/community/010ef3554344980000019ae9876cb6.jpg@1280w_1l_2o_100sh.jpg',
-					url: '/'
-				},
-				{
-					img: 'https://img.zcool.cn/community/01eb3a554344980000019ae91879dd.jpg@1280w_1l_2o_100sh.jpg',
-					url: '/'
-				}
-			],
-			swiperList: [
-				{
-					img: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=339984553,3509384023&fm=26&gp=0.jpg'
-				},
-				{
-					img: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1786439814,215205363&fm=26&gp=0.jpg'
-				},
-				{
-					img:
-						'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600399666309&di=3670afbef52571b71b98f4562043498e&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F57ea3c2d57be6.jpg'
-				}
-			],
+			columnList: [],
+			swiperList: [],
 			noticeList: [
 				{
 					id: 1,
@@ -451,10 +400,13 @@ export default {
 		});
 		// #ifdef H5
 		let locations = getlocation(); //获取位置信息
-		if (locations) {
+		if (locations && locations.latlng) {
 			this.locations = locations;
 		}
 		// #endif
+
+		// 获取首页配置数据
+		this.getHomeData();
 	},
 
 	/**
@@ -503,6 +455,24 @@ export default {
 					scrollShow: false
 				});
 			}
+		},
+
+		// 获取首页配置数据
+		async getHomeData() {
+			const result = await uni.$ajax('/api/home/index', {}).catch(err => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				});
+			});
+			console.log(result);
+			// 轮播图
+			this.swiperList = result.banner;
+			// 推荐类
+			this.categoryList = result.category;
+			// 栏目专题
+			this.columnList = result.recommend;
+			console.log(this.columnList);
 		}
 	}
 };

@@ -4,11 +4,11 @@
 		<!-- 搜索 -->
 		<view class="search">
 			<search class="search_box"></search>
-			<view class="hierarchy" @tap="onswitch">
+			<!-- <view class="hierarchy" @tap="onswitch"> -->
 				<!-- 此处切换二级或三级分类 可根据需求选择一种分类方式 -->
-				<text class="iconfont icon-erji" v-if="classLevel == true" :style="'font-size: 44upx;color:' + colors"></text>
+				<!-- <text class="iconfont icon-erji" v-if="classLevel == true" :style="'font-size: 44upx;color:' + colors"></text>
 				<text class="iconfont icon-sanji" v-if="classLevel == false" :style="'font-size: 44upx;color:' + colors"></text>
-			</view>
+			</view> -->
 		</view>
 		<!-- 二级类型的分类菜单 -->
 		/**
@@ -492,7 +492,7 @@
 	}
 
 	.search {
-		padding: 10upx 4% 10upx;
+		padding: 10upx 10upx;
 		padding-left: 10upx;
 		background-color: #ffffff;
 		overflow: hidden;
@@ -502,7 +502,7 @@
 	}
 
 	.search_box {
-		width: 90%;
+		width: 100%;
 	}
 
 	.hierarchy {

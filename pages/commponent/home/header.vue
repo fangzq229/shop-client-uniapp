@@ -17,19 +17,19 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" @change="swiperChange" previous-margin="25px" next-margin="25px">
+				<swiper circular="true" @change="swiperChange">
 					<swiper-item v-for="(item, index) in swiperList" :key="index" @click="brandTo(item)">
-						<image :src="item.img" mode="aspectFill" :class="currentSwiper !== index ? 'swiper-item-side' : ''" lazy-load="true"></image>
+						<image :src="item.imgUrl" mode="aspectFill" :class="currentSwiper !== index ? 'swiper-item-side' : ''" lazy-load="true"></image>
 					</swiper-item>
 				</swiper>
-				<view class="indicator">
+				<!-- <view class="indicator">
 					<view
 						v-for="(item, index) in swiperList"
 						:key="index"
 						:class="currentSwiper >= index ? 'on' : 'dots'"
 						:style="'width: ' + (currentSwiper >= index ? 100 / swiperList.length + '%' : '')"
 					></view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 	</view>
@@ -130,7 +130,7 @@ export default {
 		this.getUserPosition();
 		// #endif
 		// #ifdef H5
-		if (this.locations) {
+		if (this.locations && this.locations.latlng) {
 			this.latitude = this.locations.latlng.lat || '';
 			this.longitude = this.locations.latlng.lng || '';
 			this.city = this.locations.poiname;
@@ -218,26 +218,28 @@ export default {
 				method: 'GET',
 				success: res => {
 					console.log(res);
-					let today = res.data.HeWeather6[0].now; //获取到今天的天气
-					let h = today.fl;
-					this.setData({
-						high: h,
-						//高温
-						weatherName: today.cond_txt
-					});
-					this.weatherData.forEach(e => {
-						if (e.type == today.cond_txt) {
+					if (res.statusCode == 200 && res.data.HeWeather6[0].now) {
+						let today = res.data.HeWeather6[0].now; //获取到今天的天气
+						let h = today.fl;
+						this.setData({
+							high: h,
+							//高温
+							weatherName: today.cond_txt
+						});
+						this.weatherData.forEach(e => {
+							if (e.type == today.cond_txt) {
+								this.setData({
+									todyWeather: e
+								});
+							}
+						});
+
+						if (this.todyWeather.type == '' || !this.todyWeather.type) {
+							let data = this.weatherData[0];
 							this.setData({
-								todyWeather: e
+								todyWeather: data
 							});
 						}
-					});
-
-					if (this.todyWeather.type == '' || !this.todyWeather.type) {
-						let data = this.weatherData[0];
-						this.setData({
-							todyWeather: data
-						});
 					}
 				},
 				fail: () => {},
@@ -283,7 +285,7 @@ export default {
 	padding: 0 3%;
 	line-height: 80upx;
 	overflow: hidden;
-	height: 515upx;
+	height: 460upx;
 	color: #fff;
 	position: relative;
 }
@@ -348,7 +350,7 @@ export default {
 
 .swiper-box {
 	width: 100%;
-	height: 45vw;
+	height: 40vw;
 	overflow: hidden;
 	/* border-radius: 15upx; */
 	/* box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2); */
@@ -358,7 +360,7 @@ export default {
 
 .swiper-box swiper {
 	width: 100%;
-	height: 45vw;
+	height: 40vw;
 }
 .swiper-box swiper swiper-item {
 	display: flex;
@@ -366,15 +368,15 @@ export default {
 	justify-content: center;
 }
 .swiper-box swiper swiper-item image {
-	width: 95%;
-	height: 45vw;
+	width: 98%;
+	height: 40vw;
 	margin: 0 auto;
 	display: block;
-	border-radius: 10px;
+	border-radius: 10upx;
 	transition: height 0.3s;
 }
 .swiper-item-side {
-	width: 95%;
+	width: 98%;
 	height: 40vw !important;
 	transition: height 0.3s;
 }

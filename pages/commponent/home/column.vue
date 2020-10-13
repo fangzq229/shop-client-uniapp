@@ -1,11 +1,11 @@
 <template>
  <view class="column">
     <view class="column_left">
-      <image :src="dataList[0].img" @click="goto(dataList[0].url)"></image>
+      <image :src="dataList[0] ? dataList[0].imgUrl : '' " @click="goto(dataList[0])" mode="aspectFill"></image>
     </view>
     <view class="colum_right">
-      <image :src="dataList[1].img" class="right_img" @click="goto(dataList[1].url)"></image>
-      <image :src="dataList[2].img" style="margin-top: 12upx" class="right_img" @click="goto(dataList[2].url)"></image>
+      <image :src="dataList[1] ? dataList[1].imgUrl : '' " class="right_img" @click="goto(dataList[1])" mode="aspectFill"></image>
+      <image :src="dataList[2] ? dataList[2].imgUrl: '' " style="margin-top: 12upx" class="right_img" mode="aspectFill" @click="goto(dataList[2])"></image>
     </view>
   </view>
 </template>

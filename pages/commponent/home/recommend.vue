@@ -202,7 +202,6 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  font-weight: bold;
 }
 .bottom .price{
   margin-top: 15upx;
@@ -443,7 +442,6 @@ export default {
 .goods_right .goods_name {
   font-size: 28upx;
   overflow: hidden;
-  font-weight: bold;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;

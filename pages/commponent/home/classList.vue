@@ -1,7 +1,7 @@
 <template>
  <view class="category-list">
 		<view v-for="(item, index) in categoryList" :key="index" class="category" @tap="jumpList(item)">
-			<view class="class_img"><image :src="item.img" class="imgs"></image></view>
+			<view class="class_img"><image :src="item.iconUrl" class="imgs"></image></view>
 			<view class="text">{{ item.name }}</view>
 		</view>
 </view>

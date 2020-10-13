@@ -1,11 +1,11 @@
 <template>
 <view class="order">
   <!-- 选择配送方式 -->
-  <view class="mode" @tap="selectMode">
+  <!-- <view class="mode" @tap="selectMode">
     <text class="text1">配送方式</text>
     <text class="text2">{{modes || "请选择配送方式"}}</text>
     <image src="/static/images/home/right.png"></image>
-  </view>
+  </view> -->
   <!-- 收货地址 -->
   <view class="order_address" v-if="tapIndex == 0">
     <image src="/static/images/home/bottom.png"></image>

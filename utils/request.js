@@ -24,23 +24,39 @@ async function request(mehtod, params, type, callBack) {
     method: type,
     header: header
   };
-  let promise = new Promise((resolve, reject) => {
-    uni.request(http).then(res => {
-      let newdata = res[1].data; // if (newdata.code == 403) {
-      if (newdata == -1) {
-        //如果错误码为 -1 提示
-        uni.showToast({
-          title: res[1].data.msg,
-          icon: 'none'
-        });
-      }
-      resolve(res[1].data);
-    }).catch(err => {
-      reject(err);
-      console.log(err);
-    });
+  return new Promise((resolve, reject) => {
+	  uni.request({
+	  	...http,
+		success: (result) => {
+			if(result.statusCode === 200) {
+				if(result.data.status === 0) {
+					resolve(result.data.data);
+				}
+				reject(result.data.message);
+			} else {
+				reject(result.data.message);
+			}
+		},
+		fail: (err) => {
+			reject(err);
+		}
+	  })
+   //  uni.request(http).then(res => {
+   //    let newdata = res[1].data; // if (newdata.code == 403) {
+   //    if (newdata.status == -1) {
+   //      //如果错误码为 -1 提示
+   //      uni.showToast({
+   //        title: newdata.message,
+   //        icon: 'none'
+   //      });
+   //    }
+   //    resolve(newdata);
+	  // console.log('------222-----');
+   //  }).catch(err => {
+	  // console.log('----1111----');
+   //    reject(err);
+   //  });
   });
-  return promise;
 }
 export default {
   request
