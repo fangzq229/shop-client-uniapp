@@ -4,28 +4,28 @@
 		<view class="mask" @touchmove.stop.prevent="moveHandle" v-if="showModal" @tap="onhide"></view>
 		<view @touchmove.stop.prevent="moveHandle" :class="'sku ' + (showModal==true ? 'shows':'')" :style="{bottom: showModal == true ? bottoms+'upx': ''}">
 			<view class="sku_top">
-				<image :src="currentSku.img" class="top_img"></image>
+				<image :src="currentSku.skuSmallImg || nowList.smallImg" class="top_img"></image>
 				<view class="sku_title">
 					{{nowList.name}} {{ nowList.subhead }}
 				</view>
 				<view class="moneys">
 					<!-- 这里的价格是选择完规格后计算的价格 -->
-					￥{{(Number(currentSku.money) * number).toFixed(2)}}
+					￥{{(Number(currentSku.activityPrice || currentSku.salePrice) * number).toFixed(2)}}
 				</view>
 				<view class="kucun">
 					<!-- 这里的价格是选择完规格后计算的库存 -->
-					库存: {{currentSku.stock}}
+					库存: {{currentSku.activityStock || currentSku.stock}}
 				</view>
 			</view>
 			<block v-if="nowList.skuArr && nowList.skuArr.length !== 0">
-				<view v-for="(item, index) in nowList.skuArr" :key="index" class="sku_list">
+				<view class="sku_list">
 					<view class="sku_name">
-						{{item.name}}
+						规格
 					</view>
 					<view class="sku_tag">
-						<button v-for="(row, s) in item.child" :key="row.id" class="tag_s" :class="{'ondisabled': row.disabled == true}"
-						 :disabled="row.disabled == true" @tap="setTag(item,index,s,row)" :style="{color:currentArr[item.sku_id] == row.id ? colors :'#333333',background:currentArr[item.sku_id] == row.id ? '#fff' :'',borderColor:currentArr[item.sku_id] == row.id ? colors :''}">
-							{{row}}
+						<button v-for="(item, index) in nowList.skuArr" :key="index" class="tag_s" :class="{'ondisabled': item.disabled == true}"
+						 :disabled="item.disabled == true" @tap="setTag(item)" :style="{color: JSON.stringify(currentArr) == JSON.stringify(item) ? colors :'#333333',background:JSON.stringify(currentArr) == JSON.stringify(item) ? '#fff' :'',borderColor:JSON.stringify(currentArr) == JSON.stringify(item) ? colors :''}">
+							{{ formatAttr(item) }}
 						</button>
 					</view>
 				</view>
@@ -58,7 +58,7 @@
 			return {
 				number: 1,
 				current: "",
-				currentArr: [], //当前选中的规格数组
+				currentArr: {}, //当前选中的规格
 				currentSku: {}, //选择后的规格详情
 				skulength: 0, //选择商品规格的长度
 				issku: false, //判断当前商品是否存在规格
@@ -80,147 +80,64 @@
 			},
 			bottoms: {
 				type: String,
-				default: 0
+				default: ''
 			}
 		},
 		computed: {
 			skuArr() {
-				return this.skuList.skuArr;
+				return this.nowList.skuArr;
 			}
 		},
 		watch: {
-			skuList(value) { //监听商品规格变化 来清空之前所选的规格
-				console.log(value);
-				this.currentArr = []
-				this.issku = false //初始化当前规格的条件
-				this.number = 1 //初始数量
-				this.skulength = 0 //初始化商品规格长度
-				this.currentSku = value.skus[0]
-				this.nowList = value
-			}
+			skuList(value) {
+				//监听商品规格变化 来清空之前所选的规格
+				this.currentArr = value.skuArr.length > 0 ? [ ...value.skuArr[0] ] : [];
+				this.nowList = value // 商品对象
+			},
+			// 选择的数组
+			currentArr: { 
+			     deep:true, //深度监听设置为 true
+			     handler: function(newV,oldV) {
+				   // sku 选择
+				   if(newV.length > 0) {
+						this.searchSku(newV);
+				   } else {
+					   this.currentSku = this.nowList.skus[0];
+				   }
+			     }
+		   }
 		},
 		methods: {
 			moveHandle() {
 				return
 			},
-			setTag(items, current, indexs, row) {
-				console.log(items, current, indexs, row);
-				//选择规格
-				let that = this
-				let item = items
-				let pid = items.sku_id
-				let isChecked = true; // 选中 or 取消选中
-				//if (that.currentArr[pid] != undefined && that.currentArr[pid] == row.id) {
-				// 	// 点击已被选中的，删除并填充 ''
-				// 	isChecked = false;
-				// 	that.currentArr.splice(pid, 1, '');
-				// } else {
-				// 	// 选中
-				// 	that.$set(that.currentArr, pid, row.id);
-				// }
-				// let chooseSkuId = []; // 选中的规格大类
-				// that.currentArr.forEach(sku => {
-				// 	if (sku != '') {
-				// 		// sku 为空是反选 填充的
-				// 		chooseSkuId.push(sku);
-				// 	}
-				// });
-
-				// let newSku = that.getAllSku() //获取符合条件的规格数据
-				// that.skulength = chooseSkuId.length
-				// if (chooseSkuId.length == that.nowList.sku.length && newSku.length) {
-				// 	//如果所有的规格类都被选中了 设置当前选中项商品的信息
-				// 	that.currentSku = newSku[0]
-				// 	that.issku = true //设定当前商品为规格商品 用于加入购物车时判断
-				// } else {
-				// 	that.currentSku = that.nowList;
-				// }
-				// // 每次点击选择或者取消之后都要刷新下选择状态 判断其他规格不符合条件的是否被选中
-				// that.changeDisabled(isChecked, row.id, pid)
+			
+			// 根据选择条件匹配sku
+			searchSku(val) {
+				this.currentSku = this.nowList.skus.find(item => {
+					return item.attributeJson === JSON.stringify(val);
+				}) || {}
 			},
-
-			// changeDisabled(isChecked = false, skuId = 0, pid = 0) { //改变禁用状态
-			// 	let newSku = []
-			// 	if (isChecked) {
-			// 		for (let key of this.skuArr) { //遍历可用规格数组
-			// 			if (key.stock <= 0) { //如果规格现有的库存小于等于0
-			// 				continue
-			// 			}
-			// 			if (key.goods_sku_arr.indexOf(skuId.toString()) >= 0) { //如果当前选中的类中存在对应的规格
-			// 				newSku.push(key)
-			// 			}
-			// 		}
-			// 	} else {
-			// 		newSku = this.getAllSku()
-			// 	}
-			// 	// 所有存在并且有库存未选择的规格项 的 子项 id
-			// 	let noChooseSkuIds = [];
-			// 	for (let price of newSku) {
-			// 		noChooseSkuIds = noChooseSkuIds.concat(price.goods_sku_arr);
-			// 	}
-			// 	// 去重
-			// 	noChooseSkuIds = Array.from(new Set(noChooseSkuIds));
-
-			// 	if (isChecked) {
-			// 		// 去除当前选中的规格项
-			// 		let index = noChooseSkuIds.indexOf(skuId.toString());
-			// 		noChooseSkuIds.splice(index, 1);
-			// 	} else {
-			// 		// 循环去除当前已选择的规格项
-			// 		this.currentArr.forEach(sku => {
-			// 			if (sku.toString() != '') {
-			// 				// sku 为空是反选 填充的
-			// 				let index = noChooseSkuIds.indexOf(sku.toString());
-			// 				if (index >= 0) {
-			// 					// sku 存在于 noChooseSkuIds
-			// 					noChooseSkuIds.splice(index, 1);
-			// 				}
-			// 			}
-			// 		});
-			// 	}
-
-			// 	// 当前已选择的规格大类
-			// 	let chooseSkuKey = [];
-			// 	if (!isChecked) {
-			// 		// 当前已选择的规格大类
-			// 		this.currentArr.forEach((sku, key) => {
-			// 			if (sku != '') {
-			// 				// sku 为空是反选 填充的
-			// 				chooseSkuKey.push(key);
-			// 			}
-			// 		});
-			// 	} else {
-			// 		// 当前点击选择的规格大类
-			// 		chooseSkuKey = [pid];
-			// 	}
-			// 	let skuid = this.currentArr[pid]
-			// 	for (let i in this.nowList.sku) {
-			// 		// 当前点击的规格，或者取消选择时候 已选中的规格 不进行处理
-			// 		for (var x in this.nowList.sku[i]['child']) {
-			// 			// 如果当前规格项 id 不存在于有库存的规格项中，则禁用
-			// 			if (chooseSkuKey.indexOf(this.nowList.sku[i]['sku_id']) >= 0) {
-			// 				if (this.nowList.sku[i]['child'][x]['id'] == skuid) {
-			// 					continue
-			// 				} else {
-			// 					if (!isChecked) {
-			// 						this.nowList.sku[i]['child'][x]['disabled'] = false;
-			// 					}
-			// 				}
-			// 			} else {
-			// 				if (noChooseSkuIds.indexOf(this.nowList.sku[i]['child'][x]['id'].toString()) >= 0) {
-			// 					this.nowList.sku[i]['child'][x]['disabled'] = false;
-			// 				} else {
-			// 					this.nowList.sku[i]['child'][x]['disabled'] = true;
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-			// },
+			
+			// 切换选择
+			setTag(attribute) {
+				this.currentArr = attribute;
+			},
+			
+			// 格式化属性
+			formatAttr(attrs) {
+				return attrs.map(i => {
+					return i.val
+				}).join(' | ')
+			},
+			
+			// 隐藏对话框
 			onhide() {
 				//隐藏规格对话框
-				this.$emit('onhide')
+				this.$emit('onhide');
 			},
 
+            // 添加数量
 			onadd() {
 				//加
 				let data = this.number + 1;
@@ -228,7 +145,8 @@
 					number: data
 				});
 			},
-
+			
+			// 减数量
 			onreduce() {
 				//减
 				if (this.number <= 1) {
@@ -241,6 +159,7 @@
 				}
 			},
 
+			// 确认订单
 			onsubmit(value) {
 				// 此处应该判断是否登录 如果没登录 跳转到登录页
 				if (!getToken()) {
@@ -290,28 +209,7 @@
 						this.$emit('onhide')
 					}, 800);
 				}
-			},
-
-			// 处理规格多选情况下 符合条件的规格 并把不符合条件的规格禁用
-			// getAllSku() {
-			// 	let newSku = []
-			// 	for (let key of this.skuArr) { //遍历可用规格数组
-			// 		if (key.stock <= 0) { //如果规格现有的库存小于等于0
-			// 			continue
-			// 		}
-			// 		var isOk = true
-			// 		this.currentArr.forEach((sku) => {
-			// 			// sku 不为空，并且，这个 条 skuPrice 没有被选中,则排除
-			// 			if (sku.toString() !== '' && key.goods_sku_arr.indexOf(sku.toString()) < 0) {
-			// 				isOk = false
-			// 			}
-			// 		})
-			// 		if (isOk == true) {
-			// 			newSku.push(key)
-			// 		}
-			// 	}
-			// 	return newSku
-			// }
+			}
 		}
 	};
 </script>
@@ -426,7 +324,7 @@
 	}
 
 	.number {
-		margin-top: 10upx;
+		margin-top: 50upx;
 		border-top: 1upx solid #ccc;
 		width: 100%;
 		height: 80upx;
