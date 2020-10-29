@@ -4,7 +4,7 @@
 		<view class="recommend_goods" v-if="modes == true">
 			<view v-for="(item, index) in newList" :key="index" class="goods">
 				<view class="top" @tap="jumpDetails(item)">
-					<image class="cover" lazy-load="true" :src="item.smallImg" mode="scaleToFill"></image>
+					<image class="cover" lazy-load="true"  :src="item.smallImg" mode="scaleToFill"></image>
 					<!-- <image class="tags" lazy-load="true" v-if="item.baoyou" :src="tagImg[0]"></image> -->
 				</view>
 				<view class="bottom">
@@ -34,7 +34,7 @@
 		<view class="list_mode" v-if="modes == false">
 			<view class="goods_list" v-if="newList.length !== 0">
 				<view v-for="(item, index) in newList" :key="index" class="goods_item">
-					<image :src="item.smallImg" lazy-load="true" @tap="jumpDetails(item)"></image>
+					<image :src="item.smallImg" mode="aspectFill" lazy-load="true" @tap="jumpDetails(item)"></image>
 					<!-- 商品标签 -->
 					<!-- <image class="tags" :src="tagImg[item.type-1]"></image> -->
 					<view class="goods_right">
@@ -138,7 +138,7 @@
 			},
 			jumpDetails(e) {
 				uni.navigateTo({
-					url: '/pages/views/goods/goodsDetails'
+					url: '/pages/views/goods/goodsDetails?productId=' + e.id
 				});
 			}
 		}

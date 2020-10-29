@@ -99,7 +99,7 @@
 					context.restore();
 				};
 				setText(ctx, 14, '#333', 85, 35, this.userInfo.name, 'bold');
-				setText(ctx, 12, '#999', 85, 58, '为您挑选了一个好礼物');
+				setText(ctx, 12, '#999', 85, 58, '为您精心挑选了一个好礼物');
 				ctx.save();
 				/**
 				 * 绘制头像
@@ -119,7 +119,7 @@
 				this.setGoodsImg(ctx)
 
 				// 绘制商品价格
-				let pirce = '￥ ' + this.posterData.money
+				let pirce = '￥ ' + (this.posterData.skus[0].activityPrice || this.posterData.skus[0].salePrice)
 				this.setGoodsPrice(ctx, 20, this.colors, 15, 410, pirce)
 				// 绘制商品名称
 				this.setGoodsName(ctx)
@@ -185,7 +185,7 @@
 			},
 			setGoodsImg(ctx) { //绘制中间商品图片
 				let width = this.windowWidth - 90
-				ctx.drawImage(this.posterData.img, 15, 95, width, width);
+				ctx.drawImage(this.posterData.bigImg[0], 15, 95, width, width);
 				ctx.save();
 			},
 			setGoodsPrice(ctx, fs, color, x, y, c, bold) { //绘制商品价格
@@ -211,7 +211,7 @@
 					size: 14, //字体的字号
 					align: 'left',
 					baseline: 'top',
-					text: this.posterData.title,
+					text: `${this.posterData.name} ${this.posterData.subhead}`,
 					bold: true
 				};
 				var td = Math.ceil(obj.width / (obj.size));

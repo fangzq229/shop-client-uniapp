@@ -28,16 +28,19 @@
 	  </view>
       <view class="goods_list" v-if="dataList.length !== 0">
         <view v-for="(item, index) in dataList" :key="index" class="goods_item">
-          <image :src="item.img" @tap="jumpDetail" :data-item="item"></image>
+          <image :src="item.smallImg" mode="aspectFill" @tap="jumpDetail(item)" :data-item="item"></image>
           <view class="goods_right">
-            <view class="goods_name" @tap="jumpDetail" :data-item="item">{{item.title}}</view>
+            <view class="goods_name" @tap="jumpDetail(item)" :data-item="item">
+				{{item.name}} {{ item.subhead }}
+			</view>
             <view class="numbers">
-              <text v-if="item.youhui == true">优惠券</text>
-              <text v-if="item.baoyou == true">包邮</text>
+				<text v-for="(l, index) in item.label" :key="index">
+					{{ l.name }}
+				</text>
             </view>
             <view class="price">
-              <text class="money">￥{{item.money}}</text>
-              <text class="hx_money">￥{{item.hmoney}}</text>
+              <text class="money">￥ {{item.skus[0].salePrice}}</text>
+              <text class="hx_money">￥ {{item.skus[0].marketPrice}}</text>
               <text class="iconfont icon-gouwuche gouwuche" @tap="addCart(item)"></text>
             </view>
           </view>
@@ -161,7 +164,7 @@ export default {
     },
     jumpDetail(e) {
       uni.navigateTo({
-        url: '/pages/views/goods/goodsDetails'
+        url: '/pages/views/goods/goodsDetails?productId=' + e.id
       });
     }
 

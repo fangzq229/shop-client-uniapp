@@ -4,7 +4,7 @@
 		<view class="mask" @touchmove.stop.prevent="moveHandle" v-if="showModal" @tap="onhide"></view>
 		<view @touchmove.stop.prevent="moveHandle" :class="'sku ' + (showModal==true ? 'shows':'')" :style="{bottom: showModal == true ? bottoms+'upx': ''}">
 			<view class="sku_top">
-				<image :src="currentSku.skuSmallImg || nowList.smallImg" class="top_img"></image>
+				<image :src="currentSku.skuSmallImg || nowList.smallImg"  mode="aspectFill" class="top_img"></image>
 				<view class="sku_title">
 					{{nowList.name}} {{ nowList.subhead }}
 				</view>

@@ -4,9 +4,10 @@
 		<navBar textcolor="#000" :showLeft="true" :showTitle="false"></navBar>
 		<!-- 轮播图 -->
 		<view class="carousel" :style="'top:' + statusBarHeight">
-			<swiper :indicator-dots="goodsData.imgList.length >= 2 ? true: false" circular="true" duration="400" controls touchable
+			<swiper :indicator-dots="goodsData.bigImg.length >= 2 ? true: false" circular="true" duration="400" controls touchable
 			 @change="swiperchange">
-				<swiper-item class="swiper-item" v-if="goodsData.videos !== ''">
+			   <!-- 视频  -->
+				<!-- <swiper-item class="swiper-item" v-if="goodsData.videos !== ''">
 					<view class="image-wrapper">
 						<video id="myVideo" :controls="false" :show-center-play-btn="false" :muted="voice" loop :src="goodsData.videos"></video>
 						<view class="place_tow" @click="openvideo" v-if="isshowVideo == false">
@@ -22,8 +23,8 @@
 							<image src="/static/images/goods/jingyin.png" v-if="voice == true"></image>
 						</view>
 					</view>
-				</swiper-item>
-				<swiper-item v-for="(item, index) in goodsData.imgList" :key="index" class="swiper-item"  @click="preview(goodsData.imgList,index)" >
+				</swiper-item> -->
+				<swiper-item v-for="(item, index) in goodsData.bigImg" :key="index" class="swiper-item"  @click="preview(goodsData.bigImg,index)" >
 					<view class="image-wrapper" >
 						<image :src="item" class="loaded" mode="aspectFill"></image>
 					</view>
@@ -35,11 +36,11 @@
 		<!-- 商品信息 -->
 		<view class="goods_info" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="goods_name">
-				{{goodsData.title}}
+				{{goodsData.name}} {{ goodsData.subhead }}
 			</view>
 			<view class="goods_price">
-				<text class="money">￥{{goodsData.money}}</text>
-				<text class="h_money">￥{{goodsData.hmoney}}</text>
+				<text class="money">￥{{goodsData.skus[0].activityPrice || goodsData.skus[0].salePrice}}</text>
+				<text class="h_money">￥{{goodsData.skus[0].marketPrice}}</text>
 			</view>
 			<view class="shoucang">
 				<view class="sc_icons" @tap="setisColl">
@@ -49,15 +50,15 @@
 			</view>
 		</view>
 		<view class="other" :style="'transform: translateY(-' + toBar + ');'">
-			<p v-if="goodsData.baoyou == true">快递:包邮</p>
-			<p v-else>快递费:10元</p>
-			<p>销量:100</p>
+			<p>快递:包邮</p>
+			<!-- <p v-else>快递费:10元</p> -->
+			<p>销量:{{ goodsData.skus[0].virtualSales }}</p>
 		</view>
 		<!-- 分享按钮 -->
 		<view class="share" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="tips" style="color: #666;">
 				<text class="iconfont icon-zuanshi" style="color: #FF546E;font-size: 38upx;font-weight: 600;"></text>
-				分享商品可获得商城积分
+				好物爱分享
 			</view>
 			<!-- #ifdef MP -->
 			<view class="onshare" style="color: #FF546E;">
@@ -100,17 +101,17 @@
 		<view class="sku_pon" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="cell" @tap="openSku">
 				<text class="text1">商品规格：</text>
-				<text class="text2">类型...</text>
+				<text class="text2">规格...</text>
 				<image src="/static/images/home/right.png"></image>
 			</view>
-			<view class="cell" style="border:none" @tap="opencoupon">
+			<!-- <view class="cell" style="border:none" @tap="opencoupon">
 				<text class="text1">优 惠 券：</text>
 				<text class="text2" :style="{color: colors}">领取优惠券</text>
 				<image src="/static/images/home/right.png"></image>
-			</view>
+			</view> -->
 		</view>
 		<!-- 商品评价 -->
-		<view class="evaluate" :style="'transform: translateY(-' + toBar + ');'">
+		<!-- <view class="evaluate" :style="'transform: translateY(-' + toBar + ');'">
 			<p class="eva_title">
 				商品评价<text>(10)</text>
 				<text class="seeAll" @click="seeAll">查看全部</text>
@@ -140,20 +141,20 @@
 									</view>
 								<view class="ping_neirong">{{ row.comment }}</view>
 								<view class="ping_img" v-if="row.images.length !== 0"><image :src="s" mode="" v-for="(s,x) in row.images" :key="x" @click="preview(row.images, x)"></image></view>
-								<!-- 回复 -->
 								<view class="huifu" v-if="row.reply && row.reply !== ''">商家回复：{{ row.reply }}</view>
 							</view>
 						</view>
 					</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 商品详情 -->
 		<view class="details" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="details_title">
 				—— <text style="color: #666666;margin: 0 20upx;"> 商品详情 </text> ——
 			</view>
 			<view class="details_content">
-				<rich-text :nodes="htmlNode"></rich-text>
+				<!-- <rich-text :nodes="htmlNode"></rich-text> -->
+				<image style="width: 100vw;" mode="aspectFill" :src="item" v-for="(item, index) in goodsData.introImg" :key="index"></image>
 			</view>
 		</view>
 		<!-- 底部操作栏 -->
@@ -229,51 +230,8 @@
 				longitude: '',
 				nowList:{},
 				goodsData: {
-							title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-							type: 1,
-							goods_id: 201,
-							money: '35.90',
-							number: 1,
-							hmoney: '45.90',
-							img: '/static/images/goods/one.jpg',
-							youhui: true,
-							baoyou: false,
-							status: 1, //商品过期状态  0正常  1已失效
-							stock: 600,
-							videos: 'https://fzdz.soft.haoyangsoft.com/uploads/system/videos/20200813/6c819d24ee6868aee33e150c4333329b.mp4',
-							imgList:['/static/images/goods/one.jpg','http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg','http://img11.360buyimg.com/n1/jfs/t1/74434/3/6892/331750/5d512febE54e891c4/0096ad20c3c20d23.jpg'],
-							sku: [{
-								sku_id: 1,
-								skuname: '口味',
-								child: [{
-										tagname: '醇黑巧克力【20枚】',
-										id: 2011,
-										imgs: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-										money: '175.78'
-									},
-									{
-										tagname: '草莓味【8枚】',
-										id: 2012,
-										imgs: 'http://img11.360buyimg.com/n1/jfs/t1/74434/3/6892/331750/5d512febE54e891c4/0096ad20c3c20d23.jpg',
-										money: '35.90'
-									}
-								]
-							}],
-							skuArr: [{
-									goods_sku_arr: ['2011'],
-									goods_sku_text: '醇黑巧克力【20枚】',
-									img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-									money: '175.78',
-									stock: 345
-								},
-								{
-									goods_sku_arr: ['2012'],
-									goods_sku_text: '草莓味【8枚】',
-									img: 'http://img11.360buyimg.com/n1/jfs/t1/74434/3/6892/331750/5d512febE54e891c4/0096ad20c3c20d23.jpg',
-									money: '35.90',
-									stock: 255
-								},
-							]
+					bigImg: [],
+					skus: [{}]
 				},
 				showModal: false,
 				couponshow: false,
@@ -321,7 +279,7 @@
 				],
 				htmlNode: '',
 				// 商品详情
-				descriptionStr: '<div id="commDesc" hasdata="1" style="line-height: 2; transform-origin: 0px 0px; font-size: 30px;width:100%;"><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/99519/11/4669/136444/5de8bbdbE0cba049d/517f1fb75b582456.jpg!q70.dpg.webp" loaded="17"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/92267/13/4771/160442/5de8bbdbE50655175/7dd51e0b966aba15.jpg!q70.dpg.webp" loaded="16"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/93624/28/4672/131382/5de8bbdbE65d14e5d/81bc1227ec775788.jpg!q70.dpg.webp" loaded="15"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/97366/21/4817/101042/5de8bbdbE8854b673/7c4ce7faa45a418b.jpg!q70.dpg.webp" loaded="14"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/98311/21/4778/122770/5de8bbdcE13375754/f4324ca9294eef4c.jpg!q70.dpg.webp" loaded="13"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/103373/15/4747/118973/5de8bbdcE2058ee8e/d921d5f1a4aa5c89.jpg!q70.dpg.webp" loaded="12"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/88841/34/4711/84977/5de8bbdeE0b691b9a/e69796d32a63bbaa.jpg!q70.dpg.webp" loaded="11"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/95248/2/4771/99041/5de8bbdfE06b41b3b/3c4a2b1cb97a5262.jpg!q70.dpg.webp" loaded="10"></div>',
+			    descriptionStr: '<div id="commDesc" hasdata="1" style="line-height: 2; transform-origin: 0px 0px; font-size: 30px;width:100%;"><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/99519/11/4669/136444/5de8bbdbE0cba049d/517f1fb75b582456.jpg!q70.dpg.webp" loaded="17"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/92267/13/4771/160442/5de8bbdbE50655175/7dd51e0b966aba15.jpg!q70.dpg.webp" loaded="16"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/93624/28/4672/131382/5de8bbdbE65d14e5d/81bc1227ec775788.jpg!q70.dpg.webp" loaded="15"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/97366/21/4817/101042/5de8bbdbE8854b673/7c4ce7faa45a418b.jpg!q70.dpg.webp" loaded="14"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/98311/21/4778/122770/5de8bbdcE13375754/f4324ca9294eef4c.jpg!q70.dpg.webp" loaded="13"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/103373/15/4747/118973/5de8bbdcE2058ee8e/d921d5f1a4aa5c89.jpg!q70.dpg.webp" loaded="12"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/88841/34/4711/84977/5de8bbdeE0b691b9a/e69796d32a63bbaa.jpg!q70.dpg.webp" loaded="11"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/95248/2/4771/99041/5de8bbdfE06b41b3b/3c4a2b1cb97a5262.jpg!q70.dpg.webp" loaded="10"></div>',
 				goodsEva:[ //评价列表
 					{headimg:'/static/images/face.jpg',nickname:'反转',create_time:'2020-09-10 15:36',goods_name:'醇黑巧克力【20枚】', score:5,comment:'产品很不错,赞',images:['/static/images/goods/two.jpg','/static/images/goods/one.jpg'],reply:'感谢您的支持',tags:['价格合理','味道好','价格优惠','态度好']},
 					{headimg:'/static/images/face.jpg',nickname:'清风',create_time:'2020-09-10 13:36',goods_name:'草莓味【8枚】', score:4,comment:'味道还不错~',images:[],reply:'',tags:[]}
@@ -348,7 +306,8 @@
 				colors: app.globalData.newColor
 			});
 			this.getLocation(); //获取位置信息
-			this.setFrom(this.descriptionStr); //处理商品详情
+			// this.setFrom(this.descriptionStr); //处理商品详情
+			this.getProductInfo(options.productId);
 			setTimeout(() => {
 				this.setData({
 					isShow: false
@@ -595,6 +554,21 @@
 				uni.navigateTo({
 					url:'/pages/views/goods/goodsEvaluate'
 				})
+			},
+			// 获取商品详情
+			async getProductInfo(id) {
+				const result = await uni.$ajax('/api/product/info',
+					{
+						productId: id,
+					},
+				).catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+				console.log(result);
+				this.goodsData = result;
 			}
 		}
 	};
