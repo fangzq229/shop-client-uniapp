@@ -13,13 +13,13 @@
         <view class="weizhi_icon">
           <text class="iconfont icon-dizhi" :style="'color:' + colors"></text>
         </view>
-      <block v-if="address.name && address.name !== ''">
+      <block v-if="address.id">
         <view class="center">
           <view class="name">
-            <text class="text1">{{address.name}}</text>
+            <text class="text1">{{address.consignee}}</text>
             <text class="phones">{{address.phone}}</text>
            </view>
-            <view class="address_name">{{address.address_name}}</view>
+            <view class="address_name">{{address.district}} {{ address.detailedAddress }}</view>
         </view>
       </block>
       <view class="noaddress" v-else>
@@ -30,27 +30,26 @@
   <!-- 商品详情 -->
   <view v-for="(item, index) in goodsList" :key="index" class="goods">
     <view class="goods_data">
-	  <image :src="item.selectSku.img" mode="widthFix" v-if="item.selectSku.img"></image>
-      <image :src="item.img" mode="widthFix" v-else></image>
+      <image :src="item.image" mode="aspectFill"></image>
       <view class="goods_title">
         <view class="g_name">
-          {{item.title}}
+          {{item.name}} {{ item.subhead }}
         </view>
         <view class="goods_sku">
-        规格: <text style="margin-right: 10upx;">{{item.selectSku.goods_sku_text || '暂无规格'}}</text>
+        规格: <text style="margin-right: 10upx;">{{ formatAttr(item.attributeJson) }}</text>
         </view>
         <view class="price">
-            <view class="t1" :style="'color:' + colors">￥{{item.money}}</view>
+            <view class="t1" :style="'color:' + colors">￥{{item.activityPrice || item.salePrice}}</view>
             <view class="t2">
-              <text>￥{{item.hmoney}}</text>
+              <text>￥{{item.marketPrice}}</text>
             </view>
             <view class="t3">
-              x{{item.number}}
+              x{{item.quantity}}
             </view>
           </view>
       </view>
     </view>
-    <view class="morelist" style="border-bottom:none">
+    <!-- <view class="morelist" style="border-bottom:none">
       <view class="title">
         <text class="quan" :style="'background:' + colors">券</text>
          <text>优惠券</text>
@@ -58,7 +57,7 @@
       <view class="right_title" :style="'color:' + colors + ';font-size:24upx'" @tap="openCoupon(index)">
         {{item.couponName || '请选择优惠券'}}
       </view>
-    </view>
+    </view> -->
   </view>
   <!-- 订单详情 -->
   <view class="order_more">
@@ -119,16 +118,12 @@ export default {
       colors: '',
       couponshow: false,
       modes: '',
-	  tapIndex: 99,
+	  tapIndex: 0,
 	  goodsList:getGoodsData(),
 	  couponIndex: 0,
 	  nowprice: 0, //临时存储总金额的变量 用于计算优惠券
 	  sumprice: 0,
-	  address:{
-		  name:'反转',
-		  phone: 12345678915,
-		  address_name:'北京市海淀区苏家坨乡前沙涧村15号'
-	  },
+	  address: {},
 	  couponList: [ //优惠券列表
 	  	{
 	  		money: 30,
@@ -161,9 +156,9 @@ export default {
 	removeAddress() //清空存储的地址
 	// 计算所有的商品总价
 	this.getSumPrice()
-    this.setData({
-      colors: app.globalData.newColor
-    });
+	this.setData({
+		colors: app.globalData.newColor
+	});
   },
 
   /**
@@ -175,10 +170,8 @@ export default {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-	  let address = getAddress() //判断是否存在重新选择的地址
-	  if(address && address.name){
-		  this.address = address
-	  }
+	  //获取默认选择的地址
+	  this.getAddress() 
   },
 
   /**
@@ -208,10 +201,23 @@ export default {
    */
   onShareAppMessage: function () {},
   methods: {
+	// 获取默认地址
+	async getAddress() {
+		const res = await uni.$ajax('/api/address/info').catch((err) => {
+			return uni.showToast({
+				title: err,
+				icon: 'none'
+			});
+		});
+		this.address = res;
+		console.log(this.address);
+	},
+	// 计算价格
 	getSumPrice(){
 		let sumprice = 0
 		this.goodsList.forEach(e=>{
-			sumprice = (sumprice+Number(e.money)).toFixed(2)
+			const price = e.activityPrice || e.salePrice;
+			sumprice = sumprice + ((price*100*e.quantity)/100);
 		})
 		this.sumprice = sumprice
 		this.nowprice = sumprice 
@@ -268,6 +274,12 @@ export default {
 		this.couponshow = false
 		this.goodsList[this.couponIndex].couponName = ''
 		this.sumprice = this.sumprice + Number(this.goodsList[this.couponIndex].couponReduce)
+	},
+	// 格式化属性
+	formatAttr(attrs) {
+		return JSON.parse(attrs).map(i => {
+			return i.val
+		}).join(' | ')
 	}
   }
 };

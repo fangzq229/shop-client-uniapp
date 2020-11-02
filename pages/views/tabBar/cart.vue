@@ -6,7 +6,7 @@
 				<view v-for="(item, index) in cartList" :key="index" class="cart_list" @longpress.stop="onshowDel(item,index)"
 				 @touchend="ontouchend">
 					<view class="checkbox-box" @tap="setCurrent(item,index)">
-						<view class="checkbox" :style="'border-color:' + colors" v-if="item.status !== 1 ">
+						<view class="checkbox" :style="'border-color:' + colors" v-if="!item.failure">
 							<view :class="item.current == true ? 'on':''" :style="'background-color:' + colors"></view>
 						</view>
 						<view class="checkbox" style="border-color:#ccc" v-else>
@@ -14,34 +14,30 @@
 						</view>
 					</view>
 					<view class="cover" @tap="jumpDetails(item,index)">
-						<image :src="item.selectSku.img" mode="aspectFill" v-if="item.selectSku"></image>
-						<image :src="item.img" mode="aspectFill" v-else></image>
+						<image :src="item.image" mode="aspectFill"></image>
 						<text class="masks"></text>
-						<text class="mask" v-if="item.status == 1">已失效</text>
+						<text class="mask" v-if="item.failure">已失效</text>
 					</view>
 					<view class="right">
 						<view class="goods_name" @tap="jumpDetails(item,index)">
-							{{item.title}}
+							{{item.name}} {{ item.subhead }}
 						</view>
-						<view class="sku">
-							<block v-if="item.selectSku">
-								<text style="margin-left: 10upx;">{{item.selectSku.goods_sku_text}}</text>
+						<view class="sku" v-if="item.attributeJson !== '[]'">
+							<block>
+								<text style="margin-left: 10upx;">{{ formatAttr(item.attributeJson) }}</text>
 							</block>
-							<block v-else>
+							<!-- <block v-else>
 								<text>暂无规格</text>
-							</block>
+							</block> -->
 						</view>
 						<view class="numbers">
-							<text class="price" v-if="item.selectSku">
-								￥{{(Number(item.selectSku.money) * item.number).toFixed(2)}}
-							</text>
-							<text class="price" v-else>
-								￥{{(Number(item.money) * item.number).toFixed(2)}}
+							<text class="price">
+								￥{{(Number((item.activityPrice || item.salePrice)) * item.quantity).toFixed(2)}}
 							</text>
 							<view class="right_btn">
 								<view class="sub" @tap="onsub(item,index)" :style="'color:' + (item.num == 1?'#ccc':'')">-</view>
 								<view class="input">
-									<input :value="item.number" maxlength="2" disabled></input>
+									<input :value="item.quantity" maxlength="2" disabled></input>
 								</view>
 								<view class="add" @tap="onadd(item,index)">+</view>
 							</view>
@@ -86,9 +82,9 @@
 <script>
 	var app = getApp();
 	import {
-		getCart,
 		setGoodsData,
-		removeCart
+		removeCart,
+		getToken
 	} from '@/utils/auth.js'
 	export default {
 		data() {
@@ -127,8 +123,11 @@
 		/**
 		 * 生命周期函数--监听页面显示
 		 */
-		onShow: function() {
-			let cart = getCart() || []
+		onShow: async function() {
+			if(getToken()){
+				this.setTabBarBadge();
+			}
+			const cart = await this.getCart();
 			this.setData({
 				colors: app.globalData.newColor,
 				current: '99999',
@@ -164,8 +163,28 @@
 		 */
 		onShareAppMessage: function() {},
 		methods: {
+			// 获取购物车列表
+			async getCart() {
+				const res = await uni.$ajax('/api/cart/list').catch((err) => {
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+				console.log(res);
+				return res;
+			},
+			
+			// 格式化属性
+			formatAttr(attrs) {
+				return JSON.parse(attrs).map(i => {
+					return i.val
+				}).join(' | ')
+			},
+			
 			setCurrent(item, index) {
-				if (item.status == 1) { //如果商品的status 状态为1 说明已经失效
+				if (item.failure) { 
+					//商品已经失效
 					return
 				}
 				//单选
@@ -199,8 +218,14 @@
 				return;
 			},
 
-			delItem(item, index) {
+			async delItem(item, index) {
 				//点击删除 模拟删除本地数据
+				await uni.$ajax('/api/cart/del', {ids: [item.id]}, 'post').catch((err)=>{
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
 				this.cartList.splice(index, 1)
 				this.setData({
 					current: '9999',
@@ -220,25 +245,52 @@
 				});
 			},
 
-			onsub(item, index) {
+			async onsub(item, index) {
 				//减少 //已失效商品不做操作
-				if (item.status == 1 || item.number <= 1) {
-					return
-				}
-				let number = item.number - 1
-				this.$set(item, 'number', number)
-				this.getSumprice() //计算总价
-			},
-
-			onadd(item, index) {
-				if (item.status == 1) { //已失效商品不做操作
+				if (item.failure || item.quantity <= 1) {
 					return
 				}
 				//增加
-				let num = item.number + 1;
-				this.$set(item, 'number', num)
+				const res = await uni.$ajax('/api/cart/add', {
+					productId: item.productId,
+				    productSkuId: item.productSkuId,
+				    quantity: -1,
+				    type: 1
+				}, 'post').catch((err) => {
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+				let quantity = item.quantity - 1;
+				this.$set(item, 'quantity', quantity)
 				this.getSumprice() //计算总价
+				this.setTabBarBadge()
 			},
+
+			async onadd(item, index) {
+				//减少 已失效商品不做操作
+				if (item.failure) {
+					return
+				}
+				//增加
+				const res = await uni.$ajax('/api/cart/add', {
+					productId: item.productId,
+				    productSkuId: item.productSkuId,
+				    quantity: 1,
+				    type: 1
+				}, 'post').catch((err) => {
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+				let quantity = item.quantity + 1
+				this.$set(item, 'quantity', quantity)
+				this.getSumprice() //计算总价
+				this.setTabBarBadge()
+			},
+			
 			setAllCurrent() {
 				//设置全选
 				let that = this
@@ -275,24 +327,19 @@
 				let sumPrice = '';
 				let count = []
 				dataList.forEach(e => {
-					if (e.current == true) {
+					if (e.current == true && !e.failure) {
 						count.push(e);
 					}
 				});
 				let length = count.length;
 				for (var i = 0; i < length; i++) { //计算总价
 					var data = count[i];
-					if (data.selectSku) {
-						sumPrice = (Number(sumPrice) + Number(data.selectSku.money * data.number)).toFixed(2)
-					} else {
-						sumPrice = (Number(sumPrice) + Number(data.money * data.number)).toFixed(2)
-					}
+					sumPrice = (Number(sumPrice) + Number(Number(data.activityPrice || data.salePrice) * data.quantity)).toFixed(2)
 				}
 				that.sum = length
 				that.sumPrice = sumPrice
 			},
 			ontouchend() { //隐藏删除弹窗
-				console.log('触发了touch');
 				if (this.lock) {
 					setTimeout(() => {
 						this.setData({
@@ -301,13 +348,28 @@
 					}, 100);
 				}
 			},
-			clearInvalid() { //模拟清空失效商品  根据商品的status值来判断商品状态
+			
+			//清空失效商品  根据商品的failure值来判断商品状态
+			async clearInvalid() { 
+				let ids = [];
+				let spliceArr = []
 				this.cartList.forEach((e, index) => {
-					if (e.status == 1) {
-						this.cartList.splice(index, 1)
+					if (e.failure) {
+						ids.push(e.id);
+						spliceArr.push(this.cartList.splice(index, 1));
 					}
 					e.current = false
 				})
+				if(ids.length < 1) {
+					return false;
+				}
+				await uni.$ajax('/api/cart/del', {ids: ids}, 'post').catch((err)=>{
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+				
 				uni.showToast({
 					title: '清空成功~',
 					icon: 'none'
@@ -319,26 +381,12 @@
 				removeCart()
 				this.setTabBarBadge()
 			},
-			setTabBarBadge() { //设置购物车角标
-				let length = String(this.cartList.length)
-				if (length == 0) {
-					uni.removeTabBarBadge({
-						index: 2
-					})
-					return
-				}
-				uni.setTabBarBadge({ //重新设置角标
-					//给tabBar添加角标
-					index: 2,
-					text: length
-				});
-			},
 			jumpDetails(item, index) {
-				if (item.status == 1 || this.lock) { //已失效商品不做操作
+				if (item.failure == 1 || this.lock) { //已失效商品不做操作
 					return
 				}
 				uni.navigateTo({
-					url: '/pages/views/goods/goodsDetails'
+					url: '/pages/views/goods/goodsDetails?productId=' + item.productId
 				});
 			},
 			settlement() { //结算
@@ -346,9 +394,9 @@
 					return
 				}
 				// 计算出被选中的数据
-				uni.showLoading({
-					title: '提交中...'
-				})
+				// uni.showLoading({
+				// 	title: '提交中...'
+				// })
 				let arr = []
 				this.cartList.forEach(e => {
 					if (e.current == true) {
@@ -361,7 +409,7 @@
 					uni.navigateTo({
 						url: '/pages/views/order/confirmOrder'
 					})
-				}, 1000)
+				}, 300)
 			},
 			onStroll() { //随便逛逛
 				uni.switchTab({

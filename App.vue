@@ -70,19 +70,6 @@ export default {
         selectedColor: '#fa436a'
       });
     }
-	/**
-	 * 模拟获取购物车的数量 getCart
-	 */
-	let cart = getCart()
-	let length = ''
-	if(cart && getToken()){
-		length = cart.length
-		uni.setTabBarBadge({
-		  //给tabBar添加角标
-		  index: 2,
-		  text: String(length)
-		});
-	}
   },
   globalData: {
     userInfo: null,
@@ -91,7 +78,7 @@ export default {
     newColor: nowColor || '#fa436a', //小程序主题颜色
     config: myconfig.themeList  //主题图标
   },
-  methods: {}
+  methods: {} 
 };
 </script>
 <style>

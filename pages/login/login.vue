@@ -1,12 +1,12 @@
 <template>
 <view class="login" :style="'background: url(' + bgImg[imgIndex] + '); background-size: cover;background-repeat:no-repeat; background-position: center;'">
   <view class="logo">
-    <image src="/static/images/log.png"></image>
+    <!-- <image src="/static/images/log.png"></image> -->
   </view>
   <view class="login_from">
-      <input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #333"></input>
+      <input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #515151"></input>
       <view class="codes">
-      	<input placeholder="请输入短信验证码" v-model="smscode"  maxlength="6" type="number" placeholder-style="color: #333"></input>
+      	<input placeholder="请输入短信验证码" v-model="smscode"  maxlength="6" type="number" placeholder-style="color: #515151"></input>
 		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.8'}">{{codeName}}</view>
       </view>
       <view class="login_btn" @click="onlogin">登录</view>
@@ -32,13 +32,13 @@ export default {
       isCanUse: uni.getStorageSync('isCanUse'),
       nickName: '',
       avatarUrl: '',
-      bgImg: ['https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/img_flower_4.jpg', 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/img_flower_1.jpg', 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/img_flower_3.jpg', 'https://6d61-matchbox-79a395-1302390714.tcb.qcloud.la/matchbox/img_flower_2.jpg'],
+      bgImg: [],
       imgTime: '',
       imgIndex: 0,
-	  codeName: '验证码',
+	  codeName: '获取验证码',
       isCode: true,
-	  tel:'12345678912',
-	  smscode:'123456'
+	  tel:'',
+	  smscode: undefined
     };
   },
   props: {},
@@ -140,18 +140,34 @@ export default {
         imgTime: imgTime
       });
     },
-	onlogin(){ //登录 模拟存储token
-		let date = new Date().getTime()
-		setToken(date)
-		let user = {  //模拟存储用户信息
-			avatarUrl: '/static/images/face.jpg',
-			nickName: '用户2020'
+	async onlogin(){
+		if(!this.tel || !this.smscode) {
+			return uni.showToast({
+				title: '手机号或验证码不能为空',
+				icon: 'none'
+			});
 		}
-		setUserInfo(user)
-		
 		uni.showLoading({
 			title:'登录中...'
-		})
+		});
+		// 登陆
+		const res = await uni.$ajax('/api/login/phone-login', {
+			phone: this.tel,
+			code: this.smscode
+		}, 'post').catch(err => {
+			return uni.showToast({
+				title: err,
+				icon: 'none'
+			});
+		});
+		// 保存token
+		setToken(res.token);
+		//存储用户信息
+		let user = {  
+			avatarUrl: res.avatar || 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg',
+			nickName: res.nickname || '木木'
+		}
+		setUserInfo(user)
 		setTimeout(()=>{
 			uni.hideLoading()
 			uni.showToast({
@@ -159,8 +175,8 @@ export default {
 			})
 		}, 500)
 		setTimeout(()=>{
-			uni.navigateBack(-1)
-		},1500)
+			uni.navigateBack()
+		},500)
 	},
 	getCode() { //获取用户短信验证码
 		if(this.isCode == false){
@@ -182,10 +198,19 @@ export default {
 		}
 		this.getPhoneCode()
 	},
-	getPhoneCode() {
+	async getPhoneCode() {
 		let timer = ''
 		let date = 120
 		let that = this
+		// 获取手机号
+		await uni.$ajax('/api/common/send-sms', {
+			phone: this.tel
+		}, 'post').catch(err => {
+			return uni.showToast({
+				title: err,
+				icon: 'none'
+			});
+		});
 		if (that.isCode == true) {
 			uni.showToast({
 				title: '验证码发送成功~',
@@ -256,7 +281,8 @@ export default {
   height: 80upx;
   line-height: 80upx;
   margin-bottom: 60upx;
-  background-color: rgba(255, 255, 255, 0.8);
+  // background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #dddddd;
   box-sizing: border-box;
   padding: 0 30upx;
   border-radius: 10upx;
@@ -264,24 +290,24 @@ export default {
   color: #333;
 }
 .codes input{
-	width: 75%;
+	width: 70%;
 }
 .codes view{
 	height: 80upx;
 	line-height: 80upx;
-	width: 130upx;
+	width: 150upx;
 	margin-bottom: 60upx;
 	color: #FFFFFF;
-	background-color: rgba(70, 143, 152, 0.8);
+	background-color: #fa436a;
 	text-align: center;
 	font-size: 24upx;
 	border-radius: 10upx;
 }
 .login_btn{
-  width: 500upx;
+  width: 100%;
   height: 80upx;
   margin: 0 auto;
-  background-color: rgba(70, 143, 152, 0.8);
+  background-color: #fa436a;
   margin-top: 40px;
   text-align: center;
   line-height: 80upx;

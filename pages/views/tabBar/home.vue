@@ -29,7 +29,7 @@ import banner from '../../commponent/home/banner';
 import hotstitle from '../../commponent/home/hotstitle';
 import recommend from '../../commponent/home/recommend';
 import suspension from '../../commponent/home/suspension';
-import { getlocation } from '@/utils/auth.js';
+import { getlocation, getToken } from '@/utils/auth.js';
 export default {
 	data() {
 		return {
@@ -80,6 +80,9 @@ export default {
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function() {
+		if(getToken()){
+			this.setTabBarBadge();
+		}
 		this.setData({
 			colors: app.globalData.newColor
 		});

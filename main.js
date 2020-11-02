@@ -7,6 +7,27 @@ Vue.component("nodata", nodata);
 Vue.config.productionTip = false;
 Vue.mixin({
 	methods: {
+		async setTabBarBadge() {
+			//设置购物车角标
+			const res = await uni.$ajax('/api/cart/count',).catch((err) => {
+				return uni.showToast({
+					title: err,
+					icon: 'none'
+				});
+			});
+			console.log(res);
+			if (res.count == 0) {
+				uni.removeTabBarBadge({
+					index: 2
+				})
+				return
+			}
+			uni.setTabBarBadge({ //重新设置角标
+				//给tabBar添加角标
+				index: 2,
+				text: String(res.count)
+			});
+		},
 		setData: function(obj, callback) {
 			let that = this;
 			const handleData = (tepData, tepKey, afterKey) => {

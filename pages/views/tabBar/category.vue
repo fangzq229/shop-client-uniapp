@@ -27,6 +27,7 @@
 	import search from "../../commponent/public/search";
 	import twostage from "../../commponent/cate/twostage";
 	import threestage from "../../commponent/cate/threestage";
+	import { getToken } from '@/utils/auth.js';
 
 	export default {
 		data() {
@@ -95,6 +96,9 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow: function() {
+			if(getToken()){
+				this.setTabBarBadge();
+			}
 			this.setData({
 				colors: app.globalData.newColor
 			});

@@ -60,8 +60,6 @@
 				current: "",
 				currentArr: {}, //当前选中的规格
 				currentSku: {}, //选择后的规格详情
-				skulength: 0, //选择商品规格的长度
-				issku: false, //判断当前商品是否存在规格
 				update: true,
 				nowList: {}
 			};
@@ -160,7 +158,7 @@
 			},
 
 			// 确认订单
-			onsubmit(value) {
+			async onsubmit(value) {
 				// 此处应该判断是否登录 如果没登录 跳转到登录页
 				if (!getToken()) {
 					uni.navigateTo({ //登录
@@ -169,33 +167,36 @@
 					return
 				}
 				//提交购物车
-				if (this.skulength != this.nowList.sku.length) { //如果规格长度和所选规格长度不相等 提示
+				if (!this.currentSku.id) { 
+					//如果没有选择sku 提示
 					uni.showToast({
 						title: '请选择规格',
 						icon: 'none'
 					});
 				} else {
 					//此处应调用接口来添加购物车 现模拟添加到购物车
-					var datas = this.nowList
-					if (this.issku == true) { //判断当前商品是不是规格商品
-						datas.selectSku = this.currentSku
-					}
-					datas.number = this.number
-					if (value == 'add') { //如果是添加购物车
-						setCart(datas)
-						// 存储商品数据
+					let datas = { selectSku: this.currentSku, number: this.number, ...this.nowList };
+					if (value == 'add') { 
+						//如果是添加购物车
+						const res = await uni.$ajax('/api/cart/add', {
+							productId: this.nowList.id,
+						    productSkuId: this.currentSku.id,
+						    quantity: this.number,
+						    type: 1
+						}, 'post').catch((err) => {
+							return uni.showToast({
+								title: err,
+								icon: 'none'
+							});
+						});
 						uni.showToast({
 							title: '加入购物车成功 !',
 							icon: 'none'
 						});
-						/**
-						 * 模拟获取购物车的数量 getCart
-						 */
-						let cart = getCart().length
 						uni.setTabBarBadge({
 							//给tabBar添加角标
 							index: 2,
-							text: String(cart)
+							text: String(res.count)
 						});
 					} else { //如果是购买商品
 						let goods = []

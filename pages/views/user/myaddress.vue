@@ -8,14 +8,14 @@
 					</view>
 					<view @click="onsetAddress(item)">
 						<view class="center">
-							<view class="moren" v-if="item.isdefult == 0">
+							<view class="moren" v-if="item.isdefult == 1">
 								<text class="iconfont icon-moren" :style="'color:' + colors"></text>
 							</view>
 							<view class="name">
-								<text class="text1">{{item.name}}</text>
+								<text class="text1">{{item.consignee}}</text>
 								<text class="phones">{{item.phone}}</text>
 							</view>
-							<view class="address_name">{{item.address_name}}</view>
+							<view class="address_name">{{item.district}} {{ item.detailedAddress }}</view>
 						</view>
 					</view>
 					<view class="caozuo">
@@ -50,19 +50,7 @@
 		data() {
 			return {
 				colors: '',
-				addressList: [{
-					name: '张三',
-					phone: '12345678915',
-					address_name: '北京市海淀区苏家坨乡前沙涧村15号',
-					isdefult: 0,
-					id: 1
-				}, {
-					name: '李四',
-					phone: '12345678915',
-					address_name: '北京市海淀区苏家坨乡前沙涧村15号',
-					isdefult: 1,
-					id: 2
-				}],
+				addressList: [],
 				isShow: true,
 				type:''
 			};
@@ -77,6 +65,7 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			this.getAddressList();
 			let type = options.type || ''
 			this.setData({
 				colors: app.globalData.newColor,
@@ -124,6 +113,17 @@
 		 */
 		onShareAppMessage: function() {},
 		methods: {
+			// 获取收获地址列表
+			async getAddressList() {
+				const res = await uni.$ajax('/api/address/list').catch((err) => {
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+				console.log(res);
+				this.addressList = res;
+			},
 			editAddress(item) {
 				//编辑收货地址
 				uni.navigateTo({
