@@ -124,6 +124,7 @@ export default {
 	  nowprice: 0, //临时存储总金额的变量 用于计算优惠券
 	  sumprice: 0,
 	  address: {},
+	  addressId: undefined,
 	  couponList: [ //优惠券列表
 	  	{
 	  		money: 30,
@@ -203,14 +204,20 @@ export default {
   methods: {
 	// 获取默认地址
 	async getAddress() {
-		const res = await uni.$ajax('/api/address/info').catch((err) => {
+		const pages = getCurrentPages();
+	    const currPage = pages[pages.length - 1]; //当前页面
+		let addressId = currPage._data.addressId;
+		const param = {};
+		if(addressId) {
+			Object.assign(param, {id: addressId});
+		}
+		const res = await uni.$ajax('/api/address/info', param).catch((err) => {
 			return uni.showToast({
 				title: err,
 				icon: 'none'
 			});
 		});
 		this.address = res;
-		console.log(this.address);
 	},
 	// 计算价格
 	getSumPrice(){
@@ -219,8 +226,8 @@ export default {
 			const price = e.activityPrice || e.salePrice;
 			sumprice = sumprice + ((price*100*e.quantity)/100);
 		})
-		this.sumprice = sumprice
-		this.nowprice = sumprice 
+		this.sumprice = sumprice.toFixed(2);
+		this.nowprice = sumprice.toFixed(2);
 	},
     openCoupon(index) {
       this.setData({
@@ -258,7 +265,7 @@ export default {
 	
     setAddress() {
       uni.navigateTo({
-        url: '/pages/views/user/myaddress'
+        url: '/pages/views/user/myaddress?type=' + 'select'
       });
     },
 	onReceive(item, index){ //选择优惠券

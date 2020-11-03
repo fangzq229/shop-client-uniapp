@@ -19,14 +19,16 @@
 			</view>
 			<view class="row">
 				<view class="nominal">详细地址</view>
-				<view class="input"><textarea class="detailed-address-style" v-model="detailedAddress" auto-height="true" placeholder="输入详细地址"></textarea></view>
+				<view class="input">
+					<textarea class="detailed-address-style" v-model="detailedAddress" auto-height="true" placeholder="输入详细地址"></textarea>
+				</view>
 			</view>
 			<view class="row">
 				<view class="nominal" style="color: #999;margin-top: 10upx;">设为默认地址</view>
 				<view class="input switch"><switch :color="colors" style="transform:scale(0.8)" @change="switchChange" :checked="isDefault"></switch></view>
 			</view>
 		</view>
-		<view class="save"><view class="btn" :style="'background:' + colors">保存地址</view></view>
+		<view class="save"><view @tap="subAddress()" class="btn" :style="'background:' + colors">保存地址</view></view>
     <!-- 省市区选择 -->
     <setcity :show="show" @sureSelectArea="onsetCity" @hideShow="onhideShow"></setcity>
 	</view>
@@ -127,6 +129,33 @@ export default {
 		this.detailedAddress = res.detailedAddress;
 		this.isDefault = res.isDefault == 2 ? true: false;
 	},
+	
+	async subAddress() {
+		if(!this.consignee || !this.phone || this.phone.length < 11 || !this.district || !this.detailedAddress) {
+			return uni.showToast({
+				title: '参数错误',
+				icon: 'none'
+			});
+		}
+		const obj = {
+			consignee : this.consignee,
+			phone :  this.phone,
+			district : this.district,
+			detailedAddress : this.detailedAddress,
+			isDefault: this.isDefault == true ? 2: 1
+		}
+		if(this.id){
+			obj.id = this.id;
+		}
+		await uni.$ajax('/api/address/save', obj, 'post').catch((err) => {
+			return uni.showToast({
+				title: err,
+				icon: 'none'
+			});
+		});
+		uni.navigateBack(-1);
+		
+	},
     openPicker() {
       this.setData({
         show: true
@@ -141,16 +170,14 @@ export default {
 
     onsetCity(e) {
       let data = e.detail.target.dataset;
-      this.district = data.province + data.city + data.area;
+      this.district = data.province+ ' ' + data.city+ ' ' + data.area;
 	  this.setData({
 	    show: false
 	  });
     },
 
     switchChange(e) {
-      this.setData({
-        checked: e.detail.value
-      });
+      this.isDefault = e.detail.value;
     }
 
   }
@@ -267,14 +294,5 @@ export default {
   width: 40upx;
   height: 40upx;
   float: right;
-}
-.detailed-address-style{
-	font-size: 28upx;
-	word-break: break-all;/*属性规定自动换行的处理方法。normal(使用浏览器默认的换行规则。),break-all(允许在单词内换行。),keep-all(只能在半角空格或连字符处换行。)*/
-	text-overflow: ellipsis;
-	display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
-	-webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-	-webkit-line-clamp: 3;/** 显示的行数 **/
-	 overflow: hidden;
 }
 </style>

@@ -126,6 +126,11 @@
 		onShow: async function() {
 			if(getToken()){
 				this.setTabBarBadge();
+			}else {
+				uni.navigateTo({
+					url: '/pages/login/login'
+				});
+				return;
 			}
 			const cart = await this.getCart();
 			this.setData({

@@ -8,7 +8,7 @@
 					</view>
 					<view @click="onsetAddress(item)">
 						<view class="center">
-							<view class="moren" v-if="item.isdefult == 1">
+							<view class="moren" v-if="item.isDefault == 2">
 								<text class="iconfont icon-moren" :style="'color:' + colors"></text>
 							</view>
 							<view class="name">
@@ -65,7 +65,6 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-			this.getAddressList();
 			let type = options.type || ''
 			this.setData({
 				colors: app.globalData.newColor,
@@ -86,7 +85,9 @@
 		/**
 		 * 生命周期函数--监听页面显示
 		 */
-		onShow: function() {},
+		onShow: function() {
+			this.getAddressList();
+		},
 
 		/**
 		 * 生命周期函数--监听页面隐藏
@@ -138,9 +139,13 @@
 				});
 			},
 			onsetAddress(item){
-				if(this.type="select"){
-					setAddress(item)
-					uni.navigateBack(-1)
+				if(this.type=="select"){
+					let pages = getCurrentPages();
+					let prevPage = pages[pages.length - 2];
+					prevPage.setData({addressId: item.id});
+					uni.navigateBack({
+						delta:1
+					});
 				}
 			},
 			delAddress(item,index){
@@ -149,8 +154,14 @@
 					content:'确认要删除该地址吗?',
 					confirmText:'删除',
 					confirmColor:this.colors,
-					success: (res) => {
+					success: async (res) => {
 						if(res.confirm){
+							await uni.$ajax('/api/address/del?id=' + item.id).catch((err) => {
+								return uni.showToast({
+									title: err,
+									icon: 'none'
+								});
+							});
 							uni.showToast({
 								title:'删除成功~',
 								icon:'none'
