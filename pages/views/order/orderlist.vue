@@ -11,26 +11,26 @@
 			<scroll-view class="list_box" :scroll-y="true" @scrolltolower="ongetMoreList">
 				<view v-for="(item, index) in orderList" :key="index" class="lists">
 					<view class="type">
-						<text class="order_id">订单编号:{{item.order_No}}</text>
+						<text class="order_id">订单编号:{{item.code}}</text>
 						<text class="order_type" :style="'color:' + colors">
 							{{active | setStatus}}
 						</text>
 					</view>
-					<view v-for="(row, index2) in item.goods" :key="index2" class="top" @tap="jumpDetails(item)">
-						<image :src="row.img" mode="aspectFill"></image>
+					<view v-for="(row, index2) in item.orderProduct" :key="index2" class="top" @tap="jumpDetails(item)">
+						<image :src="row.smallImage" mode="aspectFill"></image>
 						<view class="top_right">
-							<view class="order_name">{{row.title}}</view>
-							<view class="sku">规格：{{row.goods_sku_text || '暂无规格'}}</view>
+							<view class="order_name">{{row.name}} {{ row.subhead }}</view>
+							<view class="sku">规格：{{ formatAttr(row.attributeJson) }}</view>
 							<view class="price">
-								<view class="t1">￥{{row.money}}</view>
+								<view class="t1">￥{{row.salePrice}}</view>
 								<view class="t3">
-									x{{row.number}}
+									x{{row.quantity}}
 								</view>
 							</view>
 						</view>
 					</view>
 					<view class="bottom">
-						<view class="address">店铺地址：北京市海淀区苏家坨乡前沙涧村</view>
+						<!-- <view class="address">店铺地址：北京市海淀区苏家坨乡前沙涧村</view> -->
 						<view class="btns">
 							<block v-if="active == 0">
 								<view class="pay" :style="'color:#fff;background:' + colors+ ';border-color:' + colors" @tap="jumpDetails(item)">去付款</view>
@@ -87,48 +87,11 @@
 					id: 4
 				}],
 				active: 0,
-				orderList: [{
-						goods: [{
-								title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-								type: 1,
-								goods_id: 201,
-								number: 1,
-								goods_sku_text: '醇黑巧克力【20枚】',
-								img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-								money: '175.78',
-							},
-							{
-								title: '农谣人 原味火山石烤肠1000g/约16根台式原味肠地道肠纯肉肠热狗肠台湾烤肠香肠烧烤肠半熟食火腿肠 台式原味地道肠1kg',
-								type: 1,
-								goods_id: 204,
-								number: 1,
-								goods_sku_text: '台式原味地道肠1kg',
-								img: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
-								money: '52.00 '
-							},
-						],
-						type: 1,
-						status: 0,
-						order_No: 'AQWEAD45648974974456',
-						shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
-					},
-					{
-						goods: [{
-							title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-							img: '/static/images/goods/there.jpg',
-							goods_id: 203,
-							money: '152.00 ',
-							sku: '',
-							number: 1,
-						}, ],
-						type: 1,
-						status: 0,
-						order_No: 'AQWEAD45648974974456',
-						shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
-					},
-				],
+				orderList:[],
 				isShow: true,
-				colors: ""
+				colors: "",
+				page: 1,
+				pageSize: 10
 			};
 		},
 		filters: {
@@ -157,10 +120,13 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
+			this.orderList = [];
 			if (options.tabIndex) {
 				this.setData({
 					active: Number(options.tabIndex)
 				});
+			} else {
+				this.getOrderList(); // 默认获取待付款订单
 			}
 			this.setData({
 				colors: app.globalData.newColor
@@ -207,17 +173,36 @@
 		 */
 		onShareAppMessage: function() {},
 		methods: {
+			// tab选择
 			setTabs(item, index) {
+				this.orderList = [];
 				this.setData({
 					active: item.id
 				});
+				this.getOrderList(index);
 			},
-
-			jumpDetails() { //模拟跳转商品详情
+			// 获取订单列表
+			getOrderList(key) {
+				uni.$ajax('/api/order/list', {
+					page: this.page,
+					pageSize: this.pageSize
+				}).then(res => {
+					console.log(res);
+					this.orderList = this.orderList.concat(res.items);
+				}).catch((err)=> {
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					})
+				})
+			},
+			//跳转商品详情
+			jumpDetails() { 
 				uni.navigateTo({
 					url: '/pages/views/order/orderdetails?status=' + this.active
 				});
 			},
+			// 取消订单
 			cencalOrder(item) {
 				//取消订单
 				uni.showModal({
@@ -230,6 +215,7 @@
 					}
 				})
 			},
+			// 申请退款
 			onRefund(item){
 				// 申请退款
 				uni.navigateTo({
@@ -238,6 +224,12 @@
 			},
 			ongetMoreList() { //上拉获取更多商品列表
 				console.log('触发到底事件')
+			},
+			
+			formatAttr(attrs) {
+				return JSON.parse(attrs).map(i => {
+						return i.val;
+					}).join(' | ');
 			}
 		}
 	};
