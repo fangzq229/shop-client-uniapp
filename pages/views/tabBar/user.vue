@@ -92,14 +92,14 @@ export default {
 			//动画效果
 			orderText: [
 				{
-					name: '待付款',
-					icon: 'icon-daifukuan',
+					name: '全部',
+					icon: 'icon-daifahuo',
 					url: '',
 					id: 0
 				},
 				{
-					name: '待发货',
-					icon: 'icon-daifahuo',
+					name: '待付款',
+					icon: 'icon-daifukuan',
 					url: '',
 					id: 1
 				},
@@ -110,15 +110,15 @@ export default {
 					id: 2
 				},
 				{
-					name: '待评价',
-					icon: 'icon-daipingjia',
+					name: '已完成',
+					icon: 'icon-shouhou',
 					url: '',
 					id: 3
 				},
 				{
-					name: '退款/售后',
-					icon: 'icon-shouhou',
-					url: '/pages/views/order/afterSaleList',
+					name: '已取消',
+					icon: 'icon-daipingjia',
+					url: '',
 					id: 4
 				}
 			],

@@ -13,7 +13,7 @@
 					<view class="type">
 						<text class="order_id">订单编号:{{item.code}}</text>
 						<text class="order_type" :style="'color:' + colors">
-							{{active | setStatus}}
+							{{ formOrderTabName(item) }}
 						</text>
 					</view>
 					<view v-for="(row, index2) in item.orderProduct" :key="index2" class="top" @tap="jumpDetails(item)">
@@ -32,22 +32,27 @@
 					<view class="bottom">
 						<!-- <view class="address">店铺地址：北京市海淀区苏家坨乡前沙涧村</view> -->
 						<view class="btns">
-							<block v-if="active == 0">
+							<block v-if="item.payStatus == 10 && item.status == 10" >
 								<view class="pay" :style="'color:#fff;background:' + colors+ ';border-color:' + colors" @tap="jumpDetails(item)">去付款</view>
-								<view class="pay shouhou" :style="'color:' + colors + ';border-color:' + colors" @tap="cencalOrder(item)">取消订单</view>	
 							</block>
-							<block v-if="active == 1">
+							<block v-if="item.payStatus == 10 && item.status == 10" >
+								<view class="pay shouhou" :style="'color:' + colors + ';border-color:' + colors" @tap="cancelOrder(item, index)">取消订单</view>
+							</block>
+							<block v-if="item.payStatus == 20 && item.deliverStatus == 10 && item.status == 10">
 								<view class="pay shouhou"  @tap="onRefund(item)">申请退款</view>
 							</block>
-							<block v-if="active == 2">
-								<view class="pay" :style="'color:#fff;background:' + colors+ ';border-color:' + colors">确认收货</view>
-								<view class="pay shouhou" @tap="onRefund(item)">申请退款</view>
+							<block v-if="item.payStatus == 20 && item.status == 20 && item.deliverStatus == 20">
+								<view class="pay" :style="'color:#fff;background:' + colors+ ';border-color:' + colors" @tap="confirmOrder(item, index)">确认收货</view>
 							</block>
-							<block v-if="active == 3">
+							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50">
 								<view class="pay shouhou" :style="'color:' + colors + ';border-color:' + colors" @tap="jumpDetails(item)">订单评价</view>
-								<view class="pay shouhou" @tap="jumpDetails(item)">申请售后</view>
 							</block>
-							<view class="pay shouhou" v-if="active == 4">删除订单</view>
+							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50">
+								<view class="pay shouhou" @tap="jumpAfterSale(item)">申请售后</view>
+							</block>
+							<block v-if="item.status == 40">
+								<view class="pay shouhou" @tap="delOrder(item, index)">删除订单</view>
+							</block>
 						</view>
 					</view>
 				</view>
@@ -70,20 +75,20 @@
 				statusBarHeight: app.globalData.statusHeight + 'px',
 				toBarHeight: app.globalData.toBar + 'px',
 				tabList: [{
-					name: '待付款',
+					name: '全部',
 					id: 0
 				}, {
-					name: '待发货',
+					name: '待付款',
 					id: 1
 				}, {
 					name: '待收货',
 					id: 2
 				},{
-					name: '待评价',
+					name: '已完成',
 					id: 3
 				},
 				{
-					name: '已完成',
+					name: '已取消',
 					id: 4
 				}],
 				active: 0,
@@ -94,21 +99,7 @@
 				pageSize: 10
 			};
 		},
-		filters: {
-			setStatus(value) {
-				if (value == 0) {
-					return '待付款'
-				} else if (value == 1) {
-					return '待发货'
-				} else if (value == 2) {
-					return '待收货'
-				} else if (value == 3) {
-					return '待评价'
-				} else if (value == 4) {
-					return '已完成'
-				}
-			}
-		},
+			
 		components: {
 			tabs,
 			loading,
@@ -125,6 +116,7 @@
 				this.setData({
 					active: Number(options.tabIndex)
 				});
+				this.getOrderList(options.tabIndex);
 			} else {
 				this.getOrderList(); // 默认获取待付款订单
 			}
@@ -161,12 +153,16 @@
 		/**
 		 * 页面相关事件处理函数--监听用户下拉动作
 		 */
-		onPullDownRefresh: function() {},
+		onPullDownRefresh: function() {
+			console.log('=========');
+		},
 
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
-		onReachBottom: function() {},
+		onReachBottom: function() {
+			console.log('-------');
+		},
 
 		/**
 		 * 用户点击右上角分享
@@ -184,6 +180,7 @@
 			// 获取订单列表
 			getOrderList(key) {
 				uni.$ajax('/api/order/list', {
+					status: key,
 					page: this.page,
 					pageSize: this.pageSize
 				}).then(res => {
@@ -196,21 +193,71 @@
 					})
 				})
 			},
-			//跳转商品详情
-			jumpDetails() { 
+			//跳转订单详情
+			jumpDetails(item) { 
 				uni.navigateTo({
-					url: '/pages/views/order/orderdetails?status=' + this.active
+					url: '/pages/views/order/orderdetails?orderId=' + item.id
 				});
 			},
+			// 售后处理
+			jumpAfterSale() {
+				uni.navigateTo({
+					url: '/pages/views/order/afterSaleList'
+				})
+			},
 			// 取消订单
-			cencalOrder(item) {
-				//取消订单
+			cancelOrder(item, index) {
 				uni.showModal({
 					title:'确认要取消该订单吗?',
 					confirmColor:this.colors,
 					success: (res) => {
 						if(res.confirm){
-							console.log('取消成功')
+							uni.$ajax('/api/order/cancel', {id: item.id}).then((res) => {
+								this.orderList.splice(index, 1);
+							}).catch((err) => {
+								return uni.showToast({
+									title: err,
+									icon: 'none'
+								});
+							})
+						}
+					}
+				})
+			},
+			// 删除订单
+			delOrder(item, index) {
+				uni.showModal({
+					title:'确认要删除该订单吗?',
+					confirmColor:this.colors,
+					success: (res) => {
+						if(res.confirm){
+							uni.$ajax('/api/order/del', {id: item.id}).then((res) => {
+								this.orderList.splice(index, 1);
+							}).catch((err) => {
+								return uni.showToast({
+									title: err,
+									icon: 'none'
+								});
+							})
+						}
+					}
+				})
+			},
+			// 确认收货
+			confirmOrder(item, index) {
+				uni.showModal({
+					title:'请确认已签收次订单?',
+					confirmColor:this.colors,
+					success: (res) => {
+						if(res.confirm){
+							uni.$ajax('/api/order/confirm', {id: item.id}).then((res) => {
+								this.orderList.splice(index, 1);
+							}).catch((err) => {
+								return uni.showToast({
+									title: err,
+									icon: 'none'
+								});
+							})
 						}
 					}
 				})
@@ -222,14 +269,33 @@
 					url: '/pages/views/order/cancelorder?orderId'
 				});
 			},
-			ongetMoreList() { //上拉获取更多商品列表
-				console.log('触发到底事件')
+			ongetMoreList() { 
+				//上拉获取更多商品列表
+				console.log('触发事件')
 			},
-			
+			// 格式化属性
 			formatAttr(attrs) {
 				return JSON.parse(attrs).map(i => {
 						return i.val;
 					}).join(' | ');
+			},
+		    // 格式化订单tab name
+			formOrderTabName(item) {
+				let text = '';
+				if(item.status == 40) {
+					text = '已取消'
+				}
+				if(item.status == 10 && item.payStatus == 10) {
+					text = '待付款'
+				}
+				if((item.status == 10 || item.status == 20) && item.payStatus == 20 && ((item.deliverStatus == 10 || item.deliverStatus == 20))) {
+					text = '待收货'
+				}
+				if(item.status == 50  && item.payStatus == 20 && item.deliverStatus == 40) {
+					text = '已完成'
+				}
+				
+				return text;
 			}
 		}
 	};
