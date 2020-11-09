@@ -39,7 +39,8 @@ export default {
       }, {
         name: '其他原因'
       }],
-      data: ""
+      data: "",
+	  orderId: undefined
     };
   },
 
@@ -50,6 +51,7 @@ export default {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+	this.orderId = options.orderId
     this.setData({
       colors: app.globalData.newColor
     });

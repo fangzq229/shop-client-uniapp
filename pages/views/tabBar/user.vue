@@ -110,13 +110,13 @@ export default {
 					id: 2
 				},
 				{
-					name: '已完成',
+					name: '退换/售后',
 					icon: 'icon-shouhou',
-					url: '',
+					url: '/pages/views/order/afterSaleList',
 					id: 3
 				},
 				{
-					name: '已取消',
+					name: '待评价',
 					icon: 'icon-daipingjia',
 					url: '',
 					id: 4

@@ -266,7 +266,7 @@
 			onRefund(item){
 				// 申请退款
 				uni.navigateTo({
-					url: '/pages/views/order/cancelorder?orderId'
+					url: '/pages/views/order/cancelorder?orderId=' + item.id
 				});
 			},
 			ongetMoreList() { 

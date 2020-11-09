@@ -1,79 +1,76 @@
 <template>
 	<view>
-	<view class="evaluate">
-		<view class="goods_data">
-			<image :src="goodData.img" mode=""></image>
-			<view class="right">
-				<p class="goods_name">{{goodData.title}}</p>
-				<p class="goods_sku">{{goodData.goods_sku_text}}</p>
-				<p class="goods_price" >
-					<text style="font-size: 24upx;">数量x{{goodData.number}}</text>
-					<text :style="{color:colors}">￥{{goodData.money}}</text>
-				</p>
+		<view class="evaluate">
+			<view class="goods_data">
+				<image :src="productDetail.smallImage" mode="aspectFill"></image>
+				<view class="right">
+					<p class="goods_name">{{ productDetail.name }} {{ productDetail.subhead }}</p>
+					<p class="goods_sku">{{ productDetail.goods_sku_text }}</p>
+					<p class="goods_price">
+						<text style="font-size: 24upx;">数量x{{ productDetail.quantity }}</text>
+						<text :style="{ color: colors }">￥{{ productDetail.salePrice }}</text>
+					</p>
+				</view>
+			</view>
+			<view class="Rate">
+				<p>整体评价</p>
+				<view class="star"><image :src="item.img" mode="" v-for="(item, index) in stars" :key="index" @click="setStar(item, index)"></image></view>
+			</view>
+			<view class="pingjia_box"><textarea placeholder="请输入您的评价..." maxlength="-1" v-model="comment" /></view>
+			<p class="youhui" style="border-bottom: none;">
+				<text class="text1">上传图片</text>
+				<text class="text3">(最多3张)</text>
+			</p>
+			<view class="img_box">
+				<view class="img_list" v-for="(item, index) in imgUrl" :key="index">
+					<image :src="item" class="imgs" mode="aspectFit"></image>
+					<image src="/static/images/close1.png" mode="aspectFit" class="close" @tap="delImg(index)"></image>
+				</view>
+				<view class="addImg" @tap="addImg" v-if="imgUrl.length < 3">
+					<image src="/static/images/shexiang.png" mode=""></image>
+					<p>添加图片</p>
+				</view>
 			</view>
 		</view>
-		<view class="Rate">
-			<p>整体评价</p>
-			<view class="star">
-				<image :src="item.img" mode="" v-for="(item,index) in stars" :key="index" @click="setStar(item,index)"></image>
-			</view>
-		</view>
-		<view class="pingjia_box">
-			<textarea placeholder="说说您的感受..." maxlength="-1" v-model="comment"/>
-		</view>
-		<p class="youhui" style="border-bottom: none;">
-			<text class="text1">上传图片</text>
-			<text class="text3">(最多3张)</text>
-		</p>
-		<view class="img_box" >
-			<view class="img_list" v-for="(item, index) in imgUrl" :key="index">
-				<image :src="item" mode="" class="imgs"></image>
-				<image src="/static/images/close1.png" mode="" class="close" @tap="delImg(index)"></image>
-			</view>
-			<view class="addImg" @tap="addImg" v-if="imgUrl.length < 3">
-				<image src="/static/images/shexiang.png" mode=""></image>
-				<p>添加图片</p>
-			</view>
-		</view>
-	</view>
-	<view class="btns" :style="{background:colors}" @click="submit">提交评价</view>
+		<view class="btns" :style="{ background: colors }" @click="submit">提交评价</view>
 	</view>
 </template>
 <script>
 var app = getApp();
+import { pathToBase64, base64ToPath } from '@/utils/image-tools.js'
 export default {
 	data() {
 		return {
 			value: 5,
-			comment:'',
-			updataImg:[],
-			imgUrl:[],
-			goodData:{},
-			colors:'',
+			comment: '',
+			updataImg: [],
+			imgUrl: [],
+			urls: [],
+			colors: '',
 			stars: [
-				{id: 1,types: true,img:'../../../static/images/home/stars.png'},
-				{id: 2,types: true,img:'../../../static/images/home/stars.png'},
-				{id: 3,types: true,img:'../../../static/images/home/stars.png'},
-				{id: 4,types: true,img:'../../../static/images/home/stars.png'},
-				{id: 5,types: true,img:'../../../static/images/home/stars.png'},
+				{ id: 1, types: true, img: '../../../static/images/home/stars.png' },
+				{ id: 2, types: true, img: '../../../static/images/home/stars.png' },
+				{ id: 3, types: true, img: '../../../static/images/home/stars.png' },
+				{ id: 4, types: true, img: '../../../static/images/home/stars.png' },
+				{ id: 5, types: true, img: '../../../static/images/home/stars.png' }
 			],
-			starNoImg:'../../../static/images/home/star-no.png',
-			starImg:'../../../static/images/home/stars.png',
-			starValue: 5
+			starNoImg: '../../../static/images/home/star-no.png',
+			starImg: '../../../static/images/home/stars.png',
+			starValue: 5,
+			productDetail: {}
 		};
 	},
 	onLoad(options) {
-		let goodData = JSON.parse(options.goodData)
+		this.getOrderProdcut(options.orderProductId);
 		this.setData({
-			colors: app.globalData.newColor,
-			goodData:goodData
+			colors: app.globalData.newColor
 		});
 	},
 	methods: {
 		delImg(index) {
 			//删除图片
 			this.imgUrl.splice(index, 1);
-			this.updataImg.splice(index, 1)
+			this.updataImg.splice(index, 1);
 		},
 		addImg() {
 			let that = this;
@@ -81,79 +78,120 @@ export default {
 				//该方法是调出选择图片的方法
 				count: 1, //数量限制
 				sizeType: ['original', 'compressed'], //可选 原图 或缩略图
-				success: function(res) {
-					//返回的值为本地的图片的链接
-					uni.showLoading({
-						title: '上传中...'
-					});
-					var tempFilePaths = res.tempFilePaths[0];
-					console.log(tempFilePaths);
+				sourceType: ['album', 'camera'], //从相册选择
+				success: async res => {
+					if (res.tempFiles.length > 0) {
+						uni.showLoading({
+							title: '上传中...'
+						});
+						for (let item of res.tempFiles) {
+							let name = item.name;
+							let names = item.name.split('.');
+							let leng = names.length;
+							let suffix = names[leng - 1];
+							if (suffix != 'png' && suffix != 'jpg' && suffix != 'jpeg') {
+								uni.showToast({
+									title: '图片上传失败,格式错误',
+									icon: 'none'
+								});
+								return;
+							}
+							// 获取base64
+							let base = await pathToBase64(item.path);
+							uni.$ajax('/api/common/upload-img64', {
+								data: base,
+								suffix: suffix
+							}, 'post').then((res) => {
+								uni.hideLoading()
+								this.urls.push(res.url + '?id=' + res.id);
+								this.imgUrl.push(res.img);
+							}).catch((err) => {
+								uni.hideLoading()
+								uni.showToast({
+									title: err,
+									icon: 'none'
+								});
+							})
+						}
+					}
 				}
 			});
 		},
-		setStar(item,index){
-			let that = this
-			if(item.types == false){
-				for(var i = 0; i<=index;i++){
-					console.log(that.stars[i].types)
-					that.stars[i].types = true
-					that.stars[i].img = that.starImg
+		setStar(item, index) {
+			let that = this;
+			if (item.types == false) {
+				for (var i = 0; i <= index; i++) {
+					console.log(that.stars[i].types);
+					that.stars[i].types = true;
+					that.stars[i].img = that.starImg;
 				}
-			}else{
-				for(var i = index+1; i<that.stars.length;i++){
-					console.log(that.stars[i].types)
-					that.stars[i].types = false
-					that.stars[i].img = that.starNoImg
+			} else {
+				for (var i = index + 1; i < that.stars.length; i++) {
+					console.log(that.stars[i].types);
+					that.stars[i].types = false;
+					that.stars[i].img = that.starNoImg;
 				}
 			}
-			this.$forceUpdate()
-			let value = this.stars.filter((e)=>{
-				return e.types == true
-			})
-			this.starValue = value.length
+			this.$forceUpdate();
+			let value = this.stars.filter(e => {
+				return e.types == true;
+			});
+			this.starValue = value.length;
+		},
+		// 获取订单商品信息
+		getOrderProdcut(id) {
+			uni.$ajax('/api/order/product', { orderProductId: id })
+				.then(result => {
+					this.productDetail = result;
+					console.log(this.productDetail);
+				})
+				.catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
 		}
 	},
-	onShow() {
-		
-	}
+	onShow() {}
 };
 </script>
 
 <style lang="scss" scoped>
 .evaluate {
-	margin:0 4%;
-	background-color: #FFFFFF;
-	box-shadow: 0upx 0upx 10upx #DDDDDD;
+	margin: 0 4%;
+	background-color: #ffffff;
+	box-shadow: 0upx 0upx 10upx #dddddd;
 	border-radius: 8upx;
 	position: relative;
 	top: 20upx;
-	.goods_data{
+	.goods_data {
 		padding: 20upx 30upx;
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
 		overflow: hidden;
-		image{
+		image {
 			width: 120upx;
 			height: 120upx;
 			border-radius: 8upx;
 		}
-		.right{
+		.right {
 			margin-left: 20upx;
 			width: 80%;
-			.goods_name{
+			.goods_name {
 				font-size: 24upx;
 				overflow: hidden;
 				display: -webkit-box;
-				-webkit-line-clamp:2;
+				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 			}
-			.goods_sku{
+			.goods_sku {
 				font-size: 24upx;
 				color: #999999;
 				margin-top: 5upx;
 			}
-			.goods_price{
+			.goods_price {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -166,7 +204,7 @@ export default {
 	}
 	.Rate {
 		padding: 0upx 30upx 30upx;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		border-bottom: 1upx solid #eee;
 		p {
 			height: 60upx;
@@ -179,7 +217,7 @@ export default {
 			display: flex;
 			align-items: center;
 			margin-left: 20upx;
-			image{
+			image {
 				height: 40upx;
 				width: 40upx;
 				display: inline-block;
@@ -190,10 +228,10 @@ export default {
 	.pingjia_box {
 		min-height: 300upx;
 		box-sizing: border-box;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		padding: 20upx 30upx;
 		border-bottom: 1upx solid #eee;
-		p{
+		p {
 			font-size: 28upx;
 			color: #999;
 			margin-bottom: 20upx;
@@ -214,7 +252,7 @@ export default {
 	margin: 0 auto;
 	border-radius: 10upx;
 	height: 80upx;
-	color: #FFFFFF;
+	color: #ffffff;
 	font-size: 30upx;
 	line-height: 80upx;
 	text-align: center;
@@ -274,12 +312,12 @@ export default {
 			float: left;
 			.text1 {
 				font-size: 32upx;
-				color: rgba(255,94,102,1);
+				color: rgba(255, 94, 102, 1);
 				font-weight: bold;
 			}
 			.text2 {
 				font-size: 24upx;
-				color: rgba(255,94,102,1);
+				color: rgba(255, 94, 102, 1);
 				margin-left: 10upx;
 			}
 		}
@@ -310,7 +348,7 @@ export default {
 			.text1 {
 				padding: 6upx 16upx;
 				border: 1px solid #f64031;
-				color: rgba(255,94,102,1);
+				color: rgba(255, 94, 102, 1);
 				width: 160upx;
 				font-weight: bold;
 				float: left;
@@ -325,8 +363,8 @@ export default {
 			}
 			.text2 {
 				padding: 6upx 16upx;
-				border: 1px solid rgba(255,94,102,1);
-				color: rgba(255,94,102,1);
+				border: 1px solid rgba(255, 94, 102, 1);
+				color: rgba(255, 94, 102, 1);
 				width: 160upx;
 				float: right;
 				font-weight: bold;
@@ -413,7 +451,7 @@ export default {
 			font-size: 24upx;
 			font-family: Microsoft YaHei;
 			font-weight: 400;
-			color: rgba(255,94,102,1);
+			color: rgba(255, 94, 102, 1);
 			text-align: center;
 			margin-top: 20upx;
 		}
@@ -446,7 +484,7 @@ export default {
 }
 </style>
 <style>
-	page{
-		background-color: #F8F8F8;
-	}
+page {
+	background-color: #f8f8f8;
+}
 </style>
