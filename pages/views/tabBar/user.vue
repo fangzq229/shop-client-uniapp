@@ -118,7 +118,7 @@ export default {
 				{
 					name: '待评价',
 					icon: 'icon-daipingjia',
-					url: '',
+					url: '/pages/views/order/evaluateList',
 					id: 4
 				}
 			],

@@ -234,7 +234,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/views/order/evaluateList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "评价中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"style": "v2",
 	"sitemapLocation": "sitemap.json",
 	"tabBar": {
