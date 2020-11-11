@@ -39,8 +39,8 @@
 				</view> -->
 				<!-- 单商品操作按钮 在订单状态为待评价时才会显示-->
 				<view class="goods_btns">
-					<view v-if="item.status == 10 && orderDetails.status == 50" class="btns" style="margin-right: 40upx;" @click="onafterSale(item)">申请售后</view>
-					<view v-if="item.commentStatus == 10 && orderDetails.status == 50" class="btns" @click="onevaluate(item)" :style="{ borderColor: colors, color: colors }">去评价</view>
+					<view v-if="item.status == 10 && orderDetails.status == 50" class="btns" @click="onafterSale(item)">申请售后</view>
+					<view v-if="item.commentStatus == 10 && orderDetails.status == 50" class="btns" @click="onevaluate(item)" :style="{ borderColor: colors, color: colors, marginLeft: '40upx' }">去评价</view>
 				</view>
 			</view>
 			<!-- 核销码 -->
@@ -162,7 +162,6 @@ export default {
 	 */
 	onLoad: function(options) {
 		this.orderId = options.orderId;
-		this.getOrderDetails(); // 获取订单详情
 		let status = 0;
 		if (options.status) {
 			status = options.status;
@@ -171,11 +170,7 @@ export default {
 			colors: app.globalData.newColor,
 			status: status
 		});
-		setTimeout(() => {
-			this.setData({
-				isShow: false
-			});
-		}, 600);
+		
 	},
 
 	/**
@@ -186,7 +181,14 @@ export default {
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
-	onShow: function() {},
+	onShow: function() {
+		this.getOrderDetails(); // 获取订单详情
+		setTimeout(() => {
+			this.setData({
+				isShow: false
+			});
+		}, 600);
+	},
 
 	/**
 	 * 生命周期函数--监听页面隐藏

@@ -44,7 +44,7 @@
 							<block v-if="item.payStatus == 20 && item.status == 20 && item.deliverStatus == 20">
 								<view class="pay" :style="'color:#fff;background:' + colors+ ';border-color:' + colors" @tap="confirmOrder(item, index)">确认收货</view>
 							</block>
-							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50">
+							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50 && item.isComment">
 								<view class="pay shouhou" :style="'color:' + colors + ';border-color:' + colors" @tap="jumpDetails(item)">订单评价</view>
 							</block>
 							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50">
@@ -111,15 +111,9 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-			this.orderList = [];
-			if (options.tabIndex) {
-				this.setData({
-					active: Number(options.tabIndex)
-				});
-				this.getOrderList(options.tabIndex);
-			} else {
-				this.getOrderList(); // 默认获取待付款订单
-			}
+			this.setData({
+				active: Number(options.tabIndex)
+			});
 			this.setData({
 				colors: app.globalData.newColor
 			});
@@ -138,7 +132,11 @@
 		/**
 		 * 生命周期函数--监听页面显示
 		 */
-		onShow: function() {},
+		onShow: function() {
+			this.orderList = [];
+			this.page = 1;
+			this.getOrderList(this.active);
+		},
 
 		/**
 		 * 生命周期函数--监听页面隐藏

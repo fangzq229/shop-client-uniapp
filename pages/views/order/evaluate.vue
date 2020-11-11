@@ -32,7 +32,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="btns" :style="{ background: colors }" @click="submit">提交评价</view>
+		<view class="btns" :style="{ background: colors }" @tap="submit()">提交评价</view>
 	</view>
 </template>
 <script>
@@ -137,6 +137,38 @@ export default {
 				return e.types == true;
 			});
 			this.starValue = value.length;
+		},
+		// 提交评价
+		submit() {
+			if(!this.comment.length) {
+				return uni.showToast({
+					title: '评论内容不能为空',
+					icon: 'none'
+				})
+			}
+			const obj = {
+				content: this.comment,
+				level: this.starValue,
+				imgs: this.urls,
+				orderId: this.productDetail.orderId,
+				orderProductId: this.productDetail.id,
+				productId: this.productDetail.productId,
+				productSkuId: this.productDetail.productSkuId,
+			}
+			uni.$ajax('/api/comment/add', obj, 'post').then((result) => {
+				uni.showToast({
+					title: '感谢您的评价',
+				});
+				setTimeout(() => {
+					uni.navigateBack(-1);
+				}, 1000);
+			}).catch((err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				});
+			})
+			
 		},
 		// 获取订单商品信息
 		getOrderProdcut(id) {
