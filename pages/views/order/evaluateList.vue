@@ -9,66 +9,32 @@
 				<tabs :colors="colors" :tabList="tabList" :active="active" @setTabs="setTabs"></tabs>
 			</view>
 			<scroll-view class="list_box" :scroll-y="true" @scrolltolower="ongetMoreList">
-				<block v-if="active !== 2">
-					<view v-for="(item, index) in orderList" :key="index" class="lists">
-						<view v-for="(row, index2) in item.goods" :key="index2" class="top">
+				<block>
+					<view class="lists" v-if="commentList.length > 0">
+						<view  class="top">
 							<view class="top_box">
-								<image class="cover" :src="row.img" mode="aspectFill"></image>
+								<image class="cover" :src="row.smallImage" mode="aspectFill"></image>
 								<view class="top_right">
-									<view class="order_name">{{row.title}}</view>
-									<view class="sku">规格：{{row.goods_sku_text || '暂无规格'}}</view>
+									<view class="order_name">{{row.name}} {{ row.subhead }}</view>
+									<view class="sku">规格：{{ formatAttr(row.attributeJson) }}</view>
 									<view class="price">
-										<view class="t1">￥{{row.money}}</view>
+										<view class="t1">￥{{row.salePrice}}</view>
 										<view class="t3">
-											x{{row.number}}
+											x{{row.quantity}}
 										</view>
 									</view>
 								</view>
 							</view>
-							<view class="bottom">
-								<block v-if="active == 0">
-									<view @click="onafterSale(row)" :style="'color:' + colors + ';border-color:' + colors">
-										申请售后
-									</view>
-								</block>
-								<block v-if="active == 1">
-									<view @click="onwithdraw(row)" :style="'color:' + colors + ';border-color:' + colors">
-										取消申请
-									</view>
-								</block>
+							<view class="bottom" v-if="row.comment.length == 0">
+								<view class="btns" @click="onafterSale(item)">去评论</view>
+							</view>
+							<view class="" v-else>
+								这是啥
 							</view>
 						</view>
 					</view>
-					<view class="nodata" v-if="orderList.length >= 3">—— 到底啦 ——</view>
-					<nodata :colors="colors" title="暂无订单信息" v-if="orderList.length == 0"></nodata>
-				</block>
-				<block v-if="active == 2">
-					<view v-for="(item, index) in afterList" :key="index" class="lists">
-						<view class="top">
-							<view class="top_box">
-								<image class="cover" :src="item.img" mode="aspectFill"></image>
-								<view class="top_right">
-									<view class="order_name">{{item.title}}</view>
-									<view class="sku">规格：{{item.goods_sku_text || '暂无规格'}}</view>
-									<view class="price">
-										<view class="t1">￥{{item.money}}</view>
-										<view class="t3">
-											x{{item.number}}
-										</view>
-									</view>
-								</view>
-							</view>
-							<view class="bottom">
-								<view class="success">
-									<text class="success_type">完成</text>
-									<text class="success_t2">服务已完成，感谢您的支持</text>
-									<image class="right_img" src="../../../static/images/home/right.png" mode=""></image>
-								</view>
-							</view>
-						</view>
-					</view>
-					<view class="nodata" v-if="afterList.length >= 3">—— 到底啦 ——</view>
-					<nodata :colors="colors" title="暂无订单信息" v-if="afterList.length == 0"></nodata>
+					<view class="nodata" v-if="commentList.length >= 3">—— 到底啦 ——</view>
+					<nodata :colors="colors" title="暂无可评论商品" v-if="commentList.length == 0"></nodata>
 				</block>
 			</scroll-view>
 		</view>
@@ -94,66 +60,11 @@
 					id: 1
 				}],
 				active: 0,
-				orderList: [{
-						goods: [{
-								title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-								type: 1,
-								goods_id: 201,
-								number: 1,
-								goods_sku_text: '醇黑巧克力【20枚】',
-								img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-								money: '175.78',
-							},
-							{
-								title: '农谣人 原味火山石烤肠1000g/约16根台式原味肠地道肠纯肉肠热狗肠台湾烤肠香肠烧烤肠半熟食火腿肠 台式原味地道肠1kg',
-								type: 1,
-								goods_id: 204,
-								number: 1,
-								goods_sku_text: '台式原味地道肠1kg',
-								img: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
-								money: '52.00 '
-							},
-						],
-						type: 1,
-						status: 0,
-						order_No: 'AQWEAD45648974974456',
-						shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
-					},
-					{
-						goods: [{
-							title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-							img: '/static/images/goods/there.jpg',
-							goods_id: 203,
-							money: '152.00 ',
-							sku: '',
-							number: 1,
-						}, ],
-						type: 1,
-						status: 0,
-						order_No: 'AQWEAD45648974974456',
-						shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
-					},
-				],
-				afterList: [{
-						title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-						type: 1,
-						goods_id: 201,
-						number: 1,
-						goods_sku_text: '醇黑巧克力【20枚】',
-						img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-						money: '175.78',
-					},
-					{
-						title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-						img: '/static/images/goods/there.jpg',
-						goods_id: 203,
-						money: '152.00 ',
-						sku: '',
-						number: 1,
-					},
-				],
+				commentList: [],
 				isShow: true,
-				colors: ""
+				colors: "",
+				page: 1,
+				pageSize: 10
 			};
 		},
 		components: {
@@ -185,7 +96,10 @@
 		/**
 		 * 生命周期函数--监听页面显示
 		 */
-		onShow: function() {},
+		onShow: function() {
+			this.commentList = [];
+			this.getCommentList();
+		},
 
 		/**
 		 * 生命周期函数--监听页面隐藏
@@ -212,10 +126,26 @@
 		 */
 		onShareAppMessage: function() {},
 		methods: {
+			// 获取评论列表
+			getCommentList() {
+				const type = this.active + 1;
+				uni.$ajax('/api/comment/list', {page: this.page, pageSize: this.pageSize, type: type }).then((result) => {
+					console.log(result);
+					this.commentList = this.commentList.concat(result.items);
+				}).catch((err) => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					})
+				})
+			},
 			setTabs(item, index) {
 				this.setData({
 					active: item.id
 				});
+				this.page = 1;
+				this.commentList = [];
+				this.getCommentList();
 			},
 			onafterSale(item) { //申请售后
 				uni.navigateTo({
@@ -235,7 +165,13 @@
 			},
 			ongetMoreList() { //上拉获取更多商品列表
 				console.log('触发到底事件')
-			}
+			},
+			// 格式化属性
+			formatAttr(attrs) {
+				return JSON.parse(attrs).map(i => {
+						return i.val;
+					}).join(' | ');
+			},
 		}
 	};
 </script>
