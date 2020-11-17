@@ -44,9 +44,9 @@
 			</view>
 			<view class="shoucang">
 				<view class="sc_icons" @tap="setisColl">
-					<text :class="['iconfont',isColl == true?'icon-shoucang1':'icon-shoucang'] " :style="{color: isColl == true? colors :''}"></text>
+					<text :class="['iconfont', goodsData.isCollection == true?'icon-shoucang1':'icon-shoucang'] " :style="{color: goodsData.isCollection == true? colors :''}"></text>
 				</view>
-				<view class="sc_text" :style="{color: isColl == true? colors :''}">收藏</view>
+				<view class="sc_text" :style="{color: goodsData.isCollection == true? colors :''}">收藏</view>
 			</view>
 		</view>
 		<view class="other" :style="'transform: translateY(-' + toBar + ');'">
@@ -419,10 +419,28 @@
 			},
 			setisColl() {
 				//收藏与取消收藏
-				let iscoll = !this.isColl;
-				this.setData({
-					isColl: iscoll
-				});
+				uni.$ajax('/api/product/collection', {
+					productId: this.goodsData.id,
+					status: this.goodsData.isCollection ? 2 : 1
+				}, 'post').then((result) => {
+					this.goodsData.isCollection = this.goodsData.isCollection ? false : true;
+					if(this.goodsData.isCollection) {
+						uni.showToast({
+							title: '收藏成功',
+							icon: 'none'
+						});
+					}else {
+						uni.showToast({
+							title: '取消收藏',
+							icon: 'none'
+						});
+					}
+				}).catch((err) => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				})
 			},
 			openMap() {
 				//打开地图
@@ -556,19 +574,19 @@
 				})
 			},
 			// 获取商品详情
-			async getProductInfo(id) {
-				const result = await uni.$ajax('/api/product/info',
+			getProductInfo(id) {
+				uni.$ajax('/api/product/info',
 					{
 						productId: id,
 					},
-				).catch(err => {
+				).then((result) => {
+					this.goodsData = result;
+				}).catch(err => {
 					uni.showToast({
 						title: err,
 						icon: 'none'
 					});
 				});
-				console.log(result);
-				this.goodsData = result;
 			}
 		}
 	};

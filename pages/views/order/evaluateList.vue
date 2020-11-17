@@ -10,7 +10,7 @@
 			</view>
 			<scroll-view class="list_box" :scroll-y="true" @scrolltolower="ongetMoreList">
 				<block>
-					<view class="lists" v-if="commentList.length > 0">
+					<view class="lists" v-if="commentList.length > 0" v-for="(row, index) in commentList" :key="index">
 						<view  class="top">
 							<view class="top_box">
 								<image class="cover" :src="row.smallImage" mode="aspectFill"></image>
@@ -26,15 +26,16 @@
 								</view>
 							</view>
 							<view class="bottom" v-if="row.comment.length == 0">
-								<view class="btns" @click="onafterSale(item)">去评论</view>
+								<view class="btns" @click="onevaluate(row)" :style="'background:' + colors + ';color:#FFF;'">去评论</view>
 							</view>
-							<view class="" v-else>
-								这是啥
+							<view class="comment-text" v-else @click="commentDetail(item)">
+								<span>评价内容：</span> {{ row.comment[0].content }}
 							</view>
 						</view>
 					</view>
 					<view class="nodata" v-if="commentList.length >= 3">—— 到底啦 ——</view>
-					<nodata :colors="colors" title="暂无可评论商品" v-if="commentList.length == 0"></nodata>
+					<nodata :colors="colors" title="暂无可评论商品" v-if="commentList.length == 0 && active ==0"></nodata>
+					<nodata :colors="colors" title="暂无已评论商品" v-if="commentList.length == 0 && active ==1"></nodata>
 				</block>
 			</scroll-view>
 		</view>
@@ -139,6 +140,18 @@
 					})
 				})
 			},
+			// 去评价
+			onevaluate(item) {
+				//去评价
+				uni.navigateTo({
+					url: '/pages/views/order/evaluate?orderProductId='+ item.id
+				});
+			},
+			// 评论详情
+			commentDetail() {
+				
+			},
+			// 切换
 			setTabs(item, index) {
 				this.setData({
 					active: item.id
@@ -147,23 +160,20 @@
 				this.commentList = [];
 				this.getCommentList();
 			},
-			onafterSale(item) { //申请售后
-				uni.navigateTo({
-					url: '/pages/views/order/afterSale?goodData=' + JSON.stringify(item)
-				})
-			},
-			onwithdraw() { //取消申请
-				uni.showModal({
-					title: '确认要取消该售后申请吗?',
-					confirmColor: this.colors,
-					success: (res) => {
-						if (res.confirm) {
-							console.log('取消成功')
-						}
-					}
-				})
-			},
-			ongetMoreList() { //上拉获取更多商品列表
+			
+			// onwithdraw() {
+			// 	uni.showModal({
+			// 		title: '确认要删除评论吗?',
+			// 		confirmColor: this.colors,
+			// 		success: (res) => {
+			// 			if (res.confirm) {
+			// 				console.log('取消成功')
+			// 			}
+			// 		}
+			// 	})
+			// },
+			//上拉获取更多商品列表
+			ongetMoreList() { 
 				console.log('触发到底事件')
 			},
 			// 格式化属性
@@ -281,6 +291,15 @@
 		line-height: 40upx;
 		margin-top: 20upx;
 		position: relative;
+	}
+	.lists .top .comment-text {
+		font-size: 24upx;
+		padding-top: 20upx;
+		color: #535353;
+	}
+	
+	.lists .top .comment-text span {
+		color: #c1c1c1;
 	}
 
 	.bottom {

@@ -5,24 +5,24 @@
   <view class="cart_box">
     <view v-for="(item, index) in dataList" :key="index" class="cart_list"  @longtap="onshowDel(item,index)" @touchend="ontouchend">
       <view class="cover" @tap="jumpDetails(item,index)" >
-        <image :src="item.img" mode="aspectFill"></image>
+        <image :src="item.smallImg" mode="aspectFill"></image>
       </view>
       <view class="right">
         <view class="goods_name" @tap="jumpDetails(item,index)">
-          {{item.name}}
+          {{item.name}} {{item.subhead}}
         </view>
         <view class="sku">
-          收藏于：2020-08-05 14:15
+          收藏于：{{ item.collectionTime }}
         </view>
          <view class="numbers">
         <text class="price" >
-        ￥{{item.money}}
+        ￥{{item.skus[0].salePrice}}
         </text>
       </view>
       </view>
       <!-- 删除的遮罩层 长按触发 -->
-	  <view class="del_mask" v-if="current == index" :style="'z-index:' + (current == index ?'99':'-21')" @tap="oncencal">
-	  </view>
+	  <!-- <view class="del_mask" v-if="current == index" :style="'z-index:' + (current == index ?'99':'-21')"> -->
+	  <!-- </view> -->
       <view class="dask_del" :style="'opacity:' + (current == index ?'1':'0') + ';z-index:' + (current == index ?'20':'-20')+';left:'+(current == index?'0':'-100%')">
         <text class="del" @tap="delItem(item,index)">删除</text>
         <text class="cencal" @tap="oncencal">取消</text>
@@ -44,26 +44,12 @@ export default {
   data() {
     return {
       colors: '',
-      dataList: [{
-      	name: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-      	img: "/static/images/goods/there.jpg",
-      	money: '152.00',
-      }, {
-      	name: '巧妈妈 鸡蛋布甸 下午茶休闲零食儿童果冻布丁125g双层果酱味smzdm 4杯鸡蛋布甸（双层）',
-      	img: "/static/images/goods/four.jpg",
-      	money: '25.80',
-      }, {
-      	name: '草莓云南夏季草莓新鲜水果3斤礼盒装 露天种植现摘现发 3斤精品装（4盒顺丰空运）',
-      	img: "/static/images/goods/five.jpg",
-      	money: '59.90'
-      }, {
-      	name: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-      	img: "/static/images/goods/one.jpg",
-      	money: '35.90',
-      }],
+      dataList: [],
       current: '99999',
       lock: false,
-      isShow: true
+      isShow: true,
+	  page: 1,
+	  pageSize: 10
     };
   },
 
@@ -95,7 +81,12 @@ export default {
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () {
+	this.dataList = [];
+	this.page = 1;
+	// 获取收藏列表
+	this.collection();
+  },
 
   /**
    * 生命周期函数--监听页面隐藏
@@ -122,6 +113,16 @@ export default {
    */
   onShareAppMessage: function () {},
   methods: {
+	collection() {
+		uni.$ajax('/api/product/collection-list', {page: this.page, pageSize: this.pageSize}).then((result) => {
+			this.dataList = this.dataList.concat(result.items);
+		}).catch((err) => {
+			uni.showToast({
+				title: err,
+				icon: 'none'
+			})
+		})
+	},
     onshowDel(item,index) {
       //显示删除
       this.setData({
@@ -133,7 +134,19 @@ export default {
 
     delItem(item,index) {
       //点击删除
-      console.log('删除成功');
+      uni.$ajax('/api/product/collection', {
+      	productId: item.id,
+      	status: 2
+      }, 'post').then((result) => {
+		this.oncencal();
+      	this.dataList.splice(index, 1);
+		
+      }).catch((err) => {
+      	uni.showToast({
+      		title: err,
+      		icon: 'none'
+      	});
+      })
     },
 
     oncencal() {
@@ -154,12 +167,8 @@ export default {
     },
 
     jumpDetails(item,index) {
-      //跳转详情
-      if (this.lock) {
-        return;
-      }
       uni.navigateTo({
-        url: '/pages/views/goods/goodsDetails'
+        url: '/pages/views/goods/goodsDetails?productId='+item.id
       });
     },
   }

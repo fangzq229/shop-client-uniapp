@@ -39,7 +39,7 @@
 			<!-- 全部订单 -->
 			<my-order :orderText="orderText" :colors="colors"></my-order>
 			<!-- 我的足迹 -->
-			<my-footprint :logList="logList" :colors="colors"></my-footprint>
+			<!-- <my-footprint :logList="logList" :colors="colors"></my-footprint> -->
 			<!-- 我的服务 -->
 			<my-server :serverList="serverList" :colors="colors" :userinfo="userinfo"></my-server>
 		</view>
@@ -61,7 +61,7 @@
 			<!-- 全部订单 -->
 			<my-order :orderText="orderText" :colors="colors"></my-order>
 			<!-- 我的足迹 -->
-			<my-footprint :logList="logList" :colors="colors"></my-footprint>
+			<!-- <my-footprint :logList="logList" :colors="colors"></my-footprint> -->
 			<!-- 我的服务 -->
 			<my-server :serverList="serverList" :colors="colors"></my-server>
 		</view>
