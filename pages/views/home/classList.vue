@@ -11,8 +11,8 @@
  	  </view>
  	 <view class="search">
  	   <view class="input-box" >
- 	 		<input placeholder="搜索关键词" placeholder-style="color:#c0c0c0;font-size:24upx;"></input>
- 	 		<view class="icon search">
+ 	 		<input placeholder="搜索关键词" v-model="searchKeyword" placeholder-style="color:#c0c0c0;font-size:24upx;"></input>
+ 	 		<view class="icon search" @click="goSearch()">
  	       <image src="/static/images/home/search.png"></image>
  	     </view>
  	 	</view>
@@ -28,13 +28,13 @@
  	  <view class="screen_list" @tap="setCurrent" :style="'color:' + (current == 1 ? colors:'')" data-index="1">
  	    销量
  	  </view>
- 	  <view class="screen_list" @tap="setList">
- 	    <text class="iconfont icon-gongge" :style="'font-size:30upx;font-weight:bold;color:' + (current == 2 ? colors:'#333')" v-if="modes == true"></text>
- 	    <text class="iconfont icon-liebiao" :style="'font-size:30upx;font-weight:bold;color:' + (current == 2 ? colors:'#333')" v-if="modes == false"></text>
+ 	  <view class="screen_list" >
+ 	    <text @tap="setList" class="iconfont icon-gongge" :style="'font-size:30upx;font-weight:bold;color:' + (current == 2 ? colors:'#333')" v-if="modes == true"></text>
+ 	    <text @tap="setList" class="iconfont icon-liebiao" :style="'font-size:30upx;font-weight:bold;color:' + (current == 2 ? colors:'#333')" v-if="modes == false"></text>
  	  </view>
- 	  <view class="screen_list" @tap="openPop" :style="'color:' + (current == 3 ? colors:'')" data-index="3">
+ 	  <!-- <view class="screen_list" @tap="openPop" :style="'color:' + (current == 3 ? colors:'')" data-index="3">
  	    筛选
- 	  </view>
+ 	  </view> -->
  	  <!-- 弹出筛选框 -->
  	  <view class="more_screen" :style="'opacity:' + (isMaskShow == true?'1':'0') + ';display:' + (isMaskShow == true?'block':'none')">
  	     <view v-for="(item, index) in screenList" :key="index" class="more_list" @tap="setScreen(item,index)">
@@ -44,10 +44,10 @@
  	  </view>
  	</view>
  	<!-- 弹出遮罩层 -->
- 	<view class="mask onemask" @tap="closeScreen" catchtouchmove="true" :style="'opacity:' + (isMaskShow == true?'1':'0') + ';z-index:' + (isMaskShow == true?'800':'-11')+';top:'+statusBarHeight+';'"></view>
- 	<view class="mask" @tap="hideright" catchtouchmove="true" :style="'opacity:' + (popShow == true?'1':'0') + ';z-index:' + (popShow == true?'910':'-11')"></view>
+ 	<view class="mask onemask" @tap="closeScreen" catchtouchmove="true" :style="'opacity:' + (isMaskShow == true?'0.7':'0') + ';z-index:' + (isMaskShow == true?'800':'-11')+';top:'+statusBarHeight+';'"></view>
+ 	<view class="mask" @tap="hideright" catchtouchmove="true" :style="'opacity:' + (popShow == true?'0.7':'0') + ';z-index:' + (popShow == true?'910':'-11')"></view>
  	<!-- 点击筛选弹出的右侧弹出窗口 -->
- 	<view :class="popShow == true ? 'right_popup':'hide_popup'" catchtouchmove="true">
+ 	<!-- <view :class="popShow == true ? 'right_popup':'hide_popup'" catchtouchmove="true">
  	  <scroll-view class="pop_scroll">
  	    <view class="top_price">
  	      <text>价 格 区 间</text>
@@ -61,7 +61,6 @@
  	    <view v-for="(item, index) in classList" :key="index" class="allClass">
  	      <view class="classtext">{{item.name}}</view>
  	      <view class="class_box">
- 	        <!-- 选中分类条件 -->
  	        <view v-for="(row, indexs) in item.child" :key="indexs" class="class_tag" :style="'color:' + (row.current == true ? '#fff':'#333') + ';background:' + (row.current == true ? colors:'') + ';border-color:' + (row.current == true ? colors:'') + ';'" @tap="setClass(item,row,index,indexs)">{{row.name}}</view>
  	      </view>
  	    </view>
@@ -70,13 +69,13 @@
  	    <view class="reset" :style="'color:' + colors + ';border-color:' + colors" @tap="onreset">重置</view>
  	    <view class="enter" :style="'background:' + colors" @tap="onenter">确定</view>
  	  </view>
- 	</view>
+ 	</view> -->
 	<!-- 二级条件选择 -->
-	<scroll-view scroll-x="true" class="tow_scroll" :scroll-with-animation="true" :scroll-left="scrollLeft">
+	<!-- <scroll-view scroll-x="true" class="tow_scroll" :scroll-with-animation="true" :scroll-left="scrollLeft">
 		<view class="scroll_tags" :style="{color:tagCurrent==index?'#ffffff':'#202020',background:tagCurrent==index?colors:'#F5F5F5'}" v-for="(item,index) in tagsList" :key="index" @click="setTags(item,index)">
 			{{item}}
 		</view>
-	</scroll-view>
+	</scroll-view> -->
  </view>
   <!-- 商品列表 -->
   <scroll-view scroll-y="true" class="scroll_box" :style="{paddingBottom: statusBarHeight}">
@@ -148,299 +147,13 @@ export default {
 		  '苹果','小米','华为','诺基亚','联想','vivo','oppo','魅族','中兴','美颜','锤子'
 	  ],
 	  // 商品列表
-	  dataList: [{
-	  		title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-	  		type: 1,
-	  		goods_id: 201,
-	  		money: '35.90',
-	  		number: 1,
-	  		hmoney: '45.90',
-	  		img: '/static/images/goods/one.jpg',
-	  		youhui: true,
-	  		baoyou: false,
-	  		status: 1, //商品过期状态  0正常  1已失效
-	  		stock: 600,
-	  		sku: [{
-	  			sku_id: 1,
-	  			skuname: '口味',
-	  			child: [{
-	  					tagname: '醇黑巧克力【20枚】',
-	  					id: 2011,
-	  					imgs: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-	  					money: '175.78'
-	  				},
-	  				{
-	  					tagname: '草莓味【8枚】',
-	  					id: 2012,
-	  					imgs: 'http://img11.360buyimg.com/n1/jfs/t1/74434/3/6892/331750/5d512febE54e891c4/0096ad20c3c20d23.jpg',
-	  					money: '35.90'
-	  				}
-	  			]
-	  		}],
-	  		skuArr: [{
-	  				goods_sku_arr: ['2011'],
-	  				goods_sku_text: '醇黑巧克力【20枚】',
-	  				img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-	  				money: '175.78',
-	  				stock: 345
-	  			},
-	  			{
-	  				goods_sku_arr: ['2012'],
-	  				goods_sku_text: '草莓味【8枚】',
-	  				img: 'http://img11.360buyimg.com/n1/jfs/t1/74434/3/6892/331750/5d512febE54e891c4/0096ad20c3c20d23.jpg',
-	  				money: '35.90',
-	  				stock: 255
-	  			},
-	  		]
-	  	},
-	  	{
-	  		title: '真巧 巧克力涂层甜甜圈 早餐蛋糕手撕面包休闲小零食办公室小吃零嘴下午茶点心 500g甜甜圈（拉花款）',
-	  		type: 2,
-	  		goods_id: 202,
-	  		money: '29.9',
-	  		number: 75,
-	  		hmoney: '39.90',
-	  		img: '/static/images/goods/two.jpg',
-	  		youhui: false,
-	  		baoyou: true,
-	  		status: 0, //商品过期状态  0正常  1已失效
-	  		stock: 100,
-	  		sku: [{
-	  			sku_id: 1,
-	  			skuname: '口味',
-	  			child: [{
-	  					tagname: '500g甜甜圈（彩针款）',
-	  					id: 2021,
-	  					imgs: 'http://img14.360buyimg.com/n1/jfs/t1/72185/1/7121/222065/5d5377d5E46e681fa/6f100c77965b9165.jpg',
-	  					money: '39.90'
-	  				},
-	  				{
-	  					tagname: '500g甜甜圈（拉花款）',
-	  					id: 2022,
-	  					imgs: 'http://img14.360buyimg.com/n1/jfs/t1/72191/2/6973/239664/5d5377d5Ef952d7d9/606e70d2b6dd44d2.jpg',
-	  					money: '39.90'
-	  				}
-	  			]
-	  		}],
-	  		skuArr: [{
-	  				goods_sku_arr: ['2021'],
-	  				goods_sku_text: '500g甜甜圈（彩针款）',
-	  				img: 'http://img14.360buyimg.com/n1/jfs/t1/72185/1/7121/222065/5d5377d5E46e681fa/6f100c77965b9165.jpg',
-	  				money: '39.90',
-	  				stock: 50
-	  			},
-	  			{
-	  				goods_sku_arr: ['2022'],
-	  				goods_sku_text: '500g甜甜圈（拉花款）',
-	  				img: 'http://img14.360buyimg.com/n1/jfs/t1/72191/2/6973/239664/5d5377d5Ef952d7d9/606e70d2b6dd44d2.jpg',
-	  				money: '39.90',
-	  				stock: 50
-	  			},
-	  		]
-	  
-	  	},
-	  	{
-	  		title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-	  		type: 3,
-	  		goods_id: 203,
-	  		money: '152.00 ',
-	  		number: 1,
-	  		hmoney: '162.00',
-	  		img: '/static/images/goods/there.jpg',
-	  		youhui: true,
-	  		baoyou: true,
-	  		status: 0, //商品过期状态  0正常  1已失效
-	  		stock: 200,
-	  		sku: [],
-	  		skuArr: []
-	  	},
-	  	{
-	  		title: '农谣人 原味火山石烤肠1000g/约16根台式原味肠地道肠纯肉肠热狗肠台湾烤肠香肠烧烤肠半熟食火腿肠 台式原味地道肠1kg',
-	  		type: 6,
-	  		goods_id: 204,
-	  		money: '52.00 ',
-	  		number: 1,
-	  		hmoney: '99.00 ',
-	  		youhui: false,
-	  		baoyou: false,
-	  		stock: 100,
-	  		img: '/static/images/goods/six.jpg',
-	  		status: 0, //商品过期状态  0正常  1已失效
-	  		sku: [{
-	  			skuname: '口味',
-	  			sku_id: 1,
-	  			child: [{
-	  					tagname: '台式原味地道肠1kg',
-	  					id: 2041,
-	  					imgs: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
-	  					money: '52.00 '
-	  				},
-	  				{
-	  					tagname: '台式黑椒味地道肠1kg',
-	  					id: 2042,
-	  					imgs: 'http://img11.360buyimg.com/n1/jfs/t1/114876/9/17594/220403/5f5ae35bEc7bb735b/bcf0c1017e86894c.png',
-	  					money: '53.50'
-	  				}
-	  			]
-	  		}, ],
-	  		skuArr: [{
-	  				goods_sku_arr: ['2041'],
-	  				goods_sku_text: '台式原味地道肠1kg',
-	  				img: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
-	  				money: '52.00',
-	  				stock: 50
-	  			},
-	  			{
-	  				goods_sku_arr: ['2042'],
-	  				goods_sku_text: '台式黑椒味地道肠1kg',
-	  				img: 'http://img11.360buyimg.com/n1/jfs/t1/114876/9/17594/220403/5f5ae35bEc7bb735b/bcf0c1017e86894c.png',
-	  				money: '53.50',
-	  				stock: 50
-	  			},
-	  		]
-	  	},
-	  	{
-	  		title: '巧妈妈 鸡蛋布甸 下午茶休闲零食儿童果冻布丁125g双层果酱味smzdm 4杯鸡蛋布甸（双层）',
-	  		type: 4,
-	  		goods_id: 205,
-	  		money: '25.80',
-	  		number: 1,
-	  		hmoney: 35.00,
-	  		img: '/static/images/goods/four.jpg',
-	  		youhui: true,
-	  		baoyou: false,
-	  		stock: 500,
-	  		status: 0, //商品过期状态  0正常  1已失效
-	  		skuArr: [{
-	  				goods_sku_arr: ['10', '40'],
-	  				goods_sku_text: '鸡蛋布旬 4杯装',
-	  				img: '/static/images/goods/four.jpg',
-	  				money: '25.80',
-	  				stock: 50
-	  			},
-	  			{
-	  				goods_sku_arr: ['10', '50'],
-	  				goods_sku_text: '鸡蛋布旬 6杯装',
-	  				img: '/static/images/goods/four.jpg',
-	  				money: '32.80',
-	  				stock: 10
-	  			},
-	  			{
-	  				goods_sku_arr: ['10', '60'],
-	  				goods_sku_text: '鸡蛋布旬 8杯装',
-	  				img: '/static/images/goods/four.jpg',
-	  				money: '52.80',
-	  				stock: 60
-	  			},
-	  			{
-	  				goods_sku_arr: ['20', '60'],
-	  				goods_sku_text: '乳酸菌布甸（草莓酱 8杯装）',
-	  				img: 'http://img11.360buyimg.com/n1/jfs/t1/97403/35/15115/138620/5e6eeae8E8dbb7c3b/90a57a2a3e696b80.jpg',
-	  				money: '52.80',
-	  				stock: 100
-	  			},
-	  			{
-	  				goods_sku_arr: ['30', '50'],
-	  				goods_sku_text: '乳酸菌布甸（蓝莓酱 8杯装）',
-	  				img: 'http://img12.360buyimg.com/n1/jfs/t1/127005/26/7147/367042/5f0eb18cE9efa12ea/1a8363f7ce5a06cb.jpg',
-	  				money: '32.80',
-	  				stock: 1300
-	  			},
-	  		],
-	  		sku: [{
-	  				sku_id: 1,
-	  				skuname: '口味',
-	  				child: [{
-	  						tagname: '鸡蛋布旬',
-	  						id: 10,
-	  						imgs: '/static/images/goods/four.jpg',
-	  						money: '25.80'
-	  					},
-	  					{
-	  						tagname: '乳酸菌布甸（草莓酱）',
-	  						id: 20,
-	  						imgs: 'http://img11.360buyimg.com/n1/jfs/t1/97403/35/15115/138620/5e6eeae8E8dbb7c3b/90a57a2a3e696b80.jpg',
-	  						money: '14.80'
-	  					},
-	  					{
-	  						tagname: '乳酸菌布甸（蓝莓酱）',
-	  						id: 30,
-	  						imgs: 'http://img12.360buyimg.com/n1/jfs/t1/127005/26/7147/367042/5f0eb18cE9efa12ea/1a8363f7ce5a06cb.jpg',
-	  						money: '30.80'
-	  					}
-	  				]
-	  			},
-	  			{
-	  				sku_id: 2,
-	  				skuname: '数量',
-	  				child: [{
-	  						tagname: '4杯装',
-	  						id: 40,
-	  						imgs: '',
-	  						money: '25.80'
-	  					},
-	  					{
-	  						tagname: '6杯装',
-	  						id: 50,
-	  						imgs: '',
-	  						money: '32.80'
-	  					},
-	  					{
-	  						tagname: '8杯装',
-	  						id: 60,
-	  						imgs: '',
-	  						money: '52.80'
-	  					}
-	  				]
-	  			},
-	  		]
-	  	},
-	  	{
-	  		title: '草莓云南夏季草莓新鲜水果3斤礼盒装 露天种植现摘现发 3斤精品装（4盒顺丰空运）',
-	  		type: 5,
-	  		goods_id: 206,
-	  		money: '59.90',
-	  		number: 200,
-	  		hmoney: '70.90',
-	  		youhui: true,
-	  		baoyou: true,
-	  		img: '/static/images/goods/five.jpg',
-	  		status: 0, //商品过期状态  0正常  1已失效
-	  		stock: 140,
-	  		sku: [{
-	  			sku_id: 1,
-	  			skuname: '种类',
-	  			child: [{
-	  					tagname: '3斤精品装',
-	  					id: 2061,
-	  					imgs: 'http://img10.360buyimg.com/n1/jfs/t1/71401/15/15968/470755/5ddb8ecaEe6a5ce65/140942226e7c7551.jpg',
-	  					money: '59.90'
-	  				},
-	  				{
-	  					tagname: '5斤精品装',
-	  					id: 2062,
-	  					imgs: 'http://img10.360buyimg.com/n1/jfs/t1/82339/35/16255/632261/5ddb8ecdE628ab494/cacc1d2241e9f65f.jpg',
-	  					money: '82.90'
-	  				},
-	  			]
-	  		}, ],
-	  		skuArr: [{
-	  				goods_sku_arr: ['2061'],
-	  				goods_sku_text: '3斤精品装',
-	  				img: 'http://img10.360buyimg.com/n1/jfs/t1/71401/15/15968/470755/5ddb8ecaEe6a5ce65/140942226e7c7551.jpg',
-	  				money: '59.90',
-	  				stock: 80
-	  			},
-	  			{
-	  				goods_sku_arr: ['2062'],
-	  				goods_sku_text: '5斤精品装',
-	  				img: 'http://img10.360buyimg.com/n1/jfs/t1/82339/35/16255/632261/5ddb8ecdE628ab494/cacc1d2241e9f65f.jpg',
-	  				money: '82.90',
-	  				stock: 60
-	  			}
-	  		],
-	  	}
-	  ],
+	  dataList: [],
+	  // 参数id
+	  id: undefined,
+	  keyword: undefined,
+	  searchKeyword: undefined,
+	  page: 1,
+	  pageSize: 10
     };
   },
 
@@ -455,10 +168,11 @@ export default {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let classId = options.classId;
     this.setData({
       colors: app.globalData.newColor,
-      classId: classId
+	  id: options.id,
+	  keyword: options.search
+      // classId: classId
     });
     setTimeout(() => {
       this.setData({
@@ -475,7 +189,17 @@ export default {
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () {
+	  this.dataList = [];
+	  this.page = 1;
+	  if(this.id) {
+		this.getRecommend();
+	  }
+	  if(this.keyword) {
+		  this.searchKeyword = JSON.parse(JSON.stringify(this.keyword));
+		  this.getProductList();
+	  }
+  },
 
   /**
    * 生命周期函数--监听页面隐藏
@@ -502,6 +226,61 @@ export default {
    */
   onShareAppMessage: function () {},
   methods: {
+	// 获取专题商品信息
+	getRecommend() {
+		const param = {
+			id: this.id,
+			page: this.page, 
+			pageSize: this.pageSize,
+		}
+		if(this.searchKeyword) {
+			Object.assign(param, {search: this.searchKeyword});
+		}
+		uni.$ajax('/api/product/recommend-list', param).then((result) => {
+			this.dataList =this.dataList.concat(result.list);
+		}).catch((err) => {
+			uni.showToast({
+				title: err,
+				icon: 'none'
+			})
+		});
+	},
+	// 获取搜索商品信息
+	getProductList() {
+		uni.$ajax('/api/product/list', {
+				page: this.page, 
+				pageSize: this.pageSize,
+				search: this.searchKeyword
+		}).then((result) => {
+			if(result.list.length === 0 || result.list.length < this.pageSize ) {
+				this.loading = false;
+			}
+			this.dataList =this.dataList.concat(result.list);
+		}).catch(err => {
+			uni.showToast({
+				title: err,
+				icon: 'none'
+			});
+		});
+	},
+	goSearch() {
+		console.log('搜索');
+		if(!this.searchKeyword) {
+			return uni.showToast({
+				title: '请输入搜索内容',
+				icon: 'none'
+			})
+		}
+		this.page = 1;
+		this.dataList = [];
+		if(this.id) {
+			this.getRecommend()
+		}
+		if(this.keyword) {
+			this.getProductList();
+		}
+	},
+	
     setCurrent(e) {
       console.log(e);
       let index = e.currentTarget.dataset.index;
@@ -615,7 +394,8 @@ export default {
 	bottom: 0;
 }
 .top_nav{
-	height: 240upx;
+	// height: 240upx;  // 二级条件选择
+	height: 160upx;
 	background-color: #FFFFFF;
 	border-bottom: 1upx solid rgba($color: #eee, $alpha: 0.6);
 }
@@ -627,7 +407,7 @@ export default {
   z-index: 900;
 }
 .scroll_box{
-	height: calc(100vh - 260upx);
+	height: calc(100vh - 160upx);
 }
 .search_box{
   padding: 0 20upx;

@@ -22,7 +22,7 @@ export default {
   methods: {
     jumpList(item) {
       uni.navigateTo({
-        url: '/pages/views/home/classList?classId=' + item.id
+        url: item.redirectUrl
       });
     }
   }

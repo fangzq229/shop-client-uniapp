@@ -2,34 +2,39 @@
 <view class="content">
 		<view class="search-box">
 			<view class="input-box">
-				<input type="text" adjust-position="true" v-model="keyword" :placeholder="defaultKeyword" placeholder-class="search_text" @confirm="doSearch" data-key="false" confirm-type="search" @input="onclear"></input>
-				<image src="/static/images/search/close.png" mode @tap="clears" v-if="shows == true"></image>
+				<input type="text" adjust-position="true" v-model="keyword" placeholder="请输入您想搜索的内容" placeholder-class="search_text" @confirm="doSearch" data-key="false" confirm-type="search"></input>
+				<!-- <image src="/static/images/search/close.png" mode="aspectFill" @tap="clears" v-if="shows == true"></image> -->
 			</view>
 			<view class="search-btn" @tap="doSearch" data-key="false" :style="'background:' + colors">搜索</view> 
 		</view>
 		<view class="search-keyword">
-			<scroll-view class="keyword-list-box" v-if="isShowKeywordList" scroll-y>
-				<view v-for="(row, index) in keywordList" :key="index">
-					<view class="keyword-entry" hover-class="keyword-entry-tap">
-						<view class="keyword-text" @tap="jumpData(row.goods_id)">
-							<text style="font-size:24upx">{{row.goods_name}}</text>
+			<view class="">
+				<scroll-view class="keyword-box" scroll-y>
+					<view class="keyword-block" v-if="oldKeywordList.length>0">
+						<view class="keyword-list-header">
+							<view>历史搜索</view>
+							<view>
+								<image @tap="oldDelete" src="/static/images/search/delete.png"></image>
+							</view>
+						</view>
+						<view class="keyword">
+							<view v-for="(item, index) in oldKeywordList" :key="index" @tap="ondoSearch(item)">{{item}}</view>
 						</view>
 					</view>
-				</view>
-			</scroll-view>
-			<scroll-view class="keyword-box" v-if="!isShowKeywordList" scroll-y>
-				<view class="keyword-block" v-if="oldKeywordList.length>0">
-					<view class="keyword-list-header">
-						<view>历史搜索</view>
-						<view>
-							<image @tap="oldDelete" src="/static/images/search/delete.png"></image>
+				</scroll-view>
+			</view>
+			<view class="">
+				<scroll-view class="keyword-box" scroll-y>
+					<view class="keyword-block" v-if="hotKeywordList.length>0">
+						<view class="keyword-list-header">
+							<view>热门搜索</view>
+						</view>
+						<view class="keyword">
+							<view v-for="(item, index) in hotKeywordList" :key="index" @tap="ondoSearch(item)">{{item}}</view>
 						</view>
 					</view>
-					<view class="keyword">
-						<view v-for="(item, index) in oldKeywordList" :key="index" @tap="ondoSearch(item)">{{item}}</view>
-					</view>
-				</view>
-			</scroll-view>
+				</scroll-view>
+			</view>
 		</view>
 </view>
 </template>
@@ -43,7 +48,6 @@ export default {
       keyword: "",
       oldKeywordList: [],
       hotKeywordList: [],
-      keywordList: [],
       forbid: '',
       isShowKeywordList: false,
       shows: false,
@@ -95,15 +99,19 @@ export default {
   onReachBottom: function () {},
   methods: {
     init() {
-      this.loadDefaultKeyword();
+	  // 历史搜索记录本地缓存
       this.loadOldKeyword();
-    },
-
-    loadDefaultKeyword() {
-      //定义默认搜索关键字，可以自己实现ajax请求数据再赋值,用户未输入时，以水印方式显示在输入框，直接不输入内容搜索会搜索默认关键字
-      this.setData({
-        defaultKeyword: "请输入您想搜索的内容"
-      });
+	  // 热门搜索记录
+	  uni.$ajax('/api/product/keyword').then((result) => {
+		  this.hotKeywordList = result.map(item => {
+			  return item.keyword;
+		  })
+	  }).catch(err => {
+		  uni.showToast({
+		  	title: '获取热门搜索失败',
+			icon: 'none'
+		  })
+	  });
     },
 
     //加载历史搜索,自动读取本地Storage
@@ -130,21 +138,10 @@ export default {
       if (this.keyword && this.keyword !== '') {
         this.saveKeyword(this.keyword); //保存为历史
       }
-
-      uni.showLoading({
-        title: '搜索中...'
-      });
-      this.setData({
-        keywordList: []
-      });
-      this.onsearch();
-    },
-
-    onclear(e) {
-      this.setData({
-        keyword: e.detail.value,
-		shows: e.detail.value !== ''? true : false
-      });
+	  // 跳转商品搜索页面
+	  uni.navigateTo({
+	    url: '/pages/views/home/classList?search=' + this.keyword
+	  });
     },
 
     //保存关键字到历史记录
@@ -161,8 +158,6 @@ export default {
             OldKeys.splice(findIndex, 1);
             OldKeys.unshift(keyword);
           } //最多10个纪录
-
-
           OldKeys.length > 10 && OldKeys.pop();
           uni.setStorage({
             key: 'OldKeys',
@@ -205,35 +200,23 @@ export default {
         }
       });
     },
-
-    onsearch() {
-      console.log('搜索')
-    },
-
-    clears() {
-	  console.log('点击了')
-      this.setData({
-        keyword: '',
-        keywordList: [],
-        isShowKeywordList: false
-      });
-    },
-
+    // clears() {
+    //   this.setData({
+    //     keyword: '',
+    //     keywordList: [],
+    //   });
+    // },
     ondoSearch(item) { //点击历史记录搜索
-		console.log(item)
-    },
-
-    jumpData(value) {
-      uni.navigateTo({
-        url: '/pages/views/goods/goodsDetails?goodsId'
-      });
+		// 跳转商品搜索页面
+		uni.navigateTo({
+		  url: '/pages/views/home/classList?search=' + item
+		});
     }
-
   }
 };
 </script>
 <style scoped lang="scss">
-view{display:block;}
+	view{display:block;}
 	.search-box {background-color:rgb(242,242,242);padding:15upx 2.5%;display:flex;justify-content:space-between;position:sticky;top: 0;}
 	.search-box .mSearch-input-box{width: 100%;}
 	.search-box .input-box {width:85%;flex-shrink:1;display:flex;justify-content:center;align-items:center;}
@@ -248,10 +231,10 @@ view{display:block;}
 	.keyword-entry .keyword-text,.keyword-entry .keyword-img {height:80upx;display:flex;align-items:center;}
 	.keyword-entry .keyword-text {width:90%;}
 	.keyword-entry .keyword-img {width:10%;justify-content:center;}
-	.keyword-box {height:calc(100vh - 110upx);border-radius:20upx 20upx 0 0;background-color:#fff;}
+	.keyword-box {border-radius:20upx 20upx 0 0;background-color:#fff;}
 	.keyword-box .keyword-block {padding:10upx 0;}
-	.keyword-box .keyword-block .keyword-list-header {width:94%;padding:10upx 3%;font-size:27upx;color:#333;display:flex;justify-content:space-between;}
-	.keyword-box .keyword-block .keyword-list-header image {width:40upx;height:40upx;}
+	.keyword-box .keyword-block .keyword-list-header {width:94%;padding:20upx 3%;font-size:27upx;color:#333;display:flex;justify-content:space-between;}
+	.keyword-box .keyword-block .keyword-list-header image {width:30upx;height:30upx;}
 	.keyword-box .keyword-block .keyword {width:94%;padding:3px 3%;display:flex;flex-flow:wrap;justify-content:flex-start;}
 	.keyword-box .keyword-block .hide-hot-tis {display:flex;justify-content:center;font-size:28upx;color:#6b6b6b;}
   .keyword-box .keyword-block .keyword>view {display:flex;justify-content:center;align-items:center;border-radius:38upx;padding:0 20upx;margin:10upx 20upx 10upx 0;height:60upx;font-size:24upx;background-color:rgb(242,242,242);color:#6b6b6b;line-height: 60upx;}

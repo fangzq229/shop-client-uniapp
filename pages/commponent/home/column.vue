@@ -24,10 +24,9 @@ export default {
 	  },
   },
   methods: {
-	  goto(url) {
-		  console.log(url);
+	  goto(item) {
 		  uni.navigateTo({
-		    url: url
+		    url: '/pages/views/home/classList?id=' + item.id
 		  });
 	  }
   }

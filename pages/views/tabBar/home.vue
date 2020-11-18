@@ -167,22 +167,22 @@ export default {
 			if(this.page === 1) { 
 				this.dataList = [];
 			};
-			const result = await uni.$ajax('/api/product/list', 
+			uni.$ajax('/api/product/list', 
 				{
 					page: this.page, 
 					pageSize: this.pageSize,
 				},
-			).catch(err => {
+			).then((result) => {
+				if(result.list.length === 0 || result.list.length < this.pageSize ) {
+					this.loading = false;
+				}
+				this.dataList =this.dataList.concat(result.list);
+			}).catch(err => {
 				uni.showToast({
 					title: err,
 					icon: 'none'
 				});
 			});
-			if(result.list.length === 0 || result.list.length < this.pageSize ) {
-				this.loading = false;
-			}
-			this.dataList =this.dataList.concat(result.list);
-			console.log(result);
 		}
 	}
 };

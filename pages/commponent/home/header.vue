@@ -275,7 +275,9 @@ export default {
 			});
 		},
 		brandTo(item) {
-			console.log(item);
+			uni.navigateTo({
+				url: item.redirectUrl
+			});
 		}
 	}
 };

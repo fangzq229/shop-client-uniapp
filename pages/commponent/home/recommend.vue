@@ -2,32 +2,32 @@
 	<view style="background: #F8F8F8;overflow: hidden;">
 		<!-- 宫格类样式 -->
 		<view class="recommend_goods" v-if="modes == true">
-			<view v-for="(item, index) in newList" :key="index" class="goods">
-				<view class="top" @tap="jumpDetails(item)">
-					<image class="cover" lazy-load="true"  :src="item.smallImg" mode="scaleToFill"></image>
-					<!-- <image class="tags" lazy-load="true" v-if="item.baoyou" :src="tagImg[0]"></image> -->
-				</view>
-				<view class="bottom">
-					<view class="goods_name" @tap="jumpDetails(item)">
-						{{item.name}} {{ item.subhead }}
+			<view class="item" v-for="(item, index) in newList" :key="index">
+				<view  class="goods">
+					<view class="top" @tap="jumpDetails(item)">
+						<image class="cover" lazy-load="true"  :src="item.smallImg" mode="aspectFill"></image>
+						<!-- <image class="tags" lazy-load="true" v-if="item.baoyou" :src="tagImg[0]"></image> -->
 					</view>
-					<view class="price">
-						<text class="text1">￥ {{item.skus[0].salePrice}}</text>
-						<text class="text2">￥ {{item.skus[0].marketPrice}}</text>
-					</view>
-					<view class="goumai">
-						<view class="g_left">
-							<text v-for="(l, index) in item.label" :key="index">
-								{{ l.name }}
-							</text>
+					<view class="bottom">
+						<view class="goods_name" @tap="jumpDetails(item)">
+							{{item.name}} {{ item.subhead }}
 						</view>
-						<view class="g_right" @tap="addCart(item)">
-							<text class="iconfont icon-gouwuche"></text>
+						<view class="price">
+							<text class="text1">￥ {{item.skus[0].salePrice}}</text>
+							<text class="text2">￥ {{item.skus[0].marketPrice}}</text>
+						</view>
+						<view class="goumai">
+							<view class="g_left">
+								<text v-for="(l, index) in item.label" :key="index">
+									{{ l.name }}
+								</text>
+							</view>
+							<view class="g_right" @tap="addCart(item)">
+								<text class="iconfont icon-gouwuche"></text>
+							</view>
 						</view>
 					</view>
 				</view>
-			</view>
-			<view class="place">
 			</view>
 		</view>
 		<!-- 列表类样式 -->
@@ -53,9 +53,9 @@
 				</view>
 			</view>
 		</view>
-		<nodata :colors="colors" title="暂无分类商品" v-if="newList.length == 0"></nodata>
+		<nodata :colors="colors" title="暂无商品" v-if="newList.length == 0"></nodata>
 		<view class="loading" v-if="loading == true">加载中...</view>
-		<view class="loading" v-if="loading == false">—— 到底啦 ——</view>
+		<view class="loading" v-if="loading == false && newList.length > 0">—— 到底啦 ——</view>
 		<!-- 选择规格 -->
 		<sku :skuList="nowList" :showModal="showModal" :colors="colors" @onhide="onhide" :bottoms="bottoms"></sku>
 	</view>
@@ -145,13 +145,6 @@
 	};
 </script>
 <style scoped lang="scss">
-	.recommend_goods {
-		padding: 20upx;
-		column-count: 2;
-		/*分为两列  用于瀑布流*/
-		column-gap: 20upx;
-	}
-
 	.loading {
 		height: 80upx;
 		line-height: 80upx;
@@ -161,26 +154,38 @@
 		width: 100%;
 		margin-bottom: 20upx;
 	}
-
+	.recommend_goods {
+		width: 95%;
+		margin: 0 auto;
+		column-count: 2;
+		column-gap: 20upx;
+		padding-top: 20upx;
+		
+	}
 	.goods {
-		height: 100%;
-		overflow: auto;
-		margin-bottom: 20upx;
+		width: 100%;
+		display: flex;
 		break-inside: avoid;
-		/*用于瀑布流*/
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 20upx;
 		border-radius: 10upx;
-		box-sizing: content-box;
-
-		&:first-child {
-			margin-top: 0;
-		}
+		
 	}
 
 	.goods .top {
 		height: 45vw;
+		width: 100%;
 		overflow: hidden;
 		position: relative;
 		background-color: #ffffff;
+		border-top-right-radius: 10upx;
+		border-top-left-radius: 10upx;
+	}
+	.goods .top image {
+		width: 100%;
+		height: 100%;
 	}
 
 	.top .cover {
@@ -199,6 +204,7 @@
 	}
 
 	.bottom {
+		width: 100%;
 		padding: 15upx;
 		background-color: #ffffff;
 		overflow: hidden;
@@ -444,13 +450,14 @@
 
 	/* 列表类样式 */
 	.list_mode {
-		padding: 20upx 4% 0upx;
 		z-index: 10;
-		background-color: #FFFFFF;
+		padding-top: 10px;
 	}
 
 	.goods_list {
 		overflow: hidden;
+		padding: 10upx 4% 0upx;
+		background-color: #FFFFFF;
 	}
 
 	.goods_list .goods_item {
@@ -551,7 +558,7 @@
 		text-align: center;
 		font-size: 24upx;
 		margin-top: 20upx;
-		height: 80upx;
+		height: calc(100vh - 240upx);
 		line-height: 80upx;
 	}
 </style>

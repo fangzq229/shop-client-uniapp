@@ -69,10 +69,10 @@
 				<text class="title">实付款</text>
 				<view class="right_title" :style="'color:' + colors + ';'">￥{{ sumprice }}</view>
 			</view>
-			<view class="tips">
+			<!-- <view class="tips">
 				<view class="tips_name">备注信息</view>
 				<view class="textarea_box"><textarea placeholder="请输入备注信息" placeholder-class="font-size: 24upx" maxlength="-1" v-if="couponshow == false"></textarea></view>
-			</view>
+			</view> -->
 		</view>
 		<view class="bottom_btn">
 			<view class="moneys">

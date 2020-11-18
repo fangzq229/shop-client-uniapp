@@ -151,32 +151,34 @@ export default {
 			title:'登录中...'
 		});
 		// 登陆
-		const res = await uni.$ajax('/api/login/phone-login', {
+		uni.$ajax('/api/login/phone-login', {
 			phone: this.tel,
 			code: this.smscode
-		}, 'post').catch(err => {
+		}, 'post').then((res) => {
+			// 保存token
+			setToken(res.token);
+			//存储用户信息
+			let user = {  
+				avatarUrl: res.avatar || 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg',
+				nickName: res.nickname || '木木'
+			}
+			setUserInfo(user)
+			setTimeout(()=>{
+				uni.hideLoading()
+				uni.showToast({
+					title:'登陆成功'
+				})
+			}, 500)
+			setTimeout(()=>{
+				uni.navigateBack()
+			},500)
+		}).catch(err => {
 			return uni.showToast({
 				title: err,
 				icon: 'none'
 			});
 		});
-		// 保存token
-		setToken(res.token);
-		//存储用户信息
-		let user = {  
-			avatarUrl: res.avatar || 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg',
-			nickName: res.nickname || '木木'
-		}
-		setUserInfo(user)
-		setTimeout(()=>{
-			uni.hideLoading()
-			uni.showToast({
-				title:'登陆成功'
-			})
-		}, 500)
-		setTimeout(()=>{
-			uni.navigateBack()
-		},500)
+		
 	},
 	getCode() { //获取用户短信验证码
 		if(this.isCode == false){
