@@ -114,7 +114,7 @@
 				</block>
 				<block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 40 && orderDetails.status == 50">
 					<!-- <view class="btns shouhou" @click="jumpSale">退款/售后</view> -->
-					<view class="btns" :style="'background:' + colors + ';margin-left:20upx;'">再次购买</view>
+					<view class="btns" :style="'background:' + colors + ';margin-left:20upx;'" @tap="addCard">再次购买</view>
 				</block>
 				<block v-if="orderDetails.status == 40">
 					<view class="btns shouhou" @tap="delOrder">删除订单</view>
@@ -298,6 +298,22 @@ export default {
 			//退款售后
 			uni.navigateTo({
 				url: '/pages/views/order/afterSaleList'
+			});
+		},
+		// 再次购买 添加购物车
+		async addCard() {
+			const arr = [];
+			this.orderDetails.orderProduct.map((item) => {
+				arr.push(uni.$ajax('/api/cart/add', {
+							productId: item.productId,
+						    productSkuId: item.productSkuId,
+						    quantity: item.quantity,
+						    type: 1
+						}, 'post'));
+			})
+			await Promise.all(arr);
+			uni.switchTab({
+				url: '/pages/views/tabBar/cart'
 			});
 		},
 		// 获取订单信息

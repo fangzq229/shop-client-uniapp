@@ -101,7 +101,7 @@ export default {
       isShow: true,
       current: 0,
       isMaskShow: false,
-      modes: true,
+      modes: false,
       onscreen: 0,
 	  scrollLeft: 0,
 	  tagCurrent: 999,

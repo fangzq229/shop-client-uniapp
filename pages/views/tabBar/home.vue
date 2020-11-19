@@ -147,19 +147,22 @@ export default {
 		},
 
 		// 获取首页配置数据
-		async getHomeData() {
-			const result = await uni.$ajax('/api/home/index', {}).catch(err => {
+		getHomeData() {
+			uni.$ajax('/api/home/index', {}).then((result)=> {
+				console.log(result);
+				// 轮播图
+				this.swiperList = result.banner;
+				// 推荐类
+				this.categoryList = result.category;
+				// 栏目专题
+				this.columnList = result.recommend;
+			}).catch(err => {
 				uni.showToast({
 					title: err,
 					icon: 'none'
 				});
 			});
-			// 轮播图
-			this.swiperList = result.banner;
-			// 推荐类
-			this.categoryList = result.category;
-			// 栏目专题
-			this.columnList = result.recommend;
+			
 		},
 		
 		// 获取热销商品

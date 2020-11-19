@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "分类",
+  "usingComponents": {
+    "search": "/pages/commponent/public/search",
+    "twostage": "/pages/commponent/cate/twostage",
+    "threestage": "/pages/commponent/cate/threestage"
+  }
+}

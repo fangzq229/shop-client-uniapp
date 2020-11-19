@@ -229,6 +229,12 @@ export default {
 		},
 
 		async submit() {
+			if(!this.addressId) {
+				return uni.showToast({
+					title:'请选择您的收货地址',
+					icon: 'none'
+				})
+			}
 			const products = this.goodsList.map(item => {
 				const obj = {
 					productId: item.productId,

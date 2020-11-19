@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "首页",
+  "navigationBarBackgroundColor": "#fa436a",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "headers": "/pages/commponent/home/header",
+    "class-list": "/pages/commponent/home/classList",
+    "notice": "/pages/commponent/home/notice",
+    "column": "/pages/commponent/home/column",
+    "banner": "/pages/commponent/home/banner",
+    "hotstitle": "/pages/commponent/home/hotstitle",
+    "recommend": "/pages/commponent/home/recommend",
+    "suspension": "/pages/commponent/home/suspension"
+  }
+}
