@@ -16,6 +16,7 @@
 
 <script>
 import listCell from "./list-cell";
+import { getToken } from '@/utils/auth';
 export default {
   data() {
     return {};
@@ -42,7 +43,13 @@ export default {
   },
   methods: {
     jumpLink(row) {
-      //页面跳转
+      // 是否登陆
+	  if(!getToken()) {
+	  	return uni.navigateTo({
+	  		url: '/pages/login/login'
+	  	});
+	  }
+	  // 跳转
       if (row.url == '') {
         return;
       }else {

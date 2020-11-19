@@ -39,7 +39,7 @@
 				</view> -->
 				<!-- 单商品操作按钮 在订单状态为待评价时才会显示-->
 				<view class="goods_btns">
-					<view v-if="item.status == 10 && orderDetails.status == 50" class="btns" @click="onafterSale(item)">申请售后</view>
+					<!-- <view v-if="item.status == 10 && orderDetails.status == 50" class="btns" @click="onafterSale(item)">申请售后</view> -->
 					<view v-if="item.commentStatus == 10 && orderDetails.status == 50" class="btns" @click="onevaluate(item)" :style="{ borderColor: colors, color: colors, marginLeft: '40upx' }">去评价</view>
 				</view>
 			</view>
@@ -69,7 +69,18 @@
 					<text class="title">订单编号</text>
 					<view class="right_title">
 						{{ orderDetails.code }}
-						<text class="copy" @click="onCopy(orderDetails.order_No)">复制</text>
+						<text class="copy" @click="onCopy(orderDetails.code)">复制</text>
+					</view>
+				</view>
+				<view class="morelist" v-if="orderDetails.logisticsName">
+					<text class="title">物流名称</text>
+					<view class="right_title">{{ orderDetails.logisticsName }}</view>
+				</view>
+				<view class="morelist" v-if="orderDetails.logisticsCode">
+					<text class="title">物流单号</text>
+					<view class="right_title">
+						{{ orderDetails.logisticsCode }}
+						<text class="copy" @click="onCopy(orderDetails.logisticsCode)">复制</text>
 					</view>
 				</view>
 				<view class="morelist">
@@ -92,17 +103,22 @@
 					<view class="btns" :style="'color:' + colors + ';border:1upx solid ' + colors + ';margin-right:20upx'" @tap="cencalOrder">取消订单</view>
 					<view class="btns" :style="'background:' + colors + ';'">继续支付</view>
 				</block>
-				<block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 10 && orderDetails.status == 10">
+				<!-- <block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 10 && orderDetails.status == 10">
 					<view class="btns" :style="'color:' + colors + ';border:1upx solid ' + colors + ';margin-right:20upx'" @tap="onRefund">申请退款</view>
+				</block> -->
+				<block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 10 && orderDetails.status == 10">
+					<view class="btns" :style="'color:#b7b4b9;border:1upx solid #DDD;margin-right:20upx'">发货中</view>
 				</block>
-				<block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 20 && orderDetails.status == 20">
-					<view class="btns" :style="'background:' + colors + ';'">确认收货</view>
+				<block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 20 && orderDetails.status == 20" >
+					<view class="btns" :style="'background:' + colors + ';'" @tap="confirmOrder">确认收货</view>
 				</block>
 				<block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 40 && orderDetails.status == 50">
-					<view class="btns shouhou" @click="jumpSale">退款/售后</view>
+					<!-- <view class="btns shouhou" @click="jumpSale">退款/售后</view> -->
 					<view class="btns" :style="'background:' + colors + ';margin-left:20upx;'">再次购买</view>
 				</block>
-				<block v-if="orderDetails.status == 40"><view class="btns shouhou">删除订单</view></block>
+				<block v-if="orderDetails.status == 40">
+					<view class="btns shouhou" @tap="delOrder">删除订单</view>
+				</block>
 			</view>
 		</view>
 		<loading v-if="isShow == true"></loading>
@@ -121,34 +137,7 @@ export default {
 			status: 0,
 			//订单状态
 			isShow: true,
-			orderDetails: {
-				goods: [
-					{
-						title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-						type: 1,
-						goods_id: 201,
-						number: 1,
-						goods_sku_text: '醇黑巧克力【20枚】',
-						img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-						money: '175.78'
-					},
-					{
-						title: '农谣人 原味火山石烤肠1000g/约16根台式原味肠地道肠纯肉肠热狗肠台湾烤肠香肠烧烤肠半熟食火腿肠 台式原味地道肠1kg',
-						type: 1,
-						goods_id: 204,
-						number: 1,
-						goods_sku_text: '台式原味地道肠1kg',
-						img: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
-						money: '52.00 '
-					}
-				],
-				type: 1,
-				status: 0,
-				order_No: 'AQWEAD45648974974456',
-				shopp_Address: '北京市海淀区苏家坨乡前沙涧村',
-				sumprice: '227.78',
-				tips: '尽快发货'
-			}
+			orderDetails: {}
 		};
 	},
 
@@ -215,26 +204,73 @@ export default {
 	 */
 	onShareAppMessage: function() {},
 	methods: {
+		// 取消订单
 		cencalOrder(item) {
-			//取消订单
 			uni.showModal({
-				title: '确认要取消该订单吗?',
-				confirmColor: this.colors,
-				success: res => {
-					if (res.confirm) {
-						console.log('取消成功');
+				title:'确认要取消该订单吗?',
+				confirmColor:this.colors,
+				success: (res) => {
+					if(res.confirm){
+						uni.$ajax('/api/order/cancel', {id: this.orderId}).then((res) => {
+							this.getOrderDetails();
+						}).catch((err) => {
+							return uni.showToast({
+								title: err,
+								icon: 'none'
+							});
+						})
 					}
 				}
-			});
+			})
 		},
+		// 删除订单
+		delOrder() {
+			uni.showModal({
+				title:'确认要删除该订单吗?',
+				confirmColor:this.colors,
+				success: (res) => {
+					if(res.confirm){
+						uni.$ajax('/api/order/del', {id: this.orderId}).then((res) => {
+							uni.navigateBack({
+							  delta: 1
+							});
+						}).catch((err) => {
+							return uni.showToast({
+								title: err,
+								icon: 'none'
+							});
+						})
+					}
+				}
+			})
+		},
+		// 确认收货
+		confirmOrder(item, index) {
+			uni.showModal({
+				title:'请确认已签收次订单?',
+				confirmColor:this.colors,
+				success: (res) => {
+					if(res.confirm){
+						uni.$ajax('/api/order/confirm', {id: this.orderId}).then((res) => {
+							this.getOrderDetails();
+						}).catch((err) => {
+							return uni.showToast({
+								title: err,
+								icon: 'none'
+							});
+						})
+					}
+				}
+			})
+		},
+		// 申请退款
 		onRefund(item) {
-			// 申请退款
 			uni.navigateTo({
 				url: '/pages/views/order/cancelorder?orderId'
 			});
 		},
+		//复制订单号
 		onCopy(value) {
-			//复制订单号
 			var input = document.createElement('input'); // 直接构建input
 			input.value = value; // 设置内容
 			document.body.appendChild(input); // 添加临时实例
@@ -246,14 +282,14 @@ export default {
 				icon: 'none'
 			});
 		},
+		//申请售后
 		onafterSale(item) {
-			//申请售后
 			uni.navigateTo({
 				url: '/pages/views/order/afterSale?goodData=' + JSON.stringify(item)
 			});
 		},
+		//去评价
 		onevaluate(item) {
-			//去评价
 			uni.navigateTo({
 				url: '/pages/views/order/evaluate?orderProductId='+ item.id
 			});
@@ -267,6 +303,7 @@ export default {
 		// 获取订单信息
 		getOrderDetails() {
 			uni.$ajax('/api/order/detail', {id: this.orderId}).then((result) => {
+				console.log(result);
 				this.orderDetails = result;
 				this.address = JSON.parse(result.address);
 			}).catch((err) => {
@@ -571,7 +608,7 @@ page {
 	margin-right: 100upx;
 }
 .bottom_btn .btns {
-	font-size: 26upx;
+	font-size: 24upx;
 	height: 50upx;
 	line-height: 50upx;
 	padding: 0 20upx;

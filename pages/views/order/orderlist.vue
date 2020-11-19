@@ -38,8 +38,11 @@
 							<block v-if="item.payStatus == 10 && item.status == 10" >
 								<view class="pay shouhou" :style="'color:' + colors + ';border-color:' + colors" @tap="cancelOrder(item, index)">取消订单</view>
 							</block>
-							<block v-if="item.payStatus == 20 && item.deliverStatus == 10 && item.status == 10">
+							<!-- <block v-if="item.payStatus == 20 && item.deliverStatus == 10 && item.status == 10">
 								<view class="pay shouhou"  @tap="onRefund(item)">申请退款</view>
+							</block> -->
+							<block v-if="item.payStatus == 20 && item.deliverStatus == 10 && item.status == 10">
+								<view class="pay shouhou" :style="'color: #b7b4b9'">发货中</view>
 							</block>
 							<block v-if="item.payStatus == 20 && item.status == 20 && item.deliverStatus == 20">
 								<view class="pay" :style="'color:#fff;background:' + colors+ ';border-color:' + colors" @tap="confirmOrder(item, index)">确认收货</view>
@@ -47,9 +50,9 @@
 							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50 && item.isComment">
 								<view class="pay shouhou" :style="'color:' + colors + ';border-color:' + colors" @tap="jumpDetails(item)">订单评价</view>
 							</block>
-							<block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50">
+							<!-- <block v-if="item.payStatus == 20 && item.deliverStatus == 40 && item.status == 50">
 								<view class="pay shouhou" @tap="jumpAfterSale(item)">申请售后</view>
-							</block>
+							</block> -->
 							<block v-if="item.status == 40">
 								<view class="pay shouhou" @tap="delOrder(item, index)">删除订单</view>
 							</block>

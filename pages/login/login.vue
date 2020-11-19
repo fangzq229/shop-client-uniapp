@@ -1,5 +1,7 @@
 <template>
 <view class="login" :style="'background: url(' + bgImg[imgIndex] + '); background-size: cover;background-repeat:no-repeat; background-position: center;'">
+  <!-- 顶部自定义导航栏 -->
+  <navBar :showLeft="true" :leftBg="false" :showTitle="false"></navBar>
   <view class="logo">
     <!-- <image src="/static/images/log.png"></image> -->
   </view>
@@ -7,12 +9,16 @@
       <input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #515151"></input>
       <view class="codes">
       	<input placeholder="请输入短信验证码" v-model="smscode"  maxlength="6" type="number" placeholder-style="color: #515151"></input>
-		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.8'}">{{codeName}}</view>
+		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.7'}">{{codeName}}</view>
       </view>
-      <view class="login_btn" @click="onlogin">登录</view>
+      <view class="login_btn" @click="onlogin" :style="'background:' + colors">登录</view>
   </view>
-  <view class="wxLogin">
-      <view>—— 快速登录 ——</view>
+  <view class="wx-login">
+      <view class="login-text">
+		  <view></view>
+		  快速登录
+		  <view></view>
+		</view>
       <image src="/static/images/wx.png"></image>
       <!-- #ifdef MP -->
       <button open-type="getUserInfo" @getuserinfo="getUserInfo">1</button>
@@ -21,14 +27,29 @@
 	  <button open-type="getUserInfo" @click="onAuthorize"></button>
 	  <!-- #endif -->
   </view>
+  <view class="explain">
+	<checkbox-group @change="checkboxChange">
+		<checkbox value="true"  :color="colors" style="transform:scale(0.6)" />
+	</checkbox-group>
+  	请认真阅读并同意 
+	<view class="">
+		《用户服务协议》
+	</view>
+	<view class="">
+		《隐私权政策》
+	</view>
+  </view>
 </view>
 </template>
 
 <script>
+var app = getApp();
 import { setUserInfo,setToken } from "../../utils/auth";
+import navBar from "../commponent/public/navBar";
 export default {
   data() {
     return {
+	  colors: '',
       isCanUse: uni.getStorageSync('isCanUse'),
       nickName: '',
       avatarUrl: '',
@@ -38,10 +59,15 @@ export default {
 	  codeName: '获取验证码',
       isCode: true,
 	  tel:'',
-	  smscode: undefined
+	  smscode: undefined,
+	  isChecked: false
     };
   },
   props: {},
+  
+  components: {
+	  navBar,
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -50,6 +76,9 @@ export default {
     // #ifdef MP-WEIXIN
     this.wxlogin(); //小程序获取用户code
     // #endif
+	this.setData({
+		colors: app.globalData.newColor
+	});
   },
 
   /**
@@ -141,6 +170,12 @@ export default {
       });
     },
 	async onlogin(){
+		if(!this.isChecked) {
+			return uni.showToast({
+				title: '请勾选用户相关协议',
+				icon: 'none'
+			});
+		}
 		if(!this.tel || !this.smscode) {
 			return uni.showToast({
 				title: '手机号或验证码不能为空',
@@ -163,15 +198,13 @@ export default {
 				nickName: res.nickname || '木木'
 			}
 			setUserInfo(user)
-			setTimeout(()=>{
-				uni.hideLoading()
-				uni.showToast({
-					title:'登陆成功'
-				})
-			}, 500)
+			uni.hideLoading()
+			uni.showToast({
+				title:'登陆成功'
+			})
 			setTimeout(()=>{
 				uni.navigateBack()
-			},500)
+			},300)
 		}).catch(err => {
 			return uni.showToast({
 				title: err,
@@ -198,39 +231,37 @@ export default {
 			});
 			return false;
 		}
+		this.isCode = false;
 		this.getPhoneCode()
 	},
 	async getPhoneCode() {
 		let timer = ''
-		let date = 120
+		let date = 60
 		let that = this
-		// 获取手机号
-		await uni.$ajax('/api/common/send-sms', {
+		uni.$ajax('/api/common/send-sms', {
 			phone: this.tel
-		}, 'post').catch(err => {
-			return uni.showToast({
-				title: err,
-				icon: 'none'
-			});
-		});
-		if (that.isCode == true) {
+		}, 'post').then(() => {
 			uni.showToast({
 				title: '验证码发送成功~',
 				icon: 'none'
 			})
 			clearInterval(timer)
-			setInterval(() => {
+			timer = setInterval(() => {
 				if (date >= 1) {
 					date--
 					that.codeName = date + '秒重试'
-					that.isCode = false
 				} else {
 					that.isCode = true
 					that.codeName = '验证码'
 					clearInterval(timer)
 				}
 			}, 1000)
-		}
+		}).catch(err => {
+			return uni.showToast({
+				title: err,
+				icon: 'none'
+			});
+		});
 	},
 	wxlogin() {
 	  // 1.wx获取登录用户code
@@ -246,6 +277,13 @@ export default {
 			title:'对接你的公众号登录方法',
 			icon:"none"
 		})
+	},
+	checkboxChange(e) {
+		if(e.detail.value.includes('true')) {
+			this.isChecked = true;
+		} else {
+			this.isChecked = false;
+		}
 	}
   }
 };
@@ -319,31 +357,38 @@ export default {
 .login_btn:active{
   opacity: 0.9;
 }
-.wxLogin{
+.wx-login{
   height: 200upx;
-  width: 300upx;
+  width: 100%;
   display: block;
   margin: 0 auto;
+  margin-top: 120upx;
   border-radius: 50%;
-  position: fixed;
-  bottom: 5vh;
-  left: 50%;
-  transform: translateX(-50%);
+  
 }
-.wxLogin view{
+.wx-login .login-text{
   text-align: center;
-  color: #FFFFFF;
+  color: #CCCCCC;
   font-size: 24upx;
   margin-bottom: 20upx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.wxLogin image{
+.wx-login .login-text view {
+	width: 160upx;
+	height: 1px;
+    background-color: #CCCCCC;
+	margin: 0 10upx;
+}
+.wx-login image{
   height: 100upx;
   width: 100upx;
   display: block;
   z-index: 10;
   margin: 0 auto;
 }
-.wxLogin button{
+.wx-login button{
   width: 100upx!important;
   height: 100upx;
   position: absolute;
@@ -355,5 +400,15 @@ export default {
   opacity: 0;
   z-index: 10;
   padding: 0!important;
+}
+.explain {
+	width: 100%;
+	display: flex;
+	font-size: 24upx;
+	justify-content: center;
+	align-items: center;
+	color: #999999;
+	position: absolute;
+	bottom: 60upx;
 }
 </style>

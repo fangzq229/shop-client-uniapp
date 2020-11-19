@@ -7,7 +7,7 @@
 </template>
 
 <script>
-
+import { getToken } from '@/utils/auth';
 export default {
   data() {
     return {};
@@ -31,12 +31,16 @@ export default {
   },
   methods: {
     jumpNext() {
-      console.log(this.linkUrl);
-      if (this.linkUrl && this.linkUrl !== '') {
-        uni.navigateTo({
-          url: this.linkUrl
-        });
-      }
+		if(!getToken()) {
+			return uni.navigateTo({
+				url: '/pages/login/login'
+			});
+		}
+		if (this.linkUrl && this.linkUrl !== '') {
+			uni.navigateTo({
+				url: this.linkUrl
+			});
+		}
     }
 
   }

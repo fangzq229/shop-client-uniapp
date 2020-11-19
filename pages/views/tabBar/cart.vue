@@ -72,9 +72,15 @@
 			</view>
 		</block>
 		<!-- 如果购物车没有数据 -->
-		<view class="nocart" v-if="cartList.length == 0">
+		<view class="nocart" v-if="cartList.length == 0 && isLogin">
 			<text class="iconfont icon-gouwuche1" :style="'color:' + colors"></text>
 			<view>空空如也,<text :style="'color:' + colors" @tap="onStroll">随便逛逛 ></text></view>
+		</view>
+		<view class="nocart" v-if="!isLogin">
+			<text class="iconfont icon-gouwuche1" :style="'color:' + colors"></text>
+			<view class="title">先去登录嘛</view>
+			<view class="text">买些自己喜欢的东西，犒赏下优秀的自己吧</view>
+			<view class="go-login" :style="'background:' + colors" @tap="goLogin()">去登陆</view>
 		</view>
 	</view>
 </template>
@@ -96,7 +102,8 @@
 				sum: 0,
 				sumPrice: 0,
 				lock: false,
-				bottomShow: ''
+				bottomShow: '',
+				isLogin: true
 			};
 		},
 
@@ -124,22 +131,22 @@
 		 * 生命周期函数--监听页面显示
 		 */
 		onShow: async function() {
-			if(getToken()){
-				this.setTabBarBadge();
-			}else {
-				uni.navigateTo({
-					url: '/pages/login/login'
-				});
-				return;
-			}
-			const cart = await this.getCart();
 			this.setData({
 				colors: app.globalData.newColor,
 				current: '99999',
-				cartList: cart,
 				allCurrent: false,
 				sum: 0,
 				sumPrice: 0
+			});
+			if(!getToken()) {
+				this.isLogin = false;
+				return;
+			}
+			this.isLogin = true;
+			this.setTabBarBadge();
+			const cart = await this.getCart();
+			this.setData({
+				cartList: cart,
 			});
 		},
 
@@ -169,15 +176,15 @@
 		onShareAppMessage: function() {},
 		methods: {
 			// 获取购物车列表
-			async getCart() {
-				const res = await uni.$ajax('/api/cart/list').catch((err) => {
+			getCart() {
+				return uni.$ajax('/api/cart/list').catch((res) => {
+					return res;
+				}) .catch((err) => {
 					return uni.showToast({
 						title: err,
 						icon: 'none'
 					});
 				});
-				console.log(res);
-				return res;
 			},
 			
 			// 格式化属性
@@ -408,6 +415,7 @@
 						arr.push(e)
 					}
 				})
+				console.log(arr);
 				setGoodsData(arr)  //存储商品信息去支付
 				setTimeout(() => {
 					uni.hideLoading()
@@ -420,8 +428,13 @@
 				uni.switchTab({
 					url: '/pages/views/tabBar/category'
 				});
+			},
+			
+			goLogin() {
+				uni.navigateTo({
+					url: '/pages/login/login'
+				});
 			}
-
 		}
 	};
 </script>
@@ -807,5 +820,19 @@
 		font-size: 24rpx;
 		color: #999;
 		margin-top: 20rpx;
+	}
+	.nocart .title {
+		font-size: 28upx;
+		color: #535353;
+	}
+	.nocart .go-login {
+		width: 240upx;
+		height: 70upx;
+		border-radius: 45upx;
+		margin: 0 auto;
+		line-height:  70upx;
+		font-size: 28upx;
+		color: #FFFFFF;
+		margin-top: 30upx;
 	}
 </style>

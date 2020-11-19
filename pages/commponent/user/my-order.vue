@@ -1,6 +1,6 @@
 <template>
  <view class="my_order">
-    <list-cell icons="icon-order" linkUrl="/pages/views/order/orderlist" :colors="colors">全部订单</list-cell>
+    <list-cell icons="icon-order" linkUrl="/pages/views/order/orderlist?tabIndex=0" :colors="colors">全部订单</list-cell>
     <view class="order_btnbox">
       <view v-for="(item, index) in orderText" :key="index" class="order_btns" @tap="jumpOrder(item,index)">
         <view>
@@ -14,6 +14,7 @@
 
 <script>
 import listCell from "./list-cell";
+import { getToken } from '@/utils/auth';
 export default {
   data() {
     return {};
@@ -32,15 +33,21 @@ export default {
   },
   methods: {
     jumpOrder(item,index) {
-	  if(item.url !== ''){
-		  uni.navigateTo({
-		    url: item.url
-		  });
-	  }else{
-		  uni.navigateTo({
-		    url: '/pages/views/order/orderlist?tabIndex=' + item.id
-		  });
-	  }
+		if(!getToken()) {
+			uni.navigateTo({
+				url: '/pages/login/login'
+			});
+			return;
+		}
+		if(item.url !== ''){
+			uni.navigateTo({
+				url: item.url
+			});
+		}else{
+			uni.navigateTo({
+				url: '/pages/views/order/orderlist?tabIndex=' + item.id
+			});
+		}
     }
   }
 };

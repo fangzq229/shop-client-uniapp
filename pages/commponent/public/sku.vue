@@ -175,7 +175,6 @@
 					});
 				} else {
 					//此处应调用接口来添加购物车 现模拟添加到购物车
-					let datas = { selectSku: this.currentSku, number: this.number, ...this.nowList };
 					if (value == 'add') { 
 						//如果是添加购物车
 						const res = await uni.$ajax('/api/cart/add', {
@@ -198,17 +197,29 @@
 							index: 2,
 							text: String(res.count)
 						});
-					} else { //如果是购买商品
-						let goods = []
-						goods.push(datas)
-						setGoodsData(goods) //存储商品信息和商品规格
+					} else { 
+						setGoodsData([{
+							activityPrice: this.currentSku.activityPrice,
+							activityType: this.currentSku.activityType,
+							attributeJson:this.currentSku.attributeJson,
+							describe: this.nowList.name,
+							image: this.currentSku.skuSmallImg || this.nowList.smallImg,
+							marketPrice: this.currentSku.marketPrice,
+							name: this.nowList.name,
+							productId: this.nowList.id,
+							productSkuId:  this.currentSku.id,
+							quantity: this.number,
+							salePrice: this.currentSku.salePrice,
+							subhead: this.nowList.subhead,
+							virtualSales: this.currentSku.virtualSales
+						}]) //存储商品信息和商品规格
 						uni.navigateTo({ //提交订单
 							url: '/pages/views/order/confirmOrder'
 						})
 					}
 					setTimeout(() => {
 						this.$emit('onhide')
-					}, 800);
+					}, 300);
 				}
 			}
 		}

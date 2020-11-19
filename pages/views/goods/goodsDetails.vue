@@ -215,7 +215,8 @@
 	import sku from "../../commponent/public/sku";
 	import coupon from "../../commponent/public/coupon";
 	import loading from "../../commponent/public/loading";
-	import poster from '../../commponent/goods/poster.vue'
+	import poster from '../../commponent/goods/poster.vue';
+	import { getToken } from '@/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -418,6 +419,11 @@
 				},600)
 			},
 			setisColl() {
+				if (!getToken()) {
+					return uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
 				//收藏与取消收藏
 				uni.$ajax('/api/product/collection', {
 					productId: this.goodsData.id,
