@@ -106,7 +106,8 @@
   padding: 0 10rpx;
   color: #FFFFFF;
   margin-left: 30rpx;
-  border-radius: 4rpx;
+  -webkit-border-radius: 4rpx;
+          border-radius: 4rpx;
 }
 .shoucang.data-v-5f04f9df,
 .go_btn.data-v-5f04f9df {
@@ -190,8 +191,10 @@
   height: 120rpx;
   display: block;
   overflow: hidden;
-  box-sizing: border-box;
-  border-radius: 8rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .shop_center.data-v-5f04f9df {
   overflow: hidden;
@@ -304,7 +307,8 @@
   text-align: center;
   border: 2rpx solid #A160F0;
   padding: 0 40rpx;
-  border-radius: 40rpx 0 0 40rpx;
+  -webkit-border-radius: 40rpx 0 0 40rpx;
+          border-radius: 40rpx 0 0 40rpx;
   font-size: 24rpx;
   color: #A160F0;
   font-weight: bold;
@@ -314,7 +318,8 @@
   line-height: 70rpx;
   text-align: center;
   padding: 0 40rpx;
-  border-radius: 0 40rpx 40rpx 0;
+  -webkit-border-radius: 0 40rpx 40rpx 0;
+          border-radius: 0 40rpx 40rpx 0;
   border-left: none;
   font-size: 24rpx;
   color: #fff;
@@ -324,7 +329,8 @@
 /* 优惠券 */
 .coupon.data-v-5f04f9df {
   background-color: #fff;
-  border-radius: 10rpx 10rpx 0 0;
+  -webkit-border-radius: 10rpx 10rpx 0 0;
+          border-radius: 10rpx 10rpx 0 0;
   position: fixed;
   left: 0;
   bottom: -1000rpx;
@@ -376,7 +382,8 @@
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   z-index: 999;
   overflow: hidden;
 }
@@ -398,7 +405,8 @@
   width: 50rpx;
   height: 50rpx;
   display: block;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2);
 }
 /* 预览视频弹窗 */
@@ -443,7 +451,8 @@
           justify-content: center;
   margin-left: 30rpx;
   margin-bottom: 20rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   padding: 10rpx;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -510,7 +519,8 @@
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   float: left;
 }
 .evaluate .evaluate_box .pingjia .pingjia_box .box_top .right.data-v-5f04f9df {
@@ -563,7 +573,8 @@
   height: 50rpx;
   line-height: 50rpx;
   padding: 0 15rpx;
-  border-radius: 25rpx;
+  -webkit-border-radius: 25rpx;
+          border-radius: 25rpx;
   text-align: center;
   margin-right: 20rpx;
 }
@@ -598,13 +609,15 @@
   max-width: 29vw;
   min-width: 29vw;
   height: 29vw;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-bottom: 20rpx;
 }
 .evaluate .evaluate_box .pingjia .pingjia_box .huifu.data-v-5f04f9df {
   padding: 20rpx;
   background-color: #f3f3f3;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   font-size: 24rpx;
   font-family: Source Han Sans CN;
   font-weight: 400;
@@ -623,7 +636,8 @@
   width: 70rpx;
   height: 70rpx;
   background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }

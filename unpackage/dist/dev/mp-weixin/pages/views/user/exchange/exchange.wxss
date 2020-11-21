@@ -11,7 +11,8 @@
   height: 100vw;
   background-color: #fff;
   margin-top: 140rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   overflow: hidden;
 }
 .ewm_box .titles.data-v-25514505 {

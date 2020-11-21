@@ -35,7 +35,8 @@
   -webkit-align-items: center;
           align-items: center;
   margin-bottom: 20rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .goods .top.data-v-4fe7968a {
   height: 45vw;
@@ -43,8 +44,10 @@
   overflow: hidden;
   position: relative;
   background-color: #ffffff;
-  border-top-right-radius: 10rpx;
-  border-top-left-radius: 10rpx;
+  -webkit-border-top-right-radius: 10rpx;
+          border-top-right-radius: 10rpx;
+  -webkit-border-top-left-radius: 10rpx;
+          border-top-left-radius: 10rpx;
 }
 .goods .top image.data-v-4fe7968a {
   width: 100%;
@@ -113,7 +116,8 @@
   line-height: 35rpx;
   padding: 0 10rpx;
   background-color: #FAEFF7;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-right: 20rpx;
   color: #fa436a;
 }
@@ -141,8 +145,10 @@
   left: 0;
   background-color: #ffffff;
   padding: 20rpx 4%;
-  border-top-left-radius: 10rpx;
-  border-top-right-radius: 10rpx;
+  -webkit-border-top-left-radius: 10rpx;
+          border-top-left-radius: 10rpx;
+  -webkit-border-top-right-radius: 10rpx;
+          border-top-right-radius: 10rpx;
   border-bottom: 1rpx solid #eee;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -160,7 +166,8 @@
   width: 170rpx;
   float: left;
   margin-right: 15rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .sku_top .sku_title.data-v-4fe7968a {
   font-size: 24rpx;
@@ -207,7 +214,8 @@
   background-color: #F5F5F5;
   border: 1rpx solid rgba(0, 0, 0, 0.05);
   float: left;
-  border-radius: 30rpx;
+  -webkit-border-radius: 30rpx;
+          border-radius: 30rpx;
   margin-right: 20rpx;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
@@ -232,7 +240,8 @@
   width: 200rpx;
   background-color: #F5F5F5;
   margin-top: 10rpx;
-  border-radius: 5rpx;
+  -webkit-border-radius: 5rpx;
+          border-radius: 5rpx;
 }
 .n_right .jian.data-v-4fe7968a,
 .jia.data-v-4fe7968a {
@@ -268,7 +277,8 @@
   width: 40vw;
   height: 56rpx;
   line-height: 56rpx;
-  border-radius: 42rpx;
+  -webkit-border-radius: 42rpx;
+          border-radius: 42rpx;
   font-size: 24rpx;
   text-align: center;
   color: #ffffff;
@@ -306,7 +316,8 @@
   width: 200rpx;
   height: 200rpx;
   float: left;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-right: 5rpx;
 }
 .goods_item .tags.data-v-4fe7968a {
@@ -348,7 +359,8 @@
   line-height: 35rpx;
   padding: 0 10rpx;
   background-color: #FAEFF7;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-right: 20rpx;
   color: #fa436a;
 }

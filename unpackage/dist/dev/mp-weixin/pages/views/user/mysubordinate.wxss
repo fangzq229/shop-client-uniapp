@@ -18,7 +18,8 @@ page.data-v-1f2ddd16 {
 .mysubordinate_list image.data-v-1f2ddd16 {
   width: 100rpx;
   height: 100rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   margin-right: 20rpx;
 }
 .mysubordinate_list .name.data-v-1f2ddd16 {

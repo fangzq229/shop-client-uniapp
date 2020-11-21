@@ -16,12 +16,14 @@ page.data-v-91b993e2 {
           justify-content: space-between;
   background-color: #fff;
   padding: 0 20rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
   margin-bottom: 20rpx;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
 }
 .mode.data-v-91b993e2:active {
   background-color: #f5f5f5;
@@ -46,10 +48,12 @@ page.data-v-91b993e2 {
   height: 150rpx;
   width: 100%;
   background-color: #fff;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   overflow: hidden;
   position: relative;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
 }
 .order_address image.data-v-91b993e2 {
   width: 100%;
@@ -68,7 +72,8 @@ page.data-v-91b993e2 {
   top: 0;
   left: 0;
   z-index: 10;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 20rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -114,8 +119,10 @@ page.data-v-91b993e2 {
 .goods.data-v-91b993e2 {
   background-color: #fff;
   margin-top: 20rpx;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
-  border-radius: 10rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   padding: 30rpx 20rpx;
   padding-bottom: 10rpx;
 }
@@ -130,7 +137,8 @@ page.data-v-91b993e2 {
   max-width: 150rpx;
   height: 150rpx;
   display: block;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .goods_title.data-v-91b993e2 {
   margin-left: 20rpx;
@@ -198,8 +206,10 @@ page.data-v-91b993e2 {
   padding: 0 2%;
   margin-top: 20rpx;
   background-color: #fff;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
-  border-radius: 10rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .morelist.data-v-91b993e2 {
   height: 70rpx;
@@ -232,7 +242,8 @@ page.data-v-91b993e2 {
   height: 35rpx;
   line-height: 36rpx;
   text-align: center;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   margin-right: 10rpx;
   -webkit-box-align: center;
   -webkit-align-items: center;
@@ -250,7 +261,8 @@ page.data-v-91b993e2 {
   height: 50rpx;
   line-height: 50rpx;
   padding: 0 20rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-left: 20rpx;
   display: inline-block;
 }
@@ -271,7 +283,8 @@ page.data-v-91b993e2 {
   text-align: center;
   color: #999999;
   padding: 5rpx 15rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   border: 1rpx solid #dddddd;
 }
 .tips.data-v-91b993e2 {
@@ -288,7 +301,8 @@ page.data-v-91b993e2 {
   min-height: 100rpx;
   width: 100%;
   border: 1rpx solid #eee;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   padding: 20rpx;
 }
 .textarea_box textarea.data-v-91b993e2 {
@@ -322,14 +336,16 @@ page.data-v-91b993e2 {
   line-height: 50rpx;
   padding: 0 20rpx;
   text-align: center;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   margin-top: 30rpx;
   color: #ffffff;
 }
 /* 优惠券 */
 .coupon.data-v-91b993e2 {
   background-color: #fff;
-  border-radius: 10rpx 10rpx 0 0;
+  -webkit-border-radius: 10rpx 10rpx 0 0;
+          border-radius: 10rpx 10rpx 0 0;
   position: fixed;
   left: 0;
   bottom: -1000rpx;
@@ -368,16 +384,20 @@ page.data-v-91b993e2 {
           justify-content: flex-start;
   position: relative;
   background-color: #fff;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
-  border-radius: 10rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .shop .shop_img.data-v-91b993e2 {
   width: 120rpx;
   height: 120rpx;
   display: block;
   overflow: hidden;
-  box-sizing: border-box;
-  border-radius: 8rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .shop_center.data-v-91b993e2 {
   overflow: hidden;
@@ -429,8 +449,10 @@ page.data-v-91b993e2 {
   height: 380rpx;
   padding: 20rpx 10rpx;
   background-color: #fff;
-  border-radius: 10rpx;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
   margin-top: 20rpx;
 }
 .ewm_title.data-v-91b993e2 {

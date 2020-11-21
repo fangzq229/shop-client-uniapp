@@ -47,9 +47,11 @@ view.data-v-aa2ac7e4 {
           flex-shrink: 0;
   font-size: 24rpx;
   color: #fff;
+  background: -webkit-gradient(linear, left top, right top, from(#4492EB), to(#3F92EE));
   background: -webkit-linear-gradient(left, #4492EB, #3F92EE);
   background: linear-gradient(to right, #4492EB, #3F92EE);
-  border-radius: 60rpx;
+  -webkit-border-radius: 60rpx;
+          border-radius: 60rpx;
 }
 .search-box .input-box > input.data-v-aa2ac7e4 {
   width: 95%;
@@ -70,7 +72,8 @@ view.data-v-aa2ac7e4 {
 .keyword-list-box.data-v-aa2ac7e4 {
   height: calc(100vh - 110rpx);
   padding-top: 10rpx;
-  border-radius: 20rpx 20rpx 0 0;
+  -webkit-border-radius: 20rpx 20rpx 0 0;
+          border-radius: 20rpx 20rpx 0 0;
   background-color: #fff;
 }
 .keyword-entry-tap.data-v-aa2ac7e4 {
@@ -116,7 +119,8 @@ view.data-v-aa2ac7e4 {
           justify-content: center;
 }
 .keyword-box.data-v-aa2ac7e4 {
-  border-radius: 20rpx 20rpx 0 0;
+  -webkit-border-radius: 20rpx 20rpx 0 0;
+          border-radius: 20rpx 20rpx 0 0;
   background-color: #fff;
 }
 .keyword-box .keyword-block.data-v-aa2ac7e4 {
@@ -170,7 +174,8 @@ view.data-v-aa2ac7e4 {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  border-radius: 38rpx;
+  -webkit-border-radius: 38rpx;
+          border-radius: 38rpx;
   padding: 0 20rpx;
   margin: 10rpx 20rpx 10rpx 0;
   height: 60rpx;
@@ -188,7 +193,8 @@ view.data-v-aa2ac7e4 {
   height: 60rpx;
   font-size: 24rpx;
   border: 0;
-  border-radius: 60rpx;
+  -webkit-border-radius: 60rpx;
+          border-radius: 60rpx;
   -webkit-appearance: none;
   appearance: none;
   padding: 0 3%;

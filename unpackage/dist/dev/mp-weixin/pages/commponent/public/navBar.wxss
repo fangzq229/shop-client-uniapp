@@ -40,7 +40,8 @@
           transform: translateY(-50%);
   z-index: 100;
   background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 .bolds.data-v-6872ba70 {
   font-weight: bold;

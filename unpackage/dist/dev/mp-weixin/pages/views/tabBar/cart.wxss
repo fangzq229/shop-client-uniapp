@@ -22,8 +22,10 @@
 .cart_list.data-v-7ad3f107 {
   width: 92vw;
   height: calc(22vw + 34rpx);
-  border-radius: 12rpx;
-  box-shadow: 0px 4rpx 16rpx rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 12rpx;
+          border-radius: 12rpx;
+  -webkit-box-shadow: 0px 4rpx 16rpx rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 4rpx 16rpx rgba(0, 0, 0, 0.1);
   overflow: hidden;
   border: 0;
   display: -webkit-box;
@@ -50,7 +52,8 @@
 .cart_list .checkbox-box .checkbox.data-v-7ad3f107 {
   width: 28rpx;
   height: 28rpx;
-  border-radius: 100%;
+  -webkit-border-radius: 100%;
+          border-radius: 100%;
   border: solid 1rpx;
   position: absolute;
   top: 50%;
@@ -70,7 +73,8 @@
 .cart_list .checkbox-box .checkbox .on.data-v-7ad3f107 {
   width: 20rpx;
   height: 20rpx;
-  border-radius: 100%;
+  -webkit-border-radius: 100%;
+          border-radius: 100%;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
@@ -81,7 +85,8 @@
   -webkit-flex-shrink: 0;
           flex-shrink: 0;
   margin-left: 10rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   overflow: hidden;
   margin-right: 10rpx;
   position: relative;
@@ -143,7 +148,8 @@
 .sku.data-v-7ad3f107 {
   font-size: 22rpx;
   background-color: #f3f3f3;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   height: 40rpx;
   line-height: 40rpx;
   padding: 0 10rpx;
@@ -188,7 +194,8 @@
   height: 40rpx;
   font-size: 40rpx;
   background-color: #f3f3f3;
-  border-radius: 4rpx;
+  -webkit-border-radius: 4rpx;
+          border-radius: 4rpx;
   text-align: center;
   line-height: 40rpx;
 }
@@ -222,7 +229,8 @@
   height: 40rpx;
   font-size: 40rpx;
   background-color: #f3f3f3;
-  border-radius: 4rpx;
+  -webkit-border-radius: 4rpx;
+          border-radius: 4rpx;
   text-align: center;
   line-height: 40rpx;
 }
@@ -266,9 +274,11 @@
   -webkit-justify-content: center;
           justify-content: center;
   line-height: 100rpx;
-  border-radius: 100%;
+  -webkit-border-radius: 100%;
+          border-radius: 100%;
   text-align: center;
   font-size: 24rpx;
+  background: -webkit-gradient(linear, left top, left bottom, from(#FF5D39), to(#FFAF48));
   background: -webkit-linear-gradient(#FF5D39, #FFAF48);
   background: linear-gradient(#FF5D39, #FFAF48);
   color: #ffffff;
@@ -279,6 +289,7 @@
   opacity: 0.9;
 }
 .cencal.data-v-7ad3f107 {
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFE846), to(#FFCD43));
   background: -webkit-linear-gradient(#FFE846, #FFCD43);
   background: linear-gradient(#FFE846, #FFCD43);
 }
@@ -307,7 +318,8 @@
 }
 .bottom_all .left .delAll.data-v-7ad3f107 {
   height: 40rpx;
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
   font-size: 22rpx;
   line-height: 38rpx;
   border: solid 1rpx;
@@ -340,7 +352,8 @@
 .bottom_all .checkbox-box .checkbox.data-v-7ad3f107 {
   width: 32rpx;
   height: 32rpx;
-  border-radius: 100%;
+  -webkit-border-radius: 100%;
+          border-radius: 100%;
   border: solid 1rpx;
   position: absolute;
   top: 50%;
@@ -360,7 +373,8 @@
 .bottom_all .checkbox-box .checkbox .on.data-v-7ad3f107 {
   width: 20rpx;
   height: 20rpx;
-  border-radius: 100%;
+  -webkit-border-radius: 100%;
+          border-radius: 100%;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
@@ -380,7 +394,8 @@
 }
 .bottom_all .rights .jiesuan.data-v-7ad3f107 {
   padding: 0 22rpx;
-  border-radius: 24rpx;
+  -webkit-border-radius: 24rpx;
+          border-radius: 24rpx;
   background-color: pink;
   height: 50rpx;
   line-height: 50rpx;
@@ -412,7 +427,8 @@
 .nocart .go-login.data-v-7ad3f107 {
   width: 240rpx;
   height: 70rpx;
-  border-radius: 45rpx;
+  -webkit-border-radius: 45rpx;
+          border-radius: 45rpx;
   margin: 0 auto;
   line-height: 70rpx;
   font-size: 28rpx;

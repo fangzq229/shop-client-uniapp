@@ -12,7 +12,8 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  border-radius: 30rpx;
+  -webkit-border-radius: 30rpx;
+          border-radius: 30rpx;
   margin-bottom: 20rpx;
   z-index: 900;
 }

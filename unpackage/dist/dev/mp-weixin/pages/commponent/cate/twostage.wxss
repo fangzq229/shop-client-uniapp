@@ -28,7 +28,8 @@
   position: absolute;
   left: 15rpx;
   top: 15rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .right.data-v-d76a8d38 {
   width: 76%;
@@ -37,7 +38,8 @@
   top: 85rpx;
   right: 0;
   background-color: #ffffff;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 10rpx;
   padding-bottom: 120rpx;
 }
@@ -51,7 +53,8 @@
   z-index: 900;
   border-bottom: 1rpx solid #F9F9F9;
   background-color: #F9F9F9;
-  border-top-left-radius: 10rpx;
+  -webkit-border-top-left-radius: 10rpx;
+          border-top-left-radius: 10rpx;
 }
 .screen .tuijian.data-v-d76a8d38 {
   font-size: 26rpx;
@@ -110,7 +113,8 @@
   width: 126rpx;
   height: 126rpx;
   float: left;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-right: 5rpx;
 }
 .goods_right.data-v-d76a8d38 {
@@ -146,9 +150,11 @@
 .goods_right .numbers text.data-v-d76a8d38 {
   background-color: #FAEFF7;
   padding: 2rpx 10rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   color: #fa436a;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-right: 15rpx;
 }
 .goods_right .price.data-v-d76a8d38 {
@@ -212,8 +218,10 @@
   left: 0;
   background-color: #ffffff;
   padding: 20rpx 4%;
-  border-top-left-radius: 10rpx;
-  border-top-right-radius: 10rpx;
+  -webkit-border-top-left-radius: 10rpx;
+          border-top-left-radius: 10rpx;
+  -webkit-border-top-right-radius: 10rpx;
+          border-top-right-radius: 10rpx;
   border-bottom: 1rpx solid #eee;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -231,7 +239,8 @@
   width: 170rpx;
   float: left;
   margin-right: 15rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .sku_top .sku_title.data-v-d76a8d38 {
   font-size: 24rpx;
@@ -279,7 +288,8 @@
   background-color: #F5F5F5;
   border: 1rpx solid rgba(0, 0, 0, 0.05);
   float: left;
-  border-radius: 30rpx;
+  -webkit-border-radius: 30rpx;
+          border-radius: 30rpx;
   margin-right: 20rpx;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
@@ -304,7 +314,8 @@
   width: 200rpx;
   background-color: #F5F5F5;
   margin-top: 10rpx;
-  border-radius: 5rpx;
+  -webkit-border-radius: 5rpx;
+          border-radius: 5rpx;
 }
 .n_right .jian.data-v-d76a8d38, .jia.data-v-d76a8d38 {
   width: 60rpx;
@@ -338,7 +349,8 @@
   width: 40vw;
   height: 56rpx;
   line-height: 56rpx;
-  border-radius: 42rpx;
+  -webkit-border-radius: 42rpx;
+          border-radius: 42rpx;
   font-size: 24rpx;
   text-align: center;
   color: #ffffff;

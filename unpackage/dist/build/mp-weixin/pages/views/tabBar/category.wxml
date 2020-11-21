@@ -1,0 +1,3 @@
+<view class="category data-v-56f823b8"><view class="search data-v-56f823b8"><search class="search_box data-v-56f823b8" vue-id="28ab3941-1" bind:__l="__l"></search></view>/**
+	* hideShow 显示销量与价格筛选条件
+	*/<block wx:if="{{classLevel==true}}"><twostage vue-id="28ab3941-2" colors="{{colors}}" current="{{currentTwo}}" dataList="{{dataList}}" classList="{{categoryList}}" hideShow="{{true}}" data-event-opts="{{[['^setTwo',[['setTwo']]]]}}" bind:setTwo="__e" class="data-v-56f823b8" bind:__l="__l"></twostage></block></view>

@@ -12,7 +12,8 @@
   width: 120rpx;
   height: 120rpx;
   display: block;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   margin-right: 20rpx;
 }
 .userinfo .user_name .p1.data-v-64c3afac {
@@ -61,13 +62,16 @@
   font-size: 24rpx;
   color: #fff;
   border: 1rpx solid #fff;
-  border-radius: 40rpx;
+  -webkit-border-radius: 40rpx;
+          border-radius: 40rpx;
   margin-top: 60rpx;
 }
 .myfunction.data-v-64c3afac {
   margin: 0 4%;
   margin-top: 30rpx;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
-  border-radius: 10rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 

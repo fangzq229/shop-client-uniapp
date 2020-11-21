@@ -8,9 +8,11 @@
   display: flex;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
-  box-shadow: 0rpx 0rpx 10rpx #eee;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #eee;
+          box-shadow: 0rpx 0rpx 10rpx #eee;
   margin-top: 20rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .category.data-v-26088b04 {
   width: 20%;

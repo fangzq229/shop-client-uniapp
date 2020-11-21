@@ -1,5 +1,5 @@
 {
-    "name" : "Tem-Mall商城模板",
+    "name" : "fzq-mall",
     "appid" : "__UNI__1EBAD2F",
     "description" : "",
     "versionName" : "1.0.0",
@@ -51,9 +51,11 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx9d519e16a48c72d6",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true,
+            "minified" : true
         },
         "usingComponents" : true,
         "permission" : {
@@ -95,6 +97,6 @@
                 }
             }
         },
-        "title" : "fzq-shop"
+        "title" : "fzq-mall"
     }
 }

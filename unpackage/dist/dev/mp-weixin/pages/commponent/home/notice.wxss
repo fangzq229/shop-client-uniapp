@@ -4,8 +4,10 @@
   margin: 0 3%;
   margin-top: 15rpx;
   padding: 0 10rpx;
-  box-shadow: 0rpx 0rpx 10rpx #eee;
-  border-radius: 8rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #eee;
+          box-shadow: 0rpx 0rpx 10rpx #eee;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .left_icon.data-v-3b47f00c {
   height: 100%;

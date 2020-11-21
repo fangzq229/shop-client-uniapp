@@ -88,7 +88,8 @@ page.data-v-edc89ef6 {
   width: 80%;
   height: 82rpx;
   line-height: 82rpx;
-  border-radius: 15rpx;
+  -webkit-border-radius: 15rpx;
+          border-radius: 15rpx;
   font-size: 32rpx;
   font-family: Source Han Sans CN;
   font-weight: 500;

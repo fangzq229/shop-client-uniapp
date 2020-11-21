@@ -36,14 +36,17 @@
   padding: 0 20rpx;
   color: #fff;
   border: 1rpx solid #fff;
-  border-radius: 40rpx;
+  -webkit-border-radius: 40rpx;
+          border-radius: 40rpx;
   margin-top: 60rpx;
 }
 .jilu.data-v-0e0d5189 {
   margin: 0 4%;
   padding: 20rpx;
-  box-shadow: 0rpx 0rpx 10rpx #aaa;
-  border-radius: 10rpx;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #aaa;
+          box-shadow: 0rpx 0rpx 10rpx #aaa;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-top: 20rpx;
 }
 .jilu_title.data-v-0e0d5189 {
@@ -62,7 +65,8 @@
   height: 50rpx;
   background-color: #3E7E8B;
   margin-right: 20rpx;
-  border-radius: 15rpx;
+  -webkit-border-radius: 15rpx;
+          border-radius: 15rpx;
 }
 .jilu_title .texts.data-v-0e0d5189 {
   font-size: 30rpx;

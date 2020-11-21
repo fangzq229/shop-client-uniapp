@@ -6,9 +6,11 @@
   height: 180rpx;
   width: 100%;
   background-color: #fff;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   position: relative;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
   margin-bottom: 20rpx;
 }
 .order_address image.data-v-1f6b3abe {
@@ -25,7 +27,8 @@
   height: 100%;
   display: block;
   z-index: 10;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 20rpx;
   display: -webkit-box;
   display: -webkit-flex;
@@ -113,10 +116,12 @@
   display: flex;
 }
 .save .btn.data-v-1f6b3abe {
-  box-shadow: 0rpx 5rpx 10rpx rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0rpx 5rpx 10rpx rgba(0, 0, 0, 0.4);
+          box-shadow: 0rpx 5rpx 10rpx rgba(0, 0, 0, 0.4);
   width: 70%;
   height: 80rpx;
-  border-radius: 80rpx;
+  -webkit-border-radius: 80rpx;
+          border-radius: 80rpx;
   background-color: #f23a3a;
   color: #fff;
   -webkit-box-pack: center;

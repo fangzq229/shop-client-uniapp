@@ -39,7 +39,8 @@
   width: 130rpx;
   height: 130rpx;
   border: 5rpx solid #fff;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 .user text.data-v-6a8e1432 {
   font-size: 38rpx;
@@ -53,7 +54,8 @@
   display: -webkit-flex;
   display: flex;
   padding: 20rpx 24rpx;
-  border-radius: 16rpx 16rpx 0 0;
+  -webkit-border-radius: 16rpx 16rpx 0 0;
+          border-radius: 16rpx 16rpx 0 0;
   width: 100%;
   overflow: hidden;
 }
@@ -101,9 +103,11 @@
   line-height: 35rpx;
   font-size: 20rpx;
   color: #333;
+  background: -webkit-gradient(linear, right top, left top, from(#f9e6af), to(#ffd465));
   background: -webkit-linear-gradient(right, #f9e6af, #ffd465);
   background: linear-gradient(270deg, #f9e6af, #ffd465);
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
   position: absolute;
   top: 12rpx;
   right: 10rpx;

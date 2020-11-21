@@ -11,8 +11,10 @@
 .saveImg.data-v-b81ea296 {
   width: 300rpx;
   height: 80rpx;
-  border-radius: 40rpx;
-  box-shadow: 0 10rpx 10rpx #ddd;
+  -webkit-border-radius: 40rpx;
+          border-radius: 40rpx;
+  -webkit-box-shadow: 0 10rpx 10rpx #ddd;
+          box-shadow: 0 10rpx 10rpx #ddd;
   background-color: pink;
   line-height: 80rpx;
   text-align: center;
@@ -24,7 +26,8 @@
   margin: 0 auto;
   -webkit-transform: translateY(30rpx);
           transform: translateY(30rpx);
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   overflow: hidden;
 }
 .imgs.data-v-b81ea296 {
@@ -33,7 +36,8 @@
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   overflow: hidden;
 }
 .tips.data-v-b81ea296 {

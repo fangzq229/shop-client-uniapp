@@ -9,7 +9,7 @@
       <input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #515151"></input>
       <view class="codes">
       	<input placeholder="请输入短信验证码" v-model="smscode"  maxlength="6" type="number" placeholder-style="color: #515151"></input>
-		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.7'}">{{codeName}}</view>
+		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.7'} + ';background:' + colors">{{codeName}}</view>
       </view>
       <view class="login_btn" @click="onlogin" :style="'background:' + colors">登录</view>
   </view>
@@ -333,7 +333,7 @@ export default {
 	width: 70%;
 }
 .codes view{
-	height: 80upx;
+	height: 76upx;
 	line-height: 80upx;
 	width: 150upx;
 	margin-bottom: 60upx;

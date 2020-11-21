@@ -167,7 +167,8 @@ export default {
 					icon: 'icon-kefu1',
 					url: '',
 					id: 8,
-					elseUrl: ''
+					elseUrl: '',
+					phoneNumber: '18811126599'
 				},
 				{
 					name: '设置',

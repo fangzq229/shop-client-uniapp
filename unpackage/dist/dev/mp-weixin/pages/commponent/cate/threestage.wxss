@@ -30,7 +30,8 @@
   position: absolute;
   left: 15rpx;
   top: 15rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
@@ -41,7 +42,8 @@
   top: 85rpx;
   right: 0;
   background-color: #ffffff;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 10rpx;
   padding-bottom: 120rpx;
   z-index: 900;
@@ -74,7 +76,8 @@
   overflow: hidden;
 }
 .top_img image.data-v-d616185c {
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .class_box.data-v-d616185c {
   margin-top: 20rpx;

@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"Tem-Mall商城模板","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1807,9 +1807,9 @@ uni$1;exports.default = _default;
 /***/ }),
 
 /***/ 11:
-/*!*********************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/auth.js ***!
-  \*********************************************************/
+/*!***********************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/auth.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1973,9 +1973,9 @@ function removeCart() {//模拟删除购物车数据
 /***/ }),
 
 /***/ 12:
-/*!***********************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/config.js ***!
-  \***********************************************************/
+/*!*************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/config.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2056,9 +2056,9 @@ var _default = {
 /***/ }),
 
 /***/ 13:
-/*!************************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/request.js ***!
-  \************************************************************/
+/*!**************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/request.js ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2070,7 +2070,7 @@ var _default = {
 
 
 var _auth = __webpack_require__(/*! ./auth */ 11);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
-var baseUrl = '';function
+var baseUrl = 'https://shop.waduobao.cn';function
 request(_x, _x2, _x3, _x4) {return _request.apply(this, arguments);}function _request() {_request = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(mehtod, params, type, callBack) {var header, http;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
             //创建一个名为request请求的方法函数
             if (!type) {
@@ -2130,9 +2130,9 @@ request(_x, _x2, _x3, _x4) {return _request.apply(this, arguments);}function _re
 /***/ }),
 
 /***/ 14:
-/*!*********************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/util.js ***!
-  \*********************************************************/
+/*!***********************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/util.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -7811,7 +7811,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"Tem-Mall商城模板","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7832,14 +7832,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"Tem-Mall商城模板","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"Tem-Mall商城模板","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7925,7 +7925,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"Tem-Mall商城模板","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8333,9 +8333,9 @@ internalMixin(Vue);
 /***/ }),
 
 /***/ 291:
-/*!***********************************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/qqmap-wx-jssdk.min.js ***!
-  \***********************************************************************/
+/*!*************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/qqmap-wx-jssdk.min.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9406,9 +9406,9 @@ module.exports = QQMapWX;
 /***/ }),
 
 /***/ 292:
-/*!*********************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/keys.js ***!
-  \*********************************************************/
+/*!***********************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/keys.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9467,9 +9467,9 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ 5);
 /***/ }),
 
 /***/ 426:
-/*!*************************************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/components/uni-popup/popup.js ***!
-  \*************************************************************************/
+/*!***************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/uni-popup/popup.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9502,9 +9502,9 @@ var config = {
 /***/ }),
 
 /***/ 427:
-/*!***************************************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/components/uni-popup/message.js ***!
-  \***************************************************************************/
+/*!*****************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/uni-popup/message.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9533,9 +9533,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ }),
 
 /***/ 463:
-/*!*********************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/area.js ***!
-  \*********************************************************/
+/*!***********************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/area.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11641,9 +11641,9 @@ if (hadRuntime) {
 /***/ }),
 
 /***/ 7:
-/*!******************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/pages.json ***!
-  \******************************************************/
+/*!********************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/pages.json ***!
+  \********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11652,9 +11652,9 @@ if (hadRuntime) {
 /***/ }),
 
 /***/ 98:
-/*!****************************************************************!*\
-  !*** /Users/fangzq/Desktop/shop/fzq-mall/utils/image-tools.js ***!
-  \****************************************************************/
+/*!******************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/utils/image-tools.js ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

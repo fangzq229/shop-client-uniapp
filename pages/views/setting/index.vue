@@ -1,9 +1,9 @@
 <template>
 <view class="setting">
    <view class="cell_box">
-    <item-cell cellname="关于商城" ></item-cell>
-    <item-cell cellname="站点帮助" ></item-cell>
-    <item-cell cellname="意见反馈" ></item-cell>
+    <!-- <item-cell cellname="关于商城" ></item-cell> -->
+    <!-- <item-cell cellname="站点帮助" ></item-cell> -->
+    <!-- <item-cell cellname="意见反馈" ></item-cell> -->
    </view>
    <!-- 选择主题 -->
    <view class="cu-list menu sm-border card-menu">

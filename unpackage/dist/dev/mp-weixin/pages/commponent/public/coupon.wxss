@@ -1,9 +1,11 @@
 .coupon_box.data-v-ccf46804 {
   margin: 20rpx;
   padding: 20rpx;
-  box-shadow: 0rpx 0rpx 10rpx #ddd;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #ddd;
+          box-shadow: 0rpx 0rpx 10rpx #ddd;
   position: relative;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   padding-bottom: 10rpx;
   overflow: hidden;
 }
@@ -33,7 +35,8 @@
   font-size: 22rpx;
   color: #fff;
   background-color: rgba(255, 84, 110, 0.8);
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   line-height: 40rpx;
   text-align: center;
   display: inline-block;

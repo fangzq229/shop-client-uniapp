@@ -28,7 +28,8 @@
   color: #DD4F42;
   width: 50rpx;
   height: 4rpx;
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
   background-color: #DD4F42;
   position: absolute;
   bottom: 0rpx;
@@ -89,7 +90,8 @@
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   float: left;
 }
 .my_evaluate .evaluate_box .pingjia .pingjia_box .box_top .right.data-v-473de54c {
@@ -142,7 +144,8 @@
   height: 50rpx;
   line-height: 50rpx;
   padding: 0 15rpx;
-  border-radius: 25rpx;
+  -webkit-border-radius: 25rpx;
+          border-radius: 25rpx;
   text-align: center;
   margin-right: 20rpx;
 }
@@ -179,7 +182,8 @@
   max-width: 29vw;
   min-width: 29vw;
   height: 29vw;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-bottom: 20rpx;
 }
 .my_evaluate .evaluate_box .pingjia .pingjia_box .ping_img .video.data-v-473de54c {
@@ -206,7 +210,8 @@
 .my_evaluate .evaluate_box .pingjia .pingjia_box .huifu.data-v-473de54c {
   padding: 20rpx;
   background-color: #f3f3f3;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   font-size: 24rpx;
   font-family: Source Han Sans CN;
   font-weight: 400;
@@ -256,7 +261,8 @@
           justify-content: center;
   margin-left: 30rpx;
   margin-bottom: 20rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   padding: 10rpx;
   background-color: rgba(0, 0, 0, 0.2);
 }

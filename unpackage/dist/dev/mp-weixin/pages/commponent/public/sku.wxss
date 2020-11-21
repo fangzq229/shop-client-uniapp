@@ -17,8 +17,10 @@
   left: 0;
   background-color: #ffffff;
   padding: 20rpx 4%;
-  border-top-left-radius: 10rpx;
-  border-top-right-radius: 10rpx;
+  -webkit-border-top-left-radius: 10rpx;
+          border-top-left-radius: 10rpx;
+  -webkit-border-top-right-radius: 10rpx;
+          border-top-right-radius: 10rpx;
   border-bottom: 1rpx solid #eee;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -37,7 +39,8 @@
   width: 170rpx;
   float: left;
   margin-right: 15rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
 }
 .sku_top .sku_title.data-v-a14b8616 {
   font-size: 30rpx;
@@ -89,7 +92,8 @@
   background-color: #F5F5F5;
   border: 1rpx solid #F5F5F5;
   float: left;
-  border-radius: 40rpx;
+  -webkit-border-radius: 40rpx;
+          border-radius: 40rpx;
   margin-right: 20rpx;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
@@ -118,7 +122,8 @@
   width: 200rpx;
   background-color: #F5F5F5;
   margin-top: 10rpx;
-  border-radius: 5rpx;
+  -webkit-border-radius: 5rpx;
+          border-radius: 5rpx;
 }
 .n_right .jian.data-v-a14b8616,
 .jia.data-v-a14b8616 {
@@ -154,7 +159,8 @@
   width: 40vw;
   height: 60rpx;
   line-height: 60rpx;
-  border-radius: 42rpx;
+  -webkit-border-radius: 42rpx;
+          border-radius: 42rpx;
   font-size: 26rpx;
   text-align: center;
   color: #ffffff;

@@ -26,7 +26,8 @@
   white-space: nowrap;
   padding-left: 30rpx;
   padding-right: 30rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   margin-top: 20rpx;
 }
 .scroll_box.data-v-fdf1dd58 {
@@ -34,7 +35,8 @@
   background-color: #fff;
   margin-top: 10rpx;
   margin-right: 10rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   overflow: hidden;
   display: inline-block;
 }

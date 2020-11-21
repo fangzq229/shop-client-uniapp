@@ -8,7 +8,8 @@
 }
 .list_box.data-v-47c603b6 {
   padding: 0 3%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   height: calc(100vh - 160rpx);
   overflow: hidden;
   padding-bottom: 50rpx;
@@ -20,10 +21,13 @@
   padding: 20rpx;
   margin-top: 5rpx;
   background-color: #ffffff;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0rpx 0rpx 10rpx #EDEDED;
-  box-sizing: border-box;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #EDEDED;
+          box-shadow: 0rpx 0rpx 10rpx #EDEDED;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 98%;
 }
 .type.data-v-47c603b6 {
@@ -62,7 +66,8 @@
   max-width: 180rpx;
   height: 180rpx;
   display: block;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .lists .top .top_right.data-v-47c603b6 {
   margin-left: 20rpx;
@@ -83,7 +88,8 @@
   height: 40rpx;
   line-height: 40rpx;
   font-size: 24rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   padding: 0 10rpx;
   color: #A7A7A7;
   background-color: #F7F7F7;
@@ -116,7 +122,8 @@
 }
 .bottom view.data-v-47c603b6 {
   padding: 8rpx 15rpx;
-  border-radius: 8rpx;
+  -webkit-border-radius: 8rpx;
+          border-radius: 8rpx;
   text-align: center;
   font-size: 24rpx;
   border: 1rpx solid #eee;

@@ -26,7 +26,8 @@
   color: #DD4F42;
   width: 50rpx;
   height: 5rpx;
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
   background-color: #DD4F42;
   position: absolute;
   bottom: 10rpx;

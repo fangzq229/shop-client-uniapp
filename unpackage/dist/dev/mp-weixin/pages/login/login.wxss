@@ -12,7 +12,8 @@
   height: 160rpx;
   width: 160rpx;
   display: block;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   margin: 0 auto;
   margin-top: 150rpx;
 }
@@ -39,9 +40,11 @@
   line-height: 80rpx;
   margin-bottom: 60rpx;
   border: 1px solid #dddddd;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 0 30rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   font-size: 24rpx;
   color: #333;
 }
@@ -57,7 +60,8 @@
   background-color: #fa436a;
   text-align: center;
   font-size: 24rpx;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
 }
 .login_btn.data-v-b237504c {
   width: 100%;
@@ -67,7 +71,8 @@
   margin-top: 40px;
   text-align: center;
   line-height: 80rpx;
-  border-radius: 40rpx;
+  -webkit-border-radius: 40rpx;
+          border-radius: 40rpx;
   color: #fff;
 }
 .login_btn.data-v-b237504c:active {
@@ -79,7 +84,8 @@
   display: block;
   margin: 0 auto;
   margin-top: 120rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 .wx-login .login-text.data-v-b237504c {
   text-align: center;
@@ -113,7 +119,8 @@
   width: 100rpx !important;
   height: 100rpx;
   position: absolute;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   text-align: center;
   top: 50%;
   left: 50%;

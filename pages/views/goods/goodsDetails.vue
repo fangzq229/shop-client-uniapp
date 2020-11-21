@@ -111,9 +111,9 @@
 			</view> -->
 		</view>
 		<!-- 商品评价 -->
-		<!-- <view class="evaluate" :style="'transform: translateY(-' + toBar + ');'">
+		<view class="evaluate" :style="'transform: translateY(-' + toBar + ');'">
 			<p class="eva_title">
-				商品评价<text>(10)</text>
+				商品评价<text>({{ commentCount }})</text>
 				<text class="seeAll" @click="seeAll">查看全部</text>
 			</p>
 			<view class="evaluate_box">
@@ -121,36 +121,38 @@
 						<view v-if="goodsEva.length !== 0">
 							<view class="pingjia_box" v-for="(row, index) in goodsEva" :key="index">
 								<view class="box_top">
-									<image :src="row.headimg" mode="" class="head"></image>
+									<image :src="row.user.avatar || 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg'" mode="" class="head"></image>
 									<view class="right">
-										<p class="name">{{ row.nickname }}</p>
+										<p class="name">{{ row.user.nickname || '木木' }}</p>
 										<p class="p2">
-											<text class="text1">{{ row.create_time }}</text>
-											<text class="text2">{{ row.goods_name }}</text>
+											<text class="text1">{{ row.createdAt }}</text>
+											<!-- <text class="text2">{{ row.goods_name }}</text> -->
 										</p>
 										<p class="p3">
-											<image src="/static/images/home/stars.png" v-for="s in row.score" :key="s" mode="" ></image>
-											<block v-if="row.score !== 5">
-												<image src="/static/images/home/star-no.png" v-for="(s,h) in (5-row.score)" :key="h" mode="" ></image>
+											<image src="/static/images/home/stars.png" v-for="s in row.level" :key="s" mode="" ></image>
+											<block v-if="row.level !== 5">
+												<image src="/static/images/home/star-no.png" v-for="(s,h) in (5-row.level)" :key="h" mode="" ></image>
 											</block>
 											</p>
 									</view>
 								</view>
-									<view class="tag_box" v-if="row.tags.length !== 0">
-										<view class="tags" v-for="(s,x) in row.tags" :key="x">{{s}}</view>
-									</view>
-								<view class="ping_neirong">{{ row.comment }}</view>
-								<view class="ping_img" v-if="row.images.length !== 0"><image :src="s" mode="" v-for="(s,x) in row.images" :key="x" @click="preview(row.images, x)"></image></view>
-								<view class="huifu" v-if="row.reply && row.reply !== ''">商家回复：{{ row.reply }}</view>
+								<!-- <view class="tag_box" v-if="row.tags.length !== 0">
+									<view class="tags" v-for="(s,x) in row.tags" :key="x">{{s}}</view>
+								</view> -->
+								<view class="ping_neirong">{{ row.content }}</view>
+								<!-- <view class="ping_img" v-if="row.images.length !== 0">
+									<image :src="s.url" mode="aspectFill" v-for="(s,x) in row.images" :key="x" @click="preview(row.images, x)"></image>
+								</view> -->
+								<view class="huifu" v-if="row.reply && row.reply.length > 0">商家回复：{{ row.reply[0].content }}</view>
 							</view>
 						</view>
 					</view>
 			</view>
-		</view> -->
+		</view>
 		<!-- 商品详情 -->
 		<view class="details" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="details_title">
-				—— <text style="color: #666666;margin: 0 20upx;"> 商品详情 </text> ——
+			   <text style="color: #666666;margin: 0 20upx;"> 商品详情 </text> 
 			</view>
 			<view class="details_content">
 				<!-- <rich-text :nodes="htmlNode"></rich-text> -->
@@ -279,12 +281,9 @@
 					}
 				],
 				htmlNode: '',
-				// 商品详情
-			    descriptionStr: '<div id="commDesc" hasdata="1" style="line-height: 2; transform-origin: 0px 0px; font-size: 30px;width:100%;"><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/99519/11/4669/136444/5de8bbdbE0cba049d/517f1fb75b582456.jpg!q70.dpg.webp" loaded="17"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/92267/13/4771/160442/5de8bbdbE50655175/7dd51e0b966aba15.jpg!q70.dpg.webp" loaded="16"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/93624/28/4672/131382/5de8bbdbE65d14e5d/81bc1227ec775788.jpg!q70.dpg.webp" loaded="15"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/97366/21/4817/101042/5de8bbdbE8854b673/7c4ce7faa45a418b.jpg!q70.dpg.webp" loaded="14"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/98311/21/4778/122770/5de8bbdcE13375754/f4324ca9294eef4c.jpg!q70.dpg.webp" loaded="13"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/103373/15/4747/118973/5de8bbdcE2058ee8e/d921d5f1a4aa5c89.jpg!q70.dpg.webp" loaded="12"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/88841/34/4711/84977/5de8bbdeE0b691b9a/e69796d32a63bbaa.jpg!q70.dpg.webp" loaded="11"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/95248/2/4771/99041/5de8bbdfE06b41b3b/3c4a2b1cb97a5262.jpg!q70.dpg.webp" loaded="10"></div>',
-				goodsEva:[ //评价列表
-					{headimg:'/static/images/face.jpg',nickname:'反转',create_time:'2020-09-10 15:36',goods_name:'醇黑巧克力【20枚】', score:5,comment:'产品很不错,赞',images:['/static/images/goods/two.jpg','/static/images/goods/one.jpg'],reply:'感谢您的支持',tags:['价格合理','味道好','价格优惠','态度好']},
-					{headimg:'/static/images/face.jpg',nickname:'清风',create_time:'2020-09-10 13:36',goods_name:'草莓味【8枚】', score:4,comment:'味道还不错~',images:[],reply:'',tags:[]}
-				],
+				// 评论
+				goodsEva:[],
+				commentCount: 0, // 评论总数
 				scrollShow: false
 			};
 		},
@@ -308,7 +307,8 @@
 			});
 			this.getLocation(); //获取位置信息
 			// this.setFrom(this.descriptionStr); //处理商品详情
-			this.getProductInfo(options.productId);
+			this.getProductInfo(options.productId); // 获取商品信息
+			this.getProductComment(options.productId); // 获取评论id
 			setTimeout(() => {
 				this.setData({
 					isShow: false
@@ -576,7 +576,7 @@
 			},
 			seeAll(){ //查看全部评论
 				uni.navigateTo({
-					url:'/pages/views/goods/goodsEvaluate'
+					url:'/pages/views/goods/goodsEvaluate?productId=' + this.goodsData.id
 				})
 			},
 			// 获取商品详情
@@ -587,6 +587,24 @@
 					},
 				).then((result) => {
 					this.goodsData = result;
+				}).catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+			},
+			getProductComment(id) {
+				uni.$ajax('/api/comment/product-list',
+					{
+						productId: id,
+						page: 1,
+						pageSize: 2,
+					},
+				).then((result) => {
+					console.log(result);
+					this.goodsEva = result.items;
+					this.commentCount = result.count;
 				}).catch(err => {
 					uni.showToast({
 						title: err,

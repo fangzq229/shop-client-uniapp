@@ -16,36 +16,37 @@
 						<view v-if="goodsEva.length !== 0">
 							<view class="pingjia_box" v-for="(row, index) in goodsEva" :key="index">
 								<view class="box_top">
-									<image :src="row.headimg" mode="" class="head"></image>
+									<image :src="row.user.avatar || 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg'" mode="" class="head"></image>
 									<view class="right">
-										<p class="name">{{ row.nickname }}</p>
+										<p class="name">{{ row.user.nickname || '木木' }}</p>
 										<p class="p2">
-											<text class="text1">{{ row.create_time }}</text>
-											<text class="text2">{{ row.goods_name }}</text>
+											<text class="text1">{{ row.createdAt }}</text>
+											<!-- <text class="text2">{{ row.goods_name }}</text> -->
 										</p>
 										<p class="p3">
-											<image src="/static/images/home/stars.png" v-for="s in row.score" :key="s" mode="" ></image>
-											<block v-if="row.score !== 5">
-												<image src="/static/images/home/star-no.png" v-for="(s,h) in (5-row.score)" :key="h" mode="" ></image>
+											<image src="/static/images/home/stars.png" v-for="s in row.level" :key="s" mode="" ></image>
+											<block v-if="row.level !== 5">
+												<image src="/static/images/home/star-no.png" v-for="(s,h) in (5-row.level)" :key="h" mode="" ></image>
 											</block>
 											</p>
 									</view>
 								</view>
-									<view class="tag_box" v-if="row.tags.length !== 0">
-										<view class="tags" v-for="(s,x) in row.tags" :key="x">{{s}}</view>
-									</view>
-								<view class="ping_neirong">{{ row.comment }}</view>
-								<view class="ping_img" v-if="row.images.length !== 0 || row.video.length !== 0">
-									<image :src="s" mode="" v-for="(s,x) in row.images" :key="x" @click="preview(row.images, x)"></image>
-									<view class="video" v-for="(v, y) in row.video" :key="y">
+								<!-- <view class="tag_box" v-if="row.tags.length !== 0">
+									<view class="tags" v-for="(s,x) in row.tags" :key="x">{{s}}</view>
+								</view> -->
+								<view class="ping_neirong">{{ row.content }}</view>
+								<!-- <view class="ping_img" v-if="row.images.length !== 0 || row.video.length !== 0"> -->
+								<view class="ping_img" v-if="row.images.length !== 0">
+									<image :src="s.url" mode="" v-for="(s,x) in row.images" :key="x" @click="preview(row.images, x)"></image>
+									<!-- <view class="video" v-for="(v, y) in row.video" :key="y">
 										<video :src="v" :controls="false" :show-center-play-btn="false"></video>
 										<view class="cover">
 											<image src="../../../static/images/goods/bofang.png" mode="" @click="playVideo(v)"></image>
 										</view>
-									</view>
+									</view> -->
 								</view>
 								<!-- 回复 -->
-								<view class="huifu" v-if="row.reply && row.reply !== ''">商家回复：{{ row.reply }}</view>
+								<view class="huifu" v-if="row.reply && row.reply.length > 0">商家回复：{{ row.reply[0].content }}</view>
 							</view>
 							<p class="onbottom">—— 到底了 ——</p>
 						</view>
@@ -94,50 +95,55 @@
 				colors: '',
 				tabList: [{
 					name: '最新',
-					number: 10,
+					number: 0,
 					id: 0
 				}, {
 					name: '好评',
-					number: 8,
+					number: 0,
 					id: 1
 				}, {
 					name: '中评',
-					number: 8,
+					number: 0,
 					id: 2
 				}, {
 					name: '差评',
-					number: 6,
+					number: 0,
 					id: 3
 				}, {
 					name: '有图',
-					number: 5,
+					number: 0,
 					id: 4
 				}],
 				active: 0,
-				goodsEva:[ //评价列表
-					{headimg:'/static/images/face.jpg',nickname:'反转',create_time:'2020-09-10 15:36',goods_name:'醇黑巧克力【20枚】', score:5,comment:'产品很不错,赞',images:['/static/images/goods/two.jpg','/static/images/goods/one.jpg'],reply:'感谢您的支持',tags:['价格合理','味道好','价格优惠','态度好'],video:[]},
-					{headimg:'/static/images/face.jpg',nickname:'清风',create_time:'2020-09-10 13:36',goods_name:'醇黑巧克力【20枚】', score:4,comment:'针不错~',images:[],reply:'',tags:[],video:['https://fzdz.soft.haoyangsoft.com/uploads/system/videos/20200813/6c819d24ee6868aee33e150c4333329b.mp4']},
-					{headimg:'/static/images/face.jpg',nickname:'明月',create_time:'2020-09-10 15:36',goods_name:'草莓味【8枚】', score:5,comment:'产品很不错,赞',images:['/static/images/goods/two.jpg','/static/images/goods/one.jpg'],reply:'感谢您的支持',tags:['价格合理','态度好'],video:[]},
-				],
+				goodsEva:[],
 				temporary:[],
 				videos:'',
-				showVideo:false
+				showVideo:false,
+				productId : undefined,
+				page: 1,
+				pageSize: 10
 			}
 		},
 		onReady() {
 			this.nowVideo = uni.createVideoContext('nowVideo');
 		},
-		onLoad() {
+		onLoad(param) {
+			this.productId = Number(param.productId);
 			let colors = app.globalData.newColor; //设置主题颜色
 			this.setData({
 				colors: colors
 			});
-			this.temporary = this.goodsEva
+			this.goodsEva = [];
+			this.page = 1;
+			this.getProductComment(); // 评价列表
+			this.getProductCommentCount(); // 评价数量
 		},
 		methods:{
 			setTabs(item,index){ //切换状态栏 模拟数据
-				this.active = index
-				this.goodsEva = index == 0 ? this.temporary : []
+				this.active = index;
+				this.goodsEva = [];
+				this.page = 1;
+				this.getProductComment();
 			},
 			preview(imgs, index){ //预览图片
 				uni.previewImage({
@@ -164,6 +170,42 @@
 				setTimeout(()=>{
 					this.nowVideo.stop()
 				},300)
+			},
+			// 获取评价
+			getProductComment() {
+				uni.$ajax('/api/comment/product-list',
+					{
+						productId: this.productId,
+						page: this.page,
+						pageSize: this.pageSize,
+						type: this.active + 1
+					},
+				).then((result) => {
+					console.log(result);
+					this.goodsEva = result.items;
+				}).catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+			},
+			// 获取评价数量
+			getProductCommentCount() {
+				uni.$ajax('/api/comment/type-count',
+					{
+						productId: this.productId,
+					},
+				).then((result) => {
+					for(let i in this.tabList) {
+						this.tabList[i].number = result[i];
+					}
+				}).catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
 			}
 		}
 	}

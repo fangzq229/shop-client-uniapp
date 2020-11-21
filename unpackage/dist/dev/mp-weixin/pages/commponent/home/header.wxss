@@ -12,6 +12,7 @@
   height: 100%;
   top: 0;
   left: 0;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(rgba(255, 255, 255, 0.3)), color-stop(rgba(255, 255, 255, 0.5)), to(#ffffff));
   background: -webkit-linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5), #ffffff);
   background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5), #ffffff);
 }
@@ -102,7 +103,8 @@
   height: 40vw;
   margin: 0 auto;
   display: block;
-  border-radius: 10rpx;
+  -webkit-border-radius: 10rpx;
+          border-radius: 10rpx;
   -webkit-transition: height 0.3s;
   transition: height 0.3s;
 }
@@ -119,7 +121,8 @@
   background-color: rgba(255, 255, 255, 0.4);
   width: 150rpx;
   height: 5rpx;
-  border-radius: 3rpx;
+  -webkit-border-radius: 3rpx;
+          border-radius: 3rpx;
   overflow: hidden;
   display: -webkit-box;
   display: -webkit-flex;
