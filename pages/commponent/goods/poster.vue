@@ -27,7 +27,7 @@ export default {
 			imgUrl: '',
 			userInfo: {
 				name: '反转',
-				logo: '/static/images/face.jpg',
+				logo: '/static/images/face.jpg'
 			}
 		};
 	},
@@ -70,32 +70,17 @@ export default {
 			});
 		},
 
-		setPoster() {
+		async setPoster() {
 			this.userInfo = getUserInfo() || {};
-			console.log(this.userInfo);
 			uni.showLoading({
 				title: '海报生成中...'
 			});
 			let ctx = uni.createCanvasContext('mycanvas', this); // 绘制背景
 			ctx.fillStyle = '#FFFFFF';
 			ctx.fillRect(0, 0, this.windowWidth - 60, 520);
-			/**
-			 * 绘制名称
-			 */
-			const setText = (context, fs, color, x, y, c, bold) => {
-				context.setFillStyle(color);
-				context.setTextAlign('left');
-				if (bold) {
-					context.font = 'normal bold 20px Arial,sans-serif';
-				} else {
-					context.font = 'normal 20px Arial,sans-serif';
-				}
-				context.setFontSize(fs);
-				context.fillText(c, x, y);
-				context.restore();
-			};
-			setText(ctx, 14, '#333', 85, 35, this.userInfo.nickName, 'bold');
-			setText(ctx, 12, '#999', 85, 58, '为您精心挑选了一个好礼物');
+			// 绘制文字
+			this.setText(ctx, 14, '#333', 85, 35, this.userInfo.nickName);
+			this.setText(ctx, 12, '#999', 85, 58, '为您精心挑选了一个好礼物');
 			ctx.save();
 			/**
 			 * 绘制头像
@@ -108,17 +93,28 @@ export default {
 			let radius = 8; //头像的圆角弧度
 			// 绘制圆角头像
 			this.setRadius(ctx, avatar_width, avatar_height, avatar_x, avatar_y, radius);
+			ctx.fill()
 			// 绘制圆形图片
 			// this.setCircular(ctx, avatar_width, avatar_height, avatar_x, avatar_y)
 
 			// 绘制商品图片
-			this.setGoodsImg(ctx);
+			ctx.beginPath();
+			await this.setGoodsImg(ctx);
+			ctx.fill()
 
 			// 绘制商品价格
+			ctx.beginPath();
 			let pirce = '￥ ' + (this.posterData.skus[0].activityPrice || this.posterData.skus[0].salePrice);
-			this.setGoodsPrice(ctx, 20, this.colors, 15, 420, pirce);
+			this.setText(ctx, 20, this.colors, 15, 420, pirce);
+			ctx.fill()
 			// 绘制商品名称
+			ctx.beginPath();
 			this.setGoodsName(ctx);
+			ctx.fill()
+			// 绘制二维码
+			ctx.beginPath();
+			this.setEwm(ctx);
+			ctx.fill()
 		},
 
 		setEwm(ctx) {
@@ -136,6 +132,7 @@ export default {
 							{
 								canvasId: 'mycanvas',
 								success: res => {
+									console.log('---------------');
 									console.log(res);
 									this.imgUrl = res.tempFilePath;
 								}
@@ -147,7 +144,7 @@ export default {
 				uni.hideLoading();
 			}, 1000);
 		},
-		setRadius(ctx, avatar_width, avatar_height, avatar_x, avatar_y, radius) {
+		async setRadius(ctx, avatar_width, avatar_height, avatar_x, avatar_y, radius) {
 			/**
 			 * 绘制圆角
 			 */
@@ -162,8 +159,8 @@ export default {
 			ctx.strokeStyle = '#fff';
 			ctx.fill(); //保证图片无bug填充
 			ctx.clip(); //画了圆 再剪切  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
-
-			ctx.drawImage(this.userInfo.avatarUrl, avatar_x, avatar_y, avatar_width, avatar_height);
+			let tempFilePath = await this.downloadFile(this.userInfo.avatarUrl);
+			ctx.drawImage(tempFilePath, avatar_x, avatar_y, avatar_width, avatar_height);
 			ctx.closePath();
 			ctx.restore();
 		},
@@ -183,13 +180,14 @@ export default {
 			ctx.closePath();
 			ctx.restore();
 		},
-		setGoodsImg(ctx) {
+		async setGoodsImg(ctx) {
 			//绘制中间商品图片
-			let width = this.windowWidth - 90;
-			ctx.drawImage(this.posterData.bigImg[0], 15, 95, width, width);
+			let width = this.windowWidth - 120;
+			const path = await this.downloadFile(this.posterData.bigImg[0]);
+			ctx.drawImage(path, 30, 95, width, width);
 			ctx.save();
 		},
-		setGoodsPrice(ctx, fs, color, x, y, c, bold) {
+		setText(ctx, fs, color, x, y, c, bold) {
 			//绘制商品价格
 			ctx.setFillStyle(color);
 			ctx.setTextAlign('left');
@@ -237,8 +235,6 @@ export default {
 					this.drawText(ctx, txt);
 				}
 			}
-			// 绘制二维码
-			this.setEwm(ctx);
 		},
 		/**
 		 * 渲染文字
@@ -303,6 +299,21 @@ export default {
 						}, 1000);
 					}
 				}
+			});
+		},
+		async downloadFile(url) {
+			// return url;
+			// #ifdef H5
+			return url;
+			// #endif
+			return new Promise(resolve => {
+				uni.downloadFile({
+					url: url,
+					success: function(res) {
+						console.log(res.tempFilePath);
+						resolve(res.tempFilePath);
+					}
+				});
 			});
 		}
 	}

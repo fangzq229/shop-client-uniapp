@@ -5,8 +5,8 @@
 				"navigationBarTitleText": "首页",
 				"navigationBarBackgroundColor": "#fa436a",
 				"navigationBarTextStyle": "white",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -16,8 +16,8 @@
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "登录",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -25,8 +25,8 @@
 			"path": "pages/views/tabBar/category",
 			"style": {
 				"navigationBarTitleText": "分类",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -34,8 +34,8 @@
 			"path": "pages/views/tabBar/cart",
 			"style": {
 				"navigationBarTitleText": "购物车",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -62,8 +62,8 @@
 			"style": {
 				"navigationBarTitleText": "商品列表",
 				"navigationStyle": "custom",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -97,8 +97,8 @@
 			"style": {
 				"navigationBarTitleText": "支付结果",
 				"navigationStyle": "custom",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -113,8 +113,8 @@
 			"style": {
 				"navigationBarTitleText": "我的收藏",
 				"navigationStyle": "custom",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -155,8 +155,8 @@
 			"style": {
 				"navigationBarTitleText": "我的订单",
 				"navigationStyle": "custom",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -177,8 +177,8 @@
 			"style": {
 				"navigationBarTitleText": "退换/售后",
 				"navigationStyle": "custom",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
 		},
@@ -229,21 +229,22 @@
 			"style": {
 				"navigationBarTitleText": "我的足迹",
 				"navigationStyle": "custom",
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/views/order/evaluateList",
+			"style": {
+				"navigationBarTitleText": "评价中心",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
-	    ,{
-            "path" : "pages/views/order/evaluateList",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "评价中心",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"style": "v2",
 	"sitemapLocation": "sitemap.json",
 	"tabBar": {

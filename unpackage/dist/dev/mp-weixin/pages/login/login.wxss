@@ -52,7 +52,7 @@
   width: 70%;
 }
 .codes view.data-v-b237504c {
-  height: 80rpx;
+  height: 76rpx;
   line-height: 80rpx;
   width: 150rpx;
   margin-bottom: 60rpx;

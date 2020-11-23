@@ -8,6 +8,7 @@ import {
 	getToken,
 	removeToken
 } from "./auth";
+// let baseUrl = 'https://shop.waduobao.cn';
 let baseUrl = '';
 async function request(mehtod, params, type, callBack) {
 	//创建一个名为request请求的方法函数

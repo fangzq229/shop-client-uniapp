@@ -126,18 +126,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
     return {
       showsever: false,
-      iconList: [{
+      iconList: [
+      {
         icon: 'icon-sousou',
         name: '搜索',
         link: '/pages/views/home/search' },
@@ -146,13 +141,14 @@ var _default =
         icon: 'icon-kefu',
         name: '客服',
         link: '',
-        tel: '123456' }] };
+        tel: '18811126599' }] };
 
 
 
   },
   props: {
-    scrollShow: { //监听页面滚动
+    scrollShow: {
+      //监听页面滚动
       type: Boolean,
       default: false },
 
@@ -161,23 +157,27 @@ var _default =
 
 
   methods: {
-    onshowsever: function onshowsever() {//控制top按钮的显示
+    onshowsever: function onshowsever() {
+      //控制top按钮的显示
       var shows = !this.showsever;
       this.setData({
         showsever: shows });
 
     },
-    goTop: function goTop() {//回到顶部
+    goTop: function goTop() {
+      //回到顶部
       uni.pageScrollTo({
         scrollTop: 0 });
 
     },
-    jumpServer: function jumpServer(item) {//跳转
+    jumpServer: function jumpServer(item) {
+      //跳转
       if (item.link !== '') {
         uni.navigateTo({
           url: item.link });
 
-      } else {//拨打电话
+      } else {
+        //拨打电话
         uni.makePhoneCall({
           phoneNumber: item.tel });
 

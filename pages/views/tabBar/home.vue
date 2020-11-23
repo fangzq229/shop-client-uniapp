@@ -69,18 +69,8 @@ export default {
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad: function(options) {},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady: function() {},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow: function() {
-		if(getToken()){
+	onLoad: function(options) {
+		if (getToken()) {
 			this.setTabBarBadge();
 		}
 		this.setData({
@@ -101,8 +91,18 @@ export default {
 		// 获取首页配置数据
 		this.getHomeData();
 		// 获取热销商品
-		this.getHostProduct()
+		this.getHostProduct();
 	},
+
+	/**
+	 * 生命周期函数--监听页面初次渲染完成
+	 */
+	onReady: function() {},
+
+	/**
+	 * 生命周期函数--监听页面显示
+	 */
+	onShow: function() {},
 
 	/**
 	 * 生命周期函数--监听页面隐藏
@@ -123,7 +123,7 @@ export default {
 	 * 页面上拉触底事件的处理函数
 	 */
 	onReachBottom: function() {
-		if(this.loading) {
+		if (this.loading) {
 			this.page = this.page + 1;
 			this.getHostProduct();
 		}
@@ -148,44 +148,47 @@ export default {
 
 		// 获取首页配置数据
 		getHomeData() {
-			uni.$ajax('/api/home/index', {}).then((result)=> {
-				console.log(result);
-				// 轮播图
-				this.swiperList = result.banner;
-				// 推荐类
-				this.categoryList = result.category;
-				// 栏目专题
-				this.columnList = result.recommend;
-			}).catch(err => {
-				uni.showToast({
-					title: err,
-					icon: 'none'
+			uni
+				.$ajax('/api/home/index', {})
+				.then(result => {
+					console.log(result);
+					// 轮播图
+					this.swiperList = result.banner;
+					// 推荐类
+					this.categoryList = result.category;
+					// 栏目专题
+					this.columnList = result.recommend;
+				})
+				.catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
 				});
-			});
-			
 		},
-		
+
 		// 获取热销商品
 		async getHostProduct() {
-			if(this.page === 1) { 
+			if (this.page === 1) {
 				this.dataList = [];
-			};
-			uni.$ajax('/api/product/list', 
-				{
-					page: this.page, 
-					pageSize: this.pageSize,
-				},
-			).then((result) => {
-				if(result.list.length === 0 || result.list.length < this.pageSize ) {
-					this.loading = false;
-				}
-				this.dataList =this.dataList.concat(result.list);
-			}).catch(err => {
-				uni.showToast({
-					title: err,
-					icon: 'none'
+			}
+			uni
+				.$ajax('/api/product/list', {
+					page: this.page,
+					pageSize: this.pageSize
+				})
+				.then(result => {
+					if (result.list.length === 0 || result.list.length < this.pageSize) {
+						this.loading = false;
+					}
+					this.dataList = this.dataList.concat(result.list);
+				})
+				.catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
 				});
-			});
 		}
 	}
 };

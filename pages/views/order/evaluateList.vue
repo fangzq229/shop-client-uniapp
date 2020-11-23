@@ -2,7 +2,7 @@
 	<view>
 		<view class="order_list">
 			<view style="background-color: #FFFFFF;">
-				<navBar :showLeft="true" navTitle="退换/售后" textcolor="#000" :leftBg="false"></navBar>
+				<navBar :showLeft="true" navTitle="评价中心" textcolor="#000" :leftBg="false"></navBar>
 			</view>
 			<!-- 顶部tab -->
 			<view class="nav_top" style="border-bottom: 1upx solid #F8F8F8;">

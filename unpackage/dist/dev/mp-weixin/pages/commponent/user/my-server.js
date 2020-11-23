@@ -128,10 +128,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
 var _auth = __webpack_require__(/*! @/utils/auth */ 11);var listCell = function listCell() {__webpack_require__.e(/*! require.ensure | pages/commponent/user/list-cell */ "pages/commponent/user/list-cell").then((function () {return resolve(__webpack_require__(/*! ./list-cell */ 379));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   data: function data() {
@@ -166,11 +162,14 @@ var _auth = __webpack_require__(/*! @/utils/auth */ 11);var listCell = function 
 
       }
       // 跳转
-      if (row.url == '') {
-        return;
-      } else {
+      if (row.url) {
         uni.navigateTo({
           url: row.url });
+
+      }
+      if (row.phoneNumber) {
+        uni.makePhoneCall({
+          phoneNumber: row.phoneNumber });
 
       }
     } } };exports.default = _default;

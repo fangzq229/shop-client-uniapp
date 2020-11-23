@@ -329,29 +329,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _auth = __webpack_require__(/*! @/utils/auth.js */ 11); //
 //
 //
@@ -539,60 +516,76 @@ var _auth = __webpack_require__(/*! @/utils/auth.js */ 11); //
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 421));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navBar = function navBar() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/navBar */ "pages/commponent/public/navBar").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/navBar */ 344));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sku = function sku() {Promise.all(/*! require.ensure | pages/commponent/public/sku */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/commponent/public/sku")]).then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/sku */ 430));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var coupon = function coupon() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/coupon */ "pages/commponent/public/coupon").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/coupon */ 437));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var loading = function loading() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/loading */ "pages/commponent/public/loading").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/loading */ 414));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var poster = function poster() {__webpack_require__.e(/*! require.ensure | pages/commponent/goods/poster */ "pages/commponent/goods/poster").then((function () {return resolve(__webpack_require__(/*! ../../commponent/goods/poster.vue */ 444));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { colors: '', shows: false, statusBarHeight: app.globalData.statusHeight + 'px', toBar: app.globalData.toBar + 'px', showdots: false, swiperList: [], isColl: false, latitude: '', longitude: '', nowList: {}, goodsData: { bigImg: [], skus: [{}] }, showModal: false, couponshow: false, isshowVideo: true, voice: false, showVideo: false, isShow: true, couponList: [//优惠券列表
-      { money: 100, reduce: 10, date: '2020-02-09 2020-10-02', id: 1, status: 0, condition: ['新人专享', '仅在支付时使用', '可与其他产品共享'] }, { money: 100, reduce: 20, date: '2020-02-09 2020-10-02', id: 2, status: 0, condition: ['新人专享'] }, { money: 100, reduce: 30, date: '2020-02-09 2020-10-02', id: 3, status: 0, condition: ['仅在支付时使用', '可与其他产品共享'] }, { money: 100, reduce: 40, date: '2020-02-09 2020-10-02', id: 4, status: 0, condition: ['新人专享', '可与其他产品共享'] }, { money: 100, reduce: 50, date: '2020-02-09 2020-10-02', id: 5, status: 0, condition: ['新人专享', '仅在支付时使用'] }], htmlNode: '', // 商品详情
-      descriptionStr: '<div id="commDesc" hasdata="1" style="line-height: 2; transform-origin: 0px 0px; font-size: 30px;width:100%;"><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/99519/11/4669/136444/5de8bbdbE0cba049d/517f1fb75b582456.jpg!q70.dpg.webp" loaded="17"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/92267/13/4771/160442/5de8bbdbE50655175/7dd51e0b966aba15.jpg!q70.dpg.webp" loaded="16"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/93624/28/4672/131382/5de8bbdbE65d14e5d/81bc1227ec775788.jpg!q70.dpg.webp" loaded="15"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/97366/21/4817/101042/5de8bbdbE8854b673/7c4ce7faa45a418b.jpg!q70.dpg.webp" loaded="14"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/98311/21/4778/122770/5de8bbdcE13375754/f4324ca9294eef4c.jpg!q70.dpg.webp" loaded="13"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/103373/15/4747/118973/5de8bbdcE2058ee8e/d921d5f1a4aa5c89.jpg!q70.dpg.webp" loaded="12"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/88841/34/4711/84977/5de8bbdeE0b691b9a/e69796d32a63bbaa.jpg!q70.dpg.webp" loaded="11"><div class="for_separator"></div><img style="max-width:640px;" src="//img30.360buyimg.com/popWaterMark/jfs/t1/95248/2/4771/99041/5de8bbdfE06b41b3b/3c4a2b1cb97a5262.jpg!q70.dpg.webp" loaded="10"></div>', goodsEva: [//评价列表
-      { headimg: '/static/images/face.jpg', nickname: '反转', create_time: '2020-09-10 15:36', goods_name: '醇黑巧克力【20枚】', score: 5, comment: '产品很不错,赞', images: ['/static/images/goods/two.jpg', '/static/images/goods/one.jpg'], reply: '感谢您的支持', tags: ['价格合理', '味道好', '价格优惠', '态度好'] }, { headimg: '/static/images/face.jpg', nickname: '清风', create_time: '2020-09-10 13:36', goods_name: '草莓味【8枚】', score: 4, comment: '味道还不错~', images: [], reply: '', tags: [] }], scrollShow: false };}, components: { navBar: navBar, sku: sku, coupon: coupon, loading: loading, poster: poster, uniPopup: uniPopup }, props: {}, /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          * 生命周期函数--监听页面加载
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          */onLoad: function onLoad(options) {var _this2 = this;this.setData({ //设置主题颜色
+var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 421));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navBar = function navBar() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/navBar */ "pages/commponent/public/navBar").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/navBar */ 344));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var sku = function sku() {Promise.all(/*! require.ensure | pages/commponent/public/sku */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/commponent/public/sku")]).then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/sku */ 430));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var coupon = function coupon() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/coupon */ "pages/commponent/public/coupon").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/coupon */ 437));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var loading = function loading() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/loading */ "pages/commponent/public/loading").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/loading */ 414));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var poster = function poster() {Promise.all(/*! require.ensure | pages/commponent/goods/poster */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/commponent/goods/poster")]).then((function () {return resolve(__webpack_require__(/*! ../../commponent/goods/poster.vue */ 444));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { data: function data() {return { colors: '', shows: false, statusBarHeight: app.globalData.statusHeight + 'px', toBar: app.globalData.toBar + 'px', showdots: false, swiperList: [], isColl: false, latitude: '', longitude: '', nowList: {}, goodsData: { bigImg: [], skus: [{}] }, showModal: false, couponshow: false, isshowVideo: true, voice: false, showVideo: false, isShow: true, couponList: [//优惠券列表
+      { money: 100, reduce: 10, date: '2020-02-09 2020-10-02', id: 1, status: 0, condition: ['新人专享', '仅在支付时使用', '可与其他产品共享'] }, { money: 100, reduce: 20, date: '2020-02-09 2020-10-02', id: 2, status: 0, condition: ['新人专享'] }, { money: 100, reduce: 30, date: '2020-02-09 2020-10-02', id: 3, status: 0, condition: ['仅在支付时使用', '可与其他产品共享'] }, { money: 100, reduce: 40, date: '2020-02-09 2020-10-02', id: 4, status: 0, condition: ['新人专享', '可与其他产品共享'] }, { money: 100, reduce: 50, date: '2020-02-09 2020-10-02', id: 5, status: 0, condition: ['新人专享', '仅在支付时使用'] }], htmlNode: '', // 评论
+      goodsEva: [], commentCount: 0, // 评论总数
+      scrollShow: false };}, components: { navBar: navBar, sku: sku, coupon: coupon, loading: loading, poster: poster, uniPopup: uniPopup }, props: {}, /**
+                                                                                                                                                         * 生命周期函数--监听页面加载
+                                                                                                                                                         */onLoad: function onLoad(options) {var _this2 = this;this.setData({ //设置主题颜色
       colors: app.globalData.newColor });this.getLocation(); //获取位置信息
     // this.setFrom(this.descriptionStr); //处理商品详情
-    this.getProductInfo(options.productId);setTimeout(function () {_this2.setData({ isShow: false });}, 600);}, /**
-                                                                                                                 * 生命周期函数--监听页面初次渲染完成
-                                                                                                                 */onReady: function onReady() {this.videoContext = uni.createVideoContext('myVideo');this.nowVideo = uni.createVideoContext('nowVideo');console.log(this.videoContext);}, /**
-                                                                                                                                                                                                                                                                                            * 生命周期函数--监听页面显示
-                                                                                                                                                                                                                                                                                            */onShow: function onShow() {}, /**
-                                                                                                                                                                                                                                                                                                                             * 生命周期函数--监听页面隐藏
-                                                                                                                                                                                                                                                                                                                             */onHide: function onHide() {}, /**
-                                                                                                                                                                                                                                                                                                                                                              * 生命周期函数--监听页面滚动
-                                                                                                                                                                                                                                                                                                                                                              */onPageScroll: function onPageScroll(e) {if (e.scrollTop >= 400) {this.scrollShow = true;} else {this.scrollShow = false;}}, /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             * 页面相关事件处理函数--监听用户下拉动作
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             */onPullDownRefresh: function onPullDownRefresh() {}, /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    * 页面上拉触底事件的处理函数
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */onReachBottom: function onReachBottom() {}, /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 用户点击右上角分享
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   */onShareAppMessage: function onShareAppMessage() {return { title: this.goodsData.title, path: '/pages/views/goods/goodsDetails', imageUrl: this.goodsData.img };}, /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        * 用户点击右上角分享到朋友圈
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */onShareTimeline: function onShareTimeline() {return { title: this.goodsData.title, path: '/pages/views/goods/goodsDetails', imageUrl: this.goodsData.img };}, methods: { getLocation: function getLocation() {var that = this;uni.getLocation({ type: 'wgs84', geocode: true, success: function success(res) {console.log('获取经纬度成功', res);that.setData({ latitude: res.latitude, longitude: res.longitude });}, fail: function fail() {console.log('获取经纬度失败');that.setData({ latitude: '', longitude: '' });}, complete: function complete() {// 解析地址
+    this.getProductInfo(options.productId); // 获取商品信息
+    this.getProductComment(options.productId); // 获取评论id
+    setTimeout(function () {_this2.setData({ isShow: false });}, 600);}, /**
+                                                                          * 生命周期函数--监听页面初次渲染完成
+                                                                          */onReady: function onReady() {this.videoContext = uni.createVideoContext('myVideo');this.nowVideo = uni.createVideoContext('nowVideo');console.log(this.videoContext);}, /**
+                                                                                                                                                                                                                                                     * 生命周期函数--监听页面显示
+                                                                                                                                                                                                                                                     */onShow: function onShow() {}, /**
+                                                                                                                                                                                                                                                                                      * 生命周期函数--监听页面隐藏
+                                                                                                                                                                                                                                                                                      */onHide: function onHide() {}, /**
+                                                                                                                                                                                                                                                                                                                       * 生命周期函数--监听页面滚动
+                                                                                                                                                                                                                                                                                                                       */onPageScroll: function onPageScroll(e) {if (e.scrollTop >= 400) {this.scrollShow = true;} else {this.scrollShow = false;}}, /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 页面相关事件处理函数--监听用户下拉动作
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      */onPullDownRefresh: function onPullDownRefresh() {}, /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             * 页面上拉触底事件的处理函数
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             */onReachBottom: function onReachBottom() {}, /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            * 用户点击右上角分享
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */onShareAppMessage: function onShareAppMessage() {return { title: this.goodsData.title, path: '/pages/views/goods/goodsDetails', imageUrl: this.goodsData.img };}, /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * 用户点击右上角分享到朋友圈
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */onShareTimeline: function onShareTimeline() {return { title: this.goodsData.title, path: '/pages/views/goods/goodsDetails', imageUrl: this.goodsData.img };}, methods: { getLocation: function getLocation() {var that = this;uni.getLocation({ type: 'wgs84', geocode: true, success: function success(res) {console.log('获取经纬度成功', res);that.setData({ latitude: res.latitude, longitude: res.longitude });}, fail: function fail() {console.log('获取经纬度失败');that.setData({ latitude: '', longitude: '' });}, complete: function complete() {// 解析地址
         } });}, setFrom: function setFrom(html) {//处理富文本 让图片居中适应
       var newContent = html.replace(/\<img/gi, '<img class="rich-img" ');this.setData({ htmlNode: newContent });}, openPoster: function openPoster() {var _this3 = this; //生成海报
-      this.shows = false;uni.showLoading({ title: '海报绘制中..' });this.$refs.popup.open();setTimeout(function () {uni.hideLoading();_this3.shows = true;}, 600);}, setisColl: function setisColl() {var _this4 = this;if (!(0, _auth.getToken)()) {return uni.navigateTo({ url: '/pages/login/login' });} //收藏与取消收藏
-      uni.$ajax('/api/product/collection', { productId: this.goodsData.id, status: this.goodsData.isCollection ? 2 : 1 }, 'post').then(function (result) {_this4.goodsData.isCollection = _this4.goodsData.isCollection ? false : true;if (_this4.goodsData.isCollection) {uni.showToast({ title: '收藏成功', icon: 'none' });} else {uni.showToast({ title: '取消收藏', icon: 'none' });}}).catch(function (err) {uni.showToast({ title: err, icon: 'none' });});}, openMap: function openMap() {//打开地图
-      var that = this;uni.openLocation({ latitude: 39.90, longitude: 116.40, success: function success(e) {
-        } });
+      if (!(0, _auth.getToken)()) {return uni.navigateTo({ url: '/pages/login/login' });};this.shows = false;uni.showLoading({ title: '海报绘制中..' });this.$refs.popup.open();setTimeout(function () {uni.hideLoading();_this3.shows = true;}, 600);}, setisColl: function setisColl() {var _this4 = this;if (!(0, _auth.getToken)()) {return uni.navigateTo({ url: '/pages/login/login' });
+
+      }
+      //收藏与取消收藏
+      uni.
+      $ajax(
+      '/api/product/collection',
+      {
+        productId: this.goodsData.id,
+        status: this.goodsData.isCollection ? 2 : 1 },
+
+      'post').
+
+      then(function (result) {
+        _this4.goodsData.isCollection = _this4.goodsData.isCollection ? false : true;
+        if (_this4.goodsData.isCollection) {
+          uni.showToast({
+            title: '收藏成功',
+            icon: 'none' });
+
+        } else {
+          uni.showToast({
+            title: '取消收藏',
+            icon: 'none' });
+
+        }
+      }).
+      catch(function (err) {
+        uni.showToast({
+          title: err,
+          icon: 'none' });
+
+      });
+    },
+    openMap: function openMap() {
+      //打开地图
+      var that = this;
+      uni.openLocation({
+        latitude: 39.9,
+        longitude: 116.4,
+        success: function success(e) {} });
 
     },
     nearAddress: function nearAddress() {
@@ -608,10 +601,8 @@ var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.e
                   _this.getLocation();
                 } });
 
-
             }
           } });
-
 
       }
     },
@@ -660,14 +651,16 @@ var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.e
           this.videoContext.pause();
         } else if (e.detail.current == 0) {
 
-          if (this.isshowVideo == false) {//自动播放
+          if (this.isshowVideo == false) {
+            //自动播放
             this.videoContext.play();
           }
 
         }
       }
     },
-    openvideo: function openvideo() {var _this5 = this; //预览视频
+    openvideo: function openvideo() {var _this5 = this;
+      //预览视频
 
       this.setData({
         showVideo: true });
@@ -678,7 +671,8 @@ var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.e
       }, 200);
 
     },
-    closeVideo: function closeVideo() {var _this6 = this; //关闭视频
+    closeVideo: function closeVideo() {var _this6 = this;
+      //关闭视频
       this.setData({
         showVideo: false });
 
@@ -687,18 +681,21 @@ var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.e
         _this6.videoContext.play();
       }, 300);
     },
-    preview: function preview(imgs, index) {//预览图片
+    preview: function preview(imgs, index) {
+      //预览图片
       uni.previewImage({
         current: index,
         urls: imgs });
 
     },
-    goTop: function goTop() {//返回顶部
+    goTop: function goTop() {
+      //返回顶部
       uni.pageScrollTo({
         scrollTop: 0 });
 
     },
-    onReceive: function onReceive(item, index) {//领取优惠券
+    onReceive: function onReceive(item, index) {
+      //领取优惠券
       console.log(item, index);
       if (item.status == 1) {
         return;
@@ -710,20 +707,41 @@ var app = getApp();var uniPopup = function uniPopup() {Promise.all(/*! require.e
 
       }
     },
-    seeAll: function seeAll() {//查看全部评论
+    seeAll: function seeAll() {
+      //查看全部评论
       uni.navigateTo({
-        url: '/pages/views/goods/goodsEvaluate' });
+        url: '/pages/views/goods/goodsEvaluate?productId=' + this.goodsData.id });
 
     },
     // 获取商品详情
     getProductInfo: function getProductInfo(id) {var _this7 = this;
-      uni.$ajax('/api/product/info',
-      {
+      uni.
+      $ajax('/api/product/info', {
         productId: id }).
 
       then(function (result) {
         _this7.goodsData = result;
-      }).catch(function (err) {
+      }).
+      catch(function (err) {
+        uni.showToast({
+          title: err,
+          icon: 'none' });
+
+      });
+    },
+    getProductComment: function getProductComment(id) {var _this8 = this;
+      uni.
+      $ajax('/api/comment/product-list', {
+        productId: id,
+        page: 1,
+        pageSize: 2 }).
+
+      then(function (result) {
+        console.log(result);
+        _this8.goodsEva = result.items;
+        _this8.commentCount = result.count;
+      }).
+      catch(function (err) {
         uni.showToast({
           title: err,
           icon: 'none' });

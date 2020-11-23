@@ -358,8 +358,15 @@ var app = getApp();var coupon = function coupon() {__webpack_require__.e(/*! req
                                                                                                                                                                                                       * 用户点击右上角分享
                                                                                                                                                                                                       */onShareAppMessage: function onShareAppMessage() {}, methods: { // 获取默认地址
     getAddress: function getAddress() {var _this = this;var pages = getCurrentPages();var currPage = pages[pages.length - 1]; //当前页面
-      var addressId = currPage._data.addressId;var param = {};if (addressId) {Object.assign(param, { id: addressId });}uni.$ajax('/api/address/info', param).then(function (res) {_this.addressId = addressId || res.id;_this.address = res;}).catch(function (err) {return uni.showToast({ title: err, icon: 'none' });});}, // 计算价格
-    getSumPrice: function getSumPrice() {var sumprice = 0;this.goodsList.forEach(function (e) {var price = e.activityPrice || e.salePrice;
+      console.log(currPage);var addressId = currPage.data.addressId;var param = {};if (addressId) {Object.assign(param, { id: addressId });}uni.$ajax('/api/address/info', param).then(function (res) {_this.addressId = addressId || res.id;_this.address = res;}).catch(function (err) {return uni.showToast({ title: err, icon: 'none' });
+
+      });
+    },
+    // 计算价格
+    getSumPrice: function getSumPrice() {
+      var sumprice = 0;
+      this.goodsList.forEach(function (e) {
+        var price = e.activityPrice || e.salePrice;
         sumprice = sumprice + price * 100 * e.quantity / 100;
       });
       this.sumprice = sumprice.toFixed(2);
@@ -396,7 +403,8 @@ var app = getApp();var coupon = function coupon() {__webpack_require__.e(/*! req
                   }
                   return obj;
                 });
-                uni.$ajax(
+                uni.
+                $ajax(
                 '/api/order/create',
                 {
                   addressId: _this2.addressId,

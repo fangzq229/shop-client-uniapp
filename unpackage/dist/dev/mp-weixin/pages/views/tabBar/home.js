@@ -201,17 +201,7 @@ var app = getApp();var headers = function headers() {Promise.all(/*! require.ens
   /**
                                * 生命周期函数--监听页面加载
                                */
-  onLoad: function onLoad(options) {},
-
-  /**
-                                        * 生命周期函数--监听页面初次渲染完成
-                                        */
-  onReady: function onReady() {},
-
-  /**
-                                   * 生命周期函数--监听页面显示
-                                   */
-  onShow: function onShow() {
+  onLoad: function onLoad(options) {
     if ((0, _auth.getToken)()) {
       this.setTabBarBadge();
     }
@@ -237,8 +227,18 @@ var app = getApp();var headers = function headers() {Promise.all(/*! require.ens
   },
 
   /**
-      * 生命周期函数--监听页面隐藏
+      * 生命周期函数--监听页面初次渲染完成
       */
+  onReady: function onReady() {},
+
+  /**
+                                   * 生命周期函数--监听页面显示
+                                   */
+  onShow: function onShow() {},
+
+  /**
+                                 * 生命周期函数--监听页面隐藏
+                                 */
   onHide: function onHide() {},
 
   /**
@@ -280,7 +280,9 @@ var app = getApp();var headers = function headers() {Promise.all(/*! require.ens
 
     // 获取首页配置数据
     getHomeData: function getHomeData() {var _this = this;
-      uni.$ajax('/api/home/index', {}).then(function (result) {
+      uni.
+      $ajax('/api/home/index', {}).
+      then(function (result) {
         console.log(result);
         // 轮播图
         _this.swiperList = result.banner;
@@ -288,22 +290,22 @@ var app = getApp();var headers = function headers() {Promise.all(/*! require.ens
         _this.categoryList = result.category;
         // 栏目专题
         _this.columnList = result.recommend;
-      }).catch(function (err) {
+      }).
+      catch(function (err) {
         uni.showToast({
           title: err,
           icon: 'none' });
 
       });
-
     },
 
     // 获取热销商品
     getHostProduct: function getHostProduct() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 if (_this2.page === 1) {
                   _this2.dataList = [];
-                };
-                uni.$ajax('/api/product/list',
-                {
+                }
+                uni.
+                $ajax('/api/product/list', {
                   page: _this2.page,
                   pageSize: _this2.pageSize }).
 
@@ -312,12 +314,13 @@ var app = getApp();var headers = function headers() {Promise.all(/*! require.ens
                     _this2.loading = false;
                   }
                   _this2.dataList = _this2.dataList.concat(result.list);
-                }).catch(function (err) {
+                }).
+                catch(function (err) {
                   uni.showToast({
                     title: err,
                     icon: 'none' });
 
-                });case 3:case "end":return _context.stop();}}}, _callee);}))();
+                });case 2:case "end":return _context.stop();}}}, _callee);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -93,7 +93,7 @@
 <script>
 var app = getApp();
 import coupon from '../../commponent/public/coupon';
-import { getGoodsData, getAddress, removeAddress } from '@/utils/auth.js';
+import { getGoodsData, removeAddress } from '@/utils/auth.js';
 export default {
 	data() {
 		return {
@@ -188,12 +188,19 @@ export default {
 		getAddress() {
 			const pages = getCurrentPages();
 			const currPage = pages[pages.length - 1]; //当前页面
+			console.log(currPage);
+			// #ifdef MP
+			let addressId = currPage.data.addressId;
+			// #endif
+			// #ifdef H5
 			let addressId = currPage._data.addressId;
+			// #endif
 			const param = {};
 			if (addressId) {
 				Object.assign(param, { id: addressId });
 			}
-			uni.$ajax('/api/address/info', param)
+			uni
+				.$ajax('/api/address/info', param)
 				.then(res => {
 					this.addressId = addressId || res.id;
 					this.address = res;
@@ -229,11 +236,11 @@ export default {
 		},
 
 		async submit() {
-			if(!this.addressId) {
+			if (!this.addressId) {
 				return uni.showToast({
-					title:'请选择您的收货地址',
+					title: '请选择您的收货地址',
 					icon: 'none'
-				})
+				});
 			}
 			const products = this.goodsList.map(item => {
 				const obj = {
@@ -246,14 +253,15 @@ export default {
 				}
 				return obj;
 			});
-			uni.$ajax(
-				'/api/order/create',
-				{
-					addressId: this.addressId,
-					products: products
-				},
-				'post'
-			)
+			uni
+				.$ajax(
+					'/api/order/create',
+					{
+						addressId: this.addressId,
+						products: products
+					},
+					'post'
+				)
 				.then(result => {
 					uni.navigateTo({
 						url: '/pages/views/order/success'

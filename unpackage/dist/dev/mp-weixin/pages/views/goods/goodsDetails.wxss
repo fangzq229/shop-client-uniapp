@@ -256,6 +256,9 @@
 .details_content.data-v-5f04f9df {
   margin-top: 30rpx;
 }
+.details_content image.data-v-5f04f9df {
+  margin-top: -6rpx;
+}
 .operation.data-v-5f04f9df {
   height: 100rpx;
   width: 100vw;

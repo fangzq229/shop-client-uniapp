@@ -214,6 +214,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 var app = getApp();var tabs = function tabs() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/tabs */ "pages/commponent/public/tabs").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/tabs.vue */ 451));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
@@ -226,50 +227,55 @@ var app = getApp();var tabs = function tabs() {__webpack_require__.e(/*! require
       colors: '',
       tabList: [{
         name: '最新',
-        number: 10,
+        number: 0,
         id: 0 },
       {
         name: '好评',
-        number: 8,
+        number: 0,
         id: 1 },
       {
         name: '中评',
-        number: 8,
+        number: 0,
         id: 2 },
       {
         name: '差评',
-        number: 6,
+        number: 0,
         id: 3 },
       {
         name: '有图',
-        number: 5,
+        number: 0,
         id: 4 }],
 
       active: 0,
-      goodsEva: [//评价列表
-      { headimg: '/static/images/face.jpg', nickname: '反转', create_time: '2020-09-10 15:36', goods_name: '醇黑巧克力【20枚】', score: 5, comment: '产品很不错,赞', images: ['/static/images/goods/two.jpg', '/static/images/goods/one.jpg'], reply: '感谢您的支持', tags: ['价格合理', '味道好', '价格优惠', '态度好'], video: [] },
-      { headimg: '/static/images/face.jpg', nickname: '清风', create_time: '2020-09-10 13:36', goods_name: '醇黑巧克力【20枚】', score: 4, comment: '针不错~', images: [], reply: '', tags: [], video: ['https://fzdz.soft.haoyangsoft.com/uploads/system/videos/20200813/6c819d24ee6868aee33e150c4333329b.mp4'] },
-      { headimg: '/static/images/face.jpg', nickname: '明月', create_time: '2020-09-10 15:36', goods_name: '草莓味【8枚】', score: 5, comment: '产品很不错,赞', images: ['/static/images/goods/two.jpg', '/static/images/goods/one.jpg'], reply: '感谢您的支持', tags: ['价格合理', '态度好'], video: [] }],
-
+      goodsEva: [],
       temporary: [],
       videos: '',
-      showVideo: false };
+      showVideo: false,
+      productId: undefined,
+      page: 1,
+      pageSize: 10 };
 
   },
   onReady: function onReady() {
     this.nowVideo = uni.createVideoContext('nowVideo');
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad(param) {
+    this.productId = Number(param.productId);
     var colors = app.globalData.newColor; //设置主题颜色
     this.setData({
       colors: colors });
 
-    this.temporary = this.goodsEva;
+    this.goodsEva = [];
+    this.page = 1;
+    this.getProductComment(); // 评价列表
+    this.getProductCommentCount(); // 评价数量
   },
   methods: {
     setTabs: function setTabs(item, index) {//切换状态栏 模拟数据
       this.active = index;
-      this.goodsEva = index == 0 ? this.temporary : [];
+      this.goodsEva = [];
+      this.page = 1;
+      this.getProductComment();
     },
     preview: function preview(imgs, index) {//预览图片
       uni.previewImage({
@@ -296,6 +302,42 @@ var app = getApp();var tabs = function tabs() {__webpack_require__.e(/*! require
       setTimeout(function () {
         _this2.nowVideo.stop();
       }, 300);
+    },
+    // 获取评价
+    getProductComment: function getProductComment() {var _this3 = this;
+      uni.$ajax('/api/comment/product-list',
+      {
+        productId: this.productId,
+        page: this.page,
+        pageSize: this.pageSize,
+        type: this.active + 1 }).
+
+      then(function (result) {
+        console.log(result);
+        _this3.goodsEva = result.items;
+      }).catch(function (err) {
+        uni.showToast({
+          title: err,
+          icon: 'none' });
+
+      });
+    },
+    // 获取评价数量
+    getProductCommentCount: function getProductCommentCount() {var _this4 = this;
+      uni.$ajax('/api/comment/type-count',
+      {
+        productId: this.productId }).
+
+      then(function (result) {
+        for (var i in _this4.tabList) {
+          _this4.tabList[i].number = result[i];
+        }
+      }).catch(function (err) {
+        uni.showToast({
+          title: err,
+          icon: 'none' });
+
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
