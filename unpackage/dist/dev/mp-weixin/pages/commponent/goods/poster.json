@@ -1,6 +1,7 @@
 {
   "component": true,
   "usingComponents": {
-    "loading": "/pages/commponent/public/loading"
+    "loading": "/pages/commponent/public/loading",
+    "lpainter": "/components/lime-painter/index"
   }
 }

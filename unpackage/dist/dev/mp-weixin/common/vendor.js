@@ -10849,6 +10849,1550 @@ module.exports = {
 
 /***/ }),
 
+/***/ 478:
+/*!******************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/lime-painter/utils.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.isNumber = isNumber;exports.toPx = toPx;exports.compareVersion = compareVersion;exports.base64ToPath = base64ToPath;exports.pathToBase64 = pathToBase64;exports.getImageInfo = getImageInfo;exports.CHAR_WIDTH_SCALE_MAP = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 4));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _iterableToArrayLimit(arr, i) {if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}var screen = uni.getSystemInfoSync().windowWidth / 750;
+// 缓存图片
+var cache = {};
+function isNumber(value) {
+  return /^-?\d+(\.\d+)?$/.test(value);
+}
+function toPx(value, baseSize) {
+  // 如果是数字
+  if (typeof value === 'number') {
+    return value;
+  }
+  // 如果是字符串数字
+  if (isNumber(value)) {
+    return value * 1;
+  }
+  // 如果有单位
+  if (typeof value === 'string') {
+    var reg = /^-?[0-9]+([.]{1}[0-9]+){0,1}(em|rpx|px|%)$/g;
+    var results = reg.exec(value);
+    if (!value || !results) {
+      return 0;
+    }
+    var unit = results[2];
+    value = parseFloat(value);
+    var res = 0;
+    if (unit === 'rpx') {
+      res = Math.floor(value * (screen || 0.5) * 1);
+    } else if (unit === 'px') {
+      res = Math.floor(value * 1);
+    } else if (unit === '%') {
+      res = Math.floor(value * toPx(baseSize) / 100);
+    } else if (unit === 'em') {
+      res = Math.ceil(value * toPx(baseSize || 14));
+    }
+    return res;
+  }
+}
+
+// 计算版本
+function compareVersion(v1, v2) {
+  v1 = v1.split('.');
+  v2 = v2.split('.');
+  var len = Math.max(v1.length, v2.length);
+  while (v1.length < len) {
+    v1.push('0');
+  }
+  while (v2.length < len) {
+    v2.push('0');
+  }
+  for (var i = 0; i < len; i++) {
+    var num1 = parseInt(v1[i], 10);
+    var num2 = parseInt(v2[i], 10);
+
+    if (num1 > num2) {
+      return 1;
+    } else if (num1 < num2) {
+      return -1;
+    }
+  }
+  return 0;
+}
+
+/** 从 0x20 开始到 0x80 的字符宽度数据 */
+var CHAR_WIDTH_SCALE_MAP = [0.296, 0.313, 0.436, 0.638, 0.586, 0.89, 0.87, 0.256, 0.334, 0.334, 0.455, 0.742,
+0.241, 0.433, 0.241, 0.427, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.586, 0.241, 0.241, 0.742,
+0.742, 0.742, 0.483, 1.031, 0.704, 0.627, 0.669, 0.762, 0.55, 0.531, 0.744, 0.773, 0.294, 0.396, 0.635, 0.513, 0.977,
+0.813, 0.815, 0.612, 0.815, 0.653, 0.577, 0.573, 0.747, 0.676, 1.018, 0.645, 0.604, 0.62, 0.334, 0.416, 0.334, 0.742,
+0.448, 0.295, 0.553, 0.639, 0.501, 0.64, 0.567, 0.347, 0.64, 0.616, 0.266, 0.267, 0.544, 0.266, 0.937, 0.616, 0.636,
+0.639, 0.64, 0.382, 0.463, 0.373, 0.616, 0.525, 0.79, 0.507, 0.529, 0.492, 0.334, 0.269, 0.334, 0.742, 0.296];exports.CHAR_WIDTH_SCALE_MAP = CHAR_WIDTH_SCALE_MAP;
+
+
+var prefix = function prefix() {
+
+
+
+
+  return wx;
+
+
+
+
+
+
+
+
+
+
+
+
+
+};
+
+var base64ToArrayBuffer = function base64ToArrayBuffer(data) {
+  /**
+                                                               * base64ToArrayBuffer
+                                                               * Base64Binary.decode(base64_string);  
+                                                               * Base64Binary.decodeArrayBuffer(base64_string); 
+                                                               */
+  var Base64Binary = {
+    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+    /* will return a  Uint8Array type */
+    decodeArrayBuffer: function decodeArrayBuffer(input) {
+      var bytes = input.length / 4 * 3;
+      var ab = new ArrayBuffer(bytes);
+      this.decode(input, ab);
+      return ab;
+    },
+
+    removePaddingChars: function removePaddingChars(input) {
+      var lkey = this._keyStr.indexOf(input.charAt(input.length - 1));
+      if (lkey == 64) {
+        return input.substring(0, input.length - 1);
+      }
+      return input;
+    },
+
+    decode: function decode(input, arrayBuffer) {
+      //get last chars to see if are valid
+      input = this.removePaddingChars(input);
+      input = this.removePaddingChars(input);
+
+      var bytes = parseInt(input.length / 4 * 3, 10);
+
+      var uarray;
+      var chr1, chr2, chr3;
+      var enc1, enc2, enc3, enc4;
+      var i = 0;
+      var j = 0;
+
+      if (arrayBuffer)
+      uarray = new Uint8Array(arrayBuffer);else
+
+      uarray = new Uint8Array(bytes);
+
+      input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+      for (i = 0; i < bytes; i += 3) {
+        //get the 3 octects in 4 ascii chars
+        enc1 = this._keyStr.indexOf(input.charAt(j++));
+        enc2 = this._keyStr.indexOf(input.charAt(j++));
+        enc3 = this._keyStr.indexOf(input.charAt(j++));
+        enc4 = this._keyStr.indexOf(input.charAt(j++));
+
+        chr1 = enc1 << 2 | enc2 >> 4;
+        chr2 = (enc2 & 15) << 4 | enc3 >> 2;
+        chr3 = (enc3 & 3) << 6 | enc4;
+
+        uarray[i] = chr1;
+        if (enc3 != 64) uarray[i + 1] = chr2;
+        if (enc4 != 64) uarray[i + 2] = chr3;
+      }
+      return uarray;
+    } };
+
+  return uni.base64ToArrayBuffer && uni.base64ToArrayBuffer(data) || Base64Binary.decodeArrayBuffer(data);
+};
+
+
+/**
+    * base64转路径
+    * @param {Object} base64
+    */
+function base64ToPath(base64) {var _ref =
+  /data:image\/(\w+);base64,(.*)/.exec(base64) || [],_ref2 = _slicedToArray(_ref, 3),format = _ref2[1],bodyData = _ref2[2];
+
+  return new Promise(function (resolve, reject) {
+
+    var fs = uni.getFileSystemManager();
+
+    //自定义文件名
+    if (!format) {
+      console.error('ERROR_BASE64SRC_PARSE');
+      reject(new Error('ERROR_BASE64SRC_PARSE'));
+    }
+    var time = new Date().getTime();
+    var pre = prefix();
+    var filePath = "".concat(pre.env.USER_DATA_PATH, "/").concat(time, ".").concat(format);
+    var buffer = base64ToArrayBuffer(bodyData);
+    fs.writeFile({
+      filePath: filePath,
+      data: buffer,
+      encoding: 'binary',
+      success: function success() {
+        resolve(filePath);
+      },
+      fail: function fail(err) {
+        console.error('获取base64图片失败', JSON.stringify(err));
+        reject(err);
+      } });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  });
+}
+
+/**
+   * 路径转base64
+   * @param {Object} string
+   */
+function pathToBase64(path) {
+  return new Promise(function (resolve, reject) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    if (uni.canIUse('getFileSystemManager')) {
+      uni.getFileSystemManager().readFile({
+        filePath: path,
+        encoding: 'base64',
+        success: function success(res) {
+          resolve('data:image/png;base64,' + res.data);
+        },
+        fail: function fail(error) {
+          console.error('urlToBase64 error:', JSON.stringify(error));
+          reject(error);
+        } });
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getImageInfo(img, isH5PathToBase64) {
+  return new Promise( /*#__PURE__*/function () {var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(resolve, reject) {var base64Reg, localReg, networkReg, imgName;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              base64Reg = /^data:image\/(\w+);base64/;
+              localReg = /^\.|^\/(?=[^\/])/;
+              networkReg = /^(http|\/\/)/;if (!
+
+
+
+
+
+
+              base64Reg.test(img)) {_context.next = 13;break;}if (
+              cache[img]) {_context.next = 12;break;}
+              imgName = img;_context.next = 8;return (
+                base64ToPath(img));case 8:img = _context.sent;
+              cache[imgName] = img;_context.next = 13;break;case 12:
+
+              img = cache[img];case 13:
+
+
+
+              if (cache[img] && cache[img].errMsg) {
+                resolve(cache[img]);
+              } else {
+                uni.getImageInfo({
+                  src: img,
+                  success: function success(image) {
+
+                    image.path = localReg.test(img) ? "/".concat(image.path) : image.path;
+
+                    // image.path = /^(http|\/\/|\/|wxfile|data:image\/(\w+);base64|file|bdfile|ttfile|blob)/.test(image.path) ? image.path : `/${image.path}`;
+                    cache[img] = image;
+                    resolve(cache[img]);
+                  },
+                  fail: function fail(err) {
+                    resolve({ path: img });
+                    console.error("getImageInfo:fail ".concat(img, " failed ").concat(JSON.stringify(err)));
+                  } });
+
+              }case 14:case "end":return _context.stop();}}}, _callee);}));return function (_x, _x2) {return _ref3.apply(this, arguments);};}());
+
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 479:
+/*!*****************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/lime-painter/draw.js ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.Draw = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 4));var _utils = __webpack_require__(/*! ./utils */ 478);
+var _gradient = __webpack_require__(/*! ./gradient */ 480);
+var _qrcode = _interopRequireDefault(__webpack_require__(/*! ./qrcode */ 481));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _createForOfIteratorHelper(o, allowArrayLike) {var it;if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e2) {throw _e2;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e3) {didErr = true;err = _e3;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function _iterableToArrayLimit(arr, i) {if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
+var id = 0;var
+
+Draw = /*#__PURE__*/function () {
+  function Draw(context, canvas) {var use2dCanvas = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;var isH5PathToBase64 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;var boundary = arguments.length > 4 ? arguments[4] : undefined;_classCallCheck(this, Draw);
+    this.ctx = context;
+    this.canvas = canvas || null;
+    this.root = boundary;
+    this.use2dCanvas = use2dCanvas;
+    this.isH5PathToBase64 = isH5PathToBase64;
+  }_createClass(Draw, [{ key: "roundRect", value: function roundRect(
+    x, y, w, h, r) {var fill = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;var stroke = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
+      if (r < 0) return;var
+      ctx = this.ctx;
+      ctx.beginPath();
+      if (!r) {
+        ctx.rect(x, y, w, h);
+      } else if (typeof r === 'number' && [0, 1, -1].includes(w - r * 2) && [0, 1, -1].includes(h - r * 2)) {
+        ctx.arc(x + w - r, y + h - r, r, 0, Math.PI * 2);
+      } else {var _ref2;var _ref =
+
+
+
+
+
+        r || (_ref2 = { r: r }, _defineProperty(_ref2, "r", r), _defineProperty(_ref2, "r", r), _defineProperty(_ref2, "r", r), _ref2),_ref$borderTopLeftRad = _ref.borderTopLeftRadius,tl = _ref$borderTopLeftRad === void 0 ? r || 0 : _ref$borderTopLeftRad,_ref$borderTopRightRa = _ref.borderTopRightRadius,tr = _ref$borderTopRightRa === void 0 ? r || 0 : _ref$borderTopRightRa,_ref$borderBottomRigh = _ref.borderBottomRightRadius,br = _ref$borderBottomRigh === void 0 ? r || 0 : _ref$borderBottomRigh,_ref$borderBottomLeft = _ref.borderBottomLeftRadius,bl = _ref$borderBottomLeft === void 0 ? r || 0 : _ref$borderBottomLeft;
+        ctx.beginPath();
+        // 右下角
+        ctx.arc(x + w - br, y + h - br, br, 0, Math.PI * 0.5);
+        ctx.lineTo(x + bl, y + h);
+        // 左下角
+        ctx.arc(x + bl, y + h - bl, bl, Math.PI * 0.5, Math.PI);
+        ctx.lineTo(x, y + tl);
+        // 左上角
+        ctx.arc(x + tl, y + tl, tl, Math.PI, Math.PI * 1.5);
+        ctx.lineTo(x + w - tr, y);
+        // 右上角
+        ctx.arc(x + w - tr, y + tr, tr, Math.PI * 1.5, Math.PI * 2);
+        ctx.lineTo(x + w, y - br);
+
+      }
+      ctx.closePath();
+      if (stroke) ctx.stroke();
+      if (fill) ctx.fill();
+    } }, { key: "measureText", value: function measureText(
+    text, fontSize) {var
+      ctx = this.ctx;
+
+      return ctx.measureText(text).width;
+
+
+
+
+
+
+
+
+
+    } }, { key: "setFont", value: function setFont(_ref3)
+    {var _ref3$fontFamily = _ref3.fontFamily,ff = _ref3$fontFamily === void 0 ? 'sans-serif' : _ref3$fontFamily,_ref3$fontSize = _ref3.fontSize,fs = _ref3$fontSize === void 0 ? 14 : _ref3$fontSize,_ref3$fontWeight = _ref3.fontWeight,fw = _ref3$fontWeight === void 0 ? 'normal' : _ref3$fontWeight,_ref3$textStyle = _ref3.textStyle,ts = _ref3$textStyle === void 0 ? 'normal' : _ref3$textStyle;
+      var ctx = this.ctx;
+      // 设置属性
+
+      // fw = fw == 'bold' ? 'bold' : 'normal'
+      // ts = ts == 'italic' ? 'italic' : 'normal'
+
+
+
+
+
+      // fs = toPx(fs)
+      ctx.font = "".concat(ts, " ").concat(fw, " ").concat(fs, "px ").concat(ff);
+    } }, { key: "setTransform", value: function setTransform(
+    box, _ref4) {var transform = _ref4.transform;var
+      ctx = this.ctx;var _ref5 =
+
+
+
+
+
+
+
+
+      transform || {},_ref5$scaleX = _ref5.scaleX,scaleX = _ref5$scaleX === void 0 ? 1 : _ref5$scaleX,_ref5$scaleY = _ref5.scaleY,scaleY = _ref5$scaleY === void 0 ? 1 : _ref5$scaleY,_ref5$translateX = _ref5.translateX,translateX = _ref5$translateX === void 0 ? 0 : _ref5$translateX,_ref5$translateY = _ref5.translateY,translateY = _ref5$translateY === void 0 ? 0 : _ref5$translateY,_ref5$rotate = _ref5.rotate,rotate = _ref5$rotate === void 0 ? 0 : _ref5$rotate,_ref5$skewX = _ref5.skewX,skewX = _ref5$skewX === void 0 ? 0 : _ref5$skewX,_ref5$skewY = _ref5.skewY,skewY = _ref5$skewY === void 0 ? 0 : _ref5$skewY;var
+
+      x =
+
+
+
+      box.left,y = box.top,w = box.width,h = box.height;
+
+      ctx.scale(scaleX, scaleY);
+      ctx.translate(
+      w * (scaleX > 0 ? 1 : -1) / 2 + (x + translateX) / scaleX,
+      h * (scaleY > 0 ? 1 : -1) / 2 + (y + translateY) / scaleY);
+
+      if (rotate) {
+        ctx.rotate(rotate * Math.PI / 180);
+      }
+      if (skewX || skewY) {
+        ctx.transform(1, Math.tan(skewY * Math.PI / 180), Math.tan(skewX * Math.PI / 180), 1, 0, 0);
+      }
+    } }, { key: "setBackground", value: function setBackground(
+    bd, w, h) {var
+      ctx = this.ctx;
+      if (!bd) {
+
+        ctx.setFillStyle('transparent');
+
+
+
+
+      } else if (_gradient.GD.isGradient(bd)) {
+        _gradient.GD.doGradient(bd, w, h, ctx);
+      } else {
+        ctx.setFillStyle(bd);
+      }
+    } }, { key: "setShadow", value: function setShadow(_ref6)
+    {var _ref6$boxShadow = _ref6.boxShadow,bs = _ref6$boxShadow === void 0 ? [] : _ref6$boxShadow;var
+      ctx = this.ctx;
+      if (bs.length) {var _bs = _slicedToArray(
+        bs, 4),x = _bs[0],y = _bs[1],b = _bs[2],c = _bs[3];
+        ctx.setShadow(x, y, b, c);
+      }
+    } }, { key: "setBorder", value: function setBorder(
+    box, style) {var _ref13,_this = this;var
+      ctx = this.ctx;var
+
+      x =
+
+
+
+      box.left,y = box.top,w = box.width,h = box.height;var
+      border = style.border,borderBottom = style.borderBottom,borderTop = style.borderTop,borderRight = style.borderRight,borderLeft = style.borderLeft,r = style.borderRadius,_style$opacity = style.opacity,opacity = _style$opacity === void 0 ? 1 : _style$opacity;var _ref7 =
+
+
+
+
+      border || {},_ref7$borderWidth = _ref7.borderWidth,bw = _ref7$borderWidth === void 0 ? 0 : _ref7$borderWidth,bs = _ref7.borderStyle,bc = _ref7.borderColor;var _ref8 =
+
+
+
+
+      borderBottom || {},_ref8$borderBottomWid = _ref8.borderBottomWidth,bbw = _ref8$borderBottomWid === void 0 ? bw : _ref8$borderBottomWid,_ref8$borderBottomSty = _ref8.borderBottomStyle,bbs = _ref8$borderBottomSty === void 0 ? bs : _ref8$borderBottomSty,_ref8$borderBottomCol = _ref8.borderBottomColor,bbc = _ref8$borderBottomCol === void 0 ? bc : _ref8$borderBottomCol;var _ref9 =
+
+
+
+
+      borderTop || {},_ref9$borderTopWidth = _ref9.borderTopWidth,btw = _ref9$borderTopWidth === void 0 ? bw : _ref9$borderTopWidth,_ref9$borderTopStyle = _ref9.borderTopStyle,bts = _ref9$borderTopStyle === void 0 ? bs : _ref9$borderTopStyle,_ref9$borderTopColor = _ref9.borderTopColor,btc = _ref9$borderTopColor === void 0 ? bc : _ref9$borderTopColor;var _ref10 =
+
+
+
+
+      borderRight || {},_ref10$borderRightWid = _ref10.borderRightWidth,brw = _ref10$borderRightWid === void 0 ? bw : _ref10$borderRightWid,_ref10$borderRightSty = _ref10.borderRightStyle,brs = _ref10$borderRightSty === void 0 ? bs : _ref10$borderRightSty,_ref10$borderRightCol = _ref10.borderRightColor,brc = _ref10$borderRightCol === void 0 ? bc : _ref10$borderRightCol;var _ref11 =
+
+
+
+
+      borderLeft || {},_ref11$borderLeftWidt = _ref11.borderLeftWidth,blw = _ref11$borderLeftWidt === void 0 ? bw : _ref11$borderLeftWidt,_ref11$borderLeftStyl = _ref11.borderLeftStyle,bls = _ref11$borderLeftStyl === void 0 ? bs : _ref11$borderLeftStyl,_ref11$borderLeftColo = _ref11.borderLeftColor,blc = _ref11$borderLeftColo === void 0 ? bc : _ref11$borderLeftColo;var _ref12 =
+
+
+
+
+
+
+      r || (_ref13 = { r: r }, _defineProperty(_ref13, "r", r), _defineProperty(_ref13, "r", r), _defineProperty(_ref13, "r", r), _ref13),_ref12$borderTopLeftR = _ref12.borderTopLeftRadius,tl = _ref12$borderTopLeftR === void 0 ? r || 0 : _ref12$borderTopLeftR,_ref12$borderTopRight = _ref12.borderTopRightRadius,tr = _ref12$borderTopRight === void 0 ? r || 0 : _ref12$borderTopRight,_ref12$borderBottomRi = _ref12.borderBottomRightRadius,br = _ref12$borderBottomRi === void 0 ? r || 0 : _ref12$borderBottomRi,_ref12$borderBottomLe = _ref12.borderBottomLeftRadius,bl = _ref12$borderBottomLe === void 0 ? r || 0 : _ref12$borderBottomLe;
+      if (!borderBottom && !borderLeft && !borderTop && !borderRight && !border) return;
+      var _borderType = function _borderType(w, s, c) {
+        if (s == 'dashed') {
+
+          ctx.setLineDash([Math.ceil(w * 4 / 3), Math.ceil(w * 4 / 3)]);
+
+
+
+
+        } else if (s == 'dotted') {
+          ctx.setLineDash([w, w]);
+        }
+        ctx.setStrokeStyle(c);
+      };
+      var _setBorder = function _setBorder(x1, y1, x2, y2, x3, y3, r1, r2, p1, p2, p3, bw, bs, bc) {
+        ctx.save();
+        _this.setOpacity(style);
+        _this.setTransform(box, style);
+        ctx.setLineWidth(bw);
+        _borderType(bw, bs, bc);
+        ctx.beginPath();
+        ctx.arc(x1, y1, r1, Math.PI * p1, Math.PI * p2);
+        ctx.lineTo(x2, y2);
+        ctx.arc(x3, y3, r2, Math.PI * p2, Math.PI * p3);
+        ctx.stroke();
+        ctx.restore();
+      };
+
+      if (border) {
+        ctx.save();
+        this.setOpacity(style);
+        this.setTransform(box, style);
+        ctx.setLineWidth(bw);
+        _borderType(bw, bs, bc);
+        this.roundRect(-w / 2, -h / 2, w, h, r, false, bc ? true : false);
+        ctx.restore();
+      }
+      x = -w / 2;
+      y = -h / 2;
+      if (borderBottom) {
+        _setBorder(x + w - br, y + h - br, x + bl, y + h, x + bl, y + h - bl, br, bl, 0.25, 0.5, 0.75, bbw, bbs, bbc);
+      }
+      if (borderLeft) {
+        // 左下角
+        _setBorder(x + bl, y + h - bl, x, y + tl, x + tl, y + tl, bl, tl, 0.75, 1, 1.25, blw, bls, blc);
+      }
+      if (borderTop) {
+        // 左上角
+        _setBorder(x + tl, y + tl, x + w - tr, y, x + w - tr, y + tr, tl, tr, 1.25, 1.5, 1.75, btw, bts, btc);
+      }
+      if (borderRight) {
+        // 右上角
+        _setBorder(x + w - tr, y + tr, x + w, y + h - br, x + w - br, y + h - br, tr, br, 1.75, 2, 0.25, btw, bts, btc);
+      }
+    } }, { key: "setOpacity", value: function setOpacity(_ref14)
+    {var _ref14$opacity = _ref14.opacity,opacity = _ref14$opacity === void 0 ? 1 : _ref14$opacity;
+      this.ctx.setGlobalAlpha(opacity);
+    } }, { key: "drawView", value: function drawView(
+    box, style) {var
+      ctx = this.ctx;var
+
+      x =
+
+
+
+      box.left,y = box.top,w = box.width,h = box.height;var _ref15 =
+
+
+
+
+
+
+
+
+
+
+
+      style || {},_ref15$borderRadius = _ref15.borderRadius,borderRadius = _ref15$borderRadius === void 0 ? 0 : _ref15$borderRadius,border = _ref15.border,borderTop = _ref15.borderTop,borderBottom = _ref15.borderBottom,borderLeft = _ref15.borderLeft,borderRight = _ref15.borderRight,_ref15$color = _ref15.color,color = _ref15$color === void 0 ? '#000000' : _ref15$color,bg = _ref15.backgroundColor,rotate = _ref15.rotate,shadow = _ref15.shadow;
+      ctx.save();
+      this.setOpacity(style);
+      this.setTransform(box, style);
+      this.setShadow(style);
+      this.setBackground(bg, w, h);
+      this.roundRect(-w / 2, -h / 2, w, h, borderRadius, true, false);
+      ctx.restore();
+      this.setBorder(box, style);
+    } }, { key: "drawImage", value: function () {var _drawImage2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(
+      img) {var _this2 = this;var box,style,custom,_args2 = arguments;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:box = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};style = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : {};custom = _args2.length > 3 && _args2[3] !== undefined ? _args2[3] : true;_context2.next = 5;return (
+                  new Promise( /*#__PURE__*/function () {var _ref16 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(resolve, reject) {var ctx, canvas, _style$borderRadius, borderRadius, mode, bg, x, y, w, h, _modeImage, _drawImage, _restore, _yield$getImageInfo, src, width, height;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                              ctx = _this2.ctx;
+                              canvas = _this2.canvas;_style$borderRadius =
+
+
+
+
+                              style.borderRadius, borderRadius = _style$borderRadius === void 0 ? 0 : _style$borderRadius, mode = style.mode, bg = style.backgroundColor;
+
+                              x =
+
+
+
+                              box.left, y = box.top, w = box.width, h = box.height;
+                              ctx.save();
+                              if (!custom) {
+                                _this2.setOpacity(style);
+                                _this2.setTransform(box, style);
+                                _this2.setBackground(bg, w, h);
+                                _this2.setShadow(style);
+                                x = -w / 2;
+                                y = -h / 2;
+                                _this2.roundRect(x, y, w, h, borderRadius, true, false);
+                              }
+                              ctx.clip();
+                              _modeImage = function _modeImage(img) {
+                                // 获得图片原始大小
+                                var rWidth = img.width;
+                                var rHeight = img.height;
+                                var startX = 0;
+                                var startY = 0;
+                                // 绘画区域比例
+                                var cp = w / h;
+                                // 原图比例
+                                var op = rWidth / rHeight;
+                                if (cp >= op) {
+                                  rHeight = rWidth / cp;
+                                  // startY = Math.round((h - rHeight) / 2)
+                                } else {
+                                  rWidth = rHeight * cp;
+                                  startX = Math.round(((img.width || w) - rWidth) / 2);
+                                }
+                                if (mode === 'scaleToFill' || !img.width) {
+                                  ctx.drawImage(img.src, x, y, w, h);
+                                } else {
+                                  // 百度小程序 开发工具 顺序有问题 暂不知晓真机
+
+
+
+
+                                  ctx.drawImage(img.src, startX, startY, rWidth, rHeight, x, y, w, h);
+
+                                }
+                              };
+                              _drawImage = function _drawImage(img) {
+                                if (_this2.use2dCanvas) {
+                                  var Image = canvas.createImage();
+                                  Image.onload = function () {
+                                    img.src = Image;
+                                    _modeImage(img);
+                                    _restore();
+                                  };
+                                  Image.onerror = function () {
+                                    console.error("createImage fail: ".concat(img));
+                                    reject(new Error("createImage fail: ".concat(img)));
+                                  };
+                                  Image.src = img.src;
+                                } else {
+                                  _modeImage(img);
+                                  _restore();
+                                }
+                              };
+                              _restore = function _restore() {
+                                ctx.restore();
+                                _this2.setBorder(box, style);
+                                setTimeout(function () {
+                                  resolve(true);
+                                }, _this2.root.sleep);
+                              };if (!(
+                              typeof img === 'string')) {_context.next = 20;break;}_context.next = 13;return (
+                                (0, _utils.getImageInfo)(img, _this2.isH5PathToBase64));case 13:_yield$getImageInfo = _context.sent;src = _yield$getImageInfo.path;width = _yield$getImageInfo.width;height = _yield$getImageInfo.height;
+                              _drawImage({ src: src, width: width, height: height });_context.next = 21;break;case 20:
+
+                              _drawImage(img);case 21:case "end":return _context.stop();}}}, _callee);}));return function (_x3, _x4) {return _ref16.apply(this, arguments);};}()));case 5:case "end":return _context2.stop();}}}, _callee2);}));function drawImage(_x2) {return _drawImage2.apply(this, arguments);}return drawImage;}() }, { key: "drawText", value: function drawText(
+
+
+
+    text, box, style, rules) {var _this3 = this;var
+      ctx = this.ctx;var
+
+      x =
+
+
+
+
+      box.left,y = box.top,w = box.width,h = box.height,_box$offsetLeft = box.offsetLeft,ol = _box$offsetLeft === void 0 ? 0 : _box$offsetLeft;var _style$color =
+
+
+
+
+
+
+
+
+
+
+
+
+      style.color,color = _style$color === void 0 ? '#000000' : _style$color,_style$lineHeight = style.lineHeight,lineHeight = _style$lineHeight === void 0 ? '1.4em' : _style$lineHeight,_style$fontSize = style.fontSize,fontSize = _style$fontSize === void 0 ? 14 : _style$fontSize,fontWeight = style.fontWeight,fontFamily = style.fontFamily,textStyle = style.textStyle,_style$textAlign = style.textAlign,textAlign = _style$textAlign === void 0 ? 'left' : _style$textAlign,_style$verticalAlign = style.verticalAlign,va = _style$verticalAlign === void 0 ? 'top' : _style$verticalAlign,bg = style.backgroundColor,maxLines = style.maxLines,td = style.textDecoration;
+      lineHeight = (0, _utils.toPx)(lineHeight, fontSize);
+
+      if (!text) return;
+      ctx.save();
+      this.setOpacity(style);
+      this.setTransform(box, style);
+      x = -w / 2;
+      y = -h / 2;
+      ctx.setTextBaseline(va);
+      this.setFont({ fontFamily: fontFamily, fontSize: fontSize, fontWeight: fontWeight, textStyle: textStyle });
+      ctx.setTextAlign(textAlign);
+      if (bg) {
+        this.setBackground(bg, w, h);
+        this.roundRect(x, y, w, h, 1, bg);
+      }
+      this.setShadow(style);
+      ctx.setFillStyle(color);
+      var rulesObj = {};
+      if (rules) {
+        if (rules.word.length > 0) {
+          for (var i = 0; i < rules.word.length; i++) {
+            var startIndex = 0,
+            index = void 0;
+            while ((index = text.indexOf(rules.word[i], startIndex)) > -1) {
+              rulesObj[index] = {
+                reset: true };
+
+              for (var j = 0; j < rules.word[i].length; j++) {
+                rulesObj[index + j] = {
+                  reset: true };
+
+              }
+              startIndex = index + 1;
+            }
+          }
+        }
+      }
+      // 水平布局
+      switch (textAlign) {
+        case 'left':
+          break;
+        case 'center':
+          x += 0.5 * w;
+          break;
+        case 'right':
+          x += w;
+          break;
+        default:
+          break;}
+
+      var textWidth = this.measureText(text, fontSize);
+      var actualHeight = Math.ceil(textWidth / w) * lineHeight;
+      var paddingTop = Math.ceil((h - actualHeight) / 2);
+      if (paddingTop < 0) paddingTop = 0;
+      // 垂直布局
+      switch (va) {
+        case 'top':
+          break;
+        case 'middle':
+          y += fontSize / 2;
+          break;
+        case 'bottom':
+
+          y += fontSize;
+          break;
+        default:
+          break;}
+
+      // 绘线
+      var _drawLine = function _drawLine(x, y, textWidth) {var _uni$getSystemInfoSyn =
+        uni.getSystemInfoSync(),system = _uni$getSystemInfoSyn.system;
+        if (/win|mac/.test(system)) {
+          y += fontSize / 3;
+        }
+        // 垂直布局
+        switch (va) {
+          case 'top':
+            break;
+          case 'middle':
+            y -= fontSize / 2;
+            break;
+          case 'bottom':
+            y -= fontSize;
+            break;
+          default:
+            break;}
+
+        var to = x;
+        switch (textAlign) {
+          case 'left':
+            x = x;
+            to += textWidth;
+            break;
+          case 'center':
+            x = x - textWidth / 2;
+            to = x + textWidth;
+            break;
+          case 'right':
+            to = x;
+            x = x - textWidth;
+            break;
+          default:
+            break;}
+
+
+        if (td) {
+          ctx.setLineWidth(fontSize / 13);
+          ctx.beginPath();
+
+          if (/\bunderline\b/.test(td)) {
+            y -= inlinePaddingTop * 0.8;
+            ctx.moveTo(x, y);
+            ctx.lineTo(to, y);
+          }
+
+          if (/\boverline\b/.test(td)) {
+            y += inlinePaddingTop;
+            ctx.moveTo(x, y - lineHeight);
+            ctx.lineTo(to, y - lineHeight);
+          }
+          if (/\bline-through\b/.test(td)) {
+            ctx.moveTo(x, y - lineHeight / 2);
+            ctx.lineTo(to, y - lineHeight / 2);
+          }
+          ctx.closePath();
+          ctx.setStrokeStyle(color);
+          ctx.stroke();
+        }
+      };
+      var _reset = function _reset(text, x, y) {
+        var rs = Object.keys(rulesObj);
+        for (var _i2 = 0; _i2 < rs.length; _i2++) {
+          var item = rulesObj[rs[_i2]];
+          // ctx.globalCompositeOperation = "destination-out";
+          ctx.save();
+          // ctx.clearRect(item.x, item.y, item.w, item.h)
+          ctx.setFillStyle(rules.color);
+          if (item.char) {
+            ctx.fillText(item.char, item.x, item.y);
+          }
+          ctx.restore();
+        }
+      };
+      var _setText = function _setText(isReset, _char2) {
+        if (isReset) {
+          var t1 = _this3.measureText(" ", fontSize);
+          var t2 = _this3.measureText("\u3000", fontSize);
+          var t3 = _this3.measureText(_char2, fontSize);
+          var _char = '';
+          var _num = 1;
+          if (t3 == t2) {
+            _char = "\u3000";
+            _num = 1;
+          } else {
+            _char = " ";
+            _num = Math.ceil(t3 / t1);
+          }
+          return new Array(_num).fill(_char).join('');
+        } else {
+          return _char2;
+        }
+      };
+      var _setRulesObj = function _setRulesObj(text, index, x, y) {
+        rulesObj[index].x = x;
+        rulesObj[index].y = y;
+        rulesObj[index].char = text;
+      };
+      var inlinePaddingTop = Math.ceil((lineHeight - fontSize) / 2);
+      // 不超过一行
+      if (textWidth + ol <= w && !text.includes('\n')) {
+        x = x + ol;
+        var _rs = Object.keys(rulesObj);
+        var _text = text.split('');
+        if (_rs) {
+          for (var _i3 = 0; _i3 < _rs.length; _i3++) {
+            var _index = _rs[_i3];
+            var t = _text[_index];
+            var _char3 = _setText(rulesObj[_index], t);
+            _text[_index] = _char3;
+            _setRulesObj(t, _index, x + this.measureText(text.substring(0, _index), fontSize), y + inlinePaddingTop);
+          }
+          _reset();
+        }
+        ctx.fillText(_text.join(''), x, y + inlinePaddingTop);
+        y += lineHeight;
+        _drawLine(x, y, textWidth);
+        ctx.restore();
+        return;
+      }
+      // 多行文本
+      var chars = text.split('');
+      var _y = y;
+      var _x = x;
+      // 逐行绘制
+      var line = '';
+      var lineIndex = 0;
+      var textArray = [];
+
+      for (var _index2 = 0; _index2 <= chars.length; _index2++) {
+        var ch = chars[_index2] || '';
+        var isLine = ch === '\n';
+        var isRight = ch == ''; // index == chars.length
+        ch = isLine ? '' : ch;
+
+        var textline = line + _setText(rulesObj[_index2], ch);
+        var testWidth = this.measureText(textline, fontSize);
+
+        if (rulesObj[_index2]) {
+          _setRulesObj(ch, _index2, _x + testWidth - this.measureText(ch, fontSize), y + inlinePaddingTop);
+        }
+        // 绘制行数大于最大行数，则直接跳出循环
+        if (lineIndex >= maxLines) {
+          break;
+        }
+        if (lineIndex == 0) {
+          testWidth = testWidth + ol;
+          _x = x + ol;
+        } else {
+          _x = x;
+        }
+        if (testWidth > w || isLine || isRight) {
+          lineIndex++;
+          line = isRight && testWidth <= w ? textline : line;
+          if (lineIndex === maxLines && testWidth > w) {
+            while (this.measureText("".concat(line, "..."), fontSize) > w) {
+              if (line.length <= 1) {
+                // 如果只有一个字符时，直接跳出循环
+                break;
+              }
+              line = line.substring(0, line.length - 1);
+              if (rulesObj[_index2 - 1]) {
+                rulesObj[_index2 - 1].char = '';
+              }
+            }
+            line += '...';
+          }
+          ctx.fillText(line, _x, y + inlinePaddingTop);
+          y += lineHeight;
+          _drawLine(_x, y, testWidth);
+          line = ch;
+          if (y + lineHeight > _y + h) break;
+        } else {
+          line = textline;
+        }
+      }
+      var rs = Object.keys(rulesObj);
+      if (rs) {
+        _reset();
+      }
+      ctx.restore();
+    } }, { key: "findNode", value: function () {var _findNode = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(
+      element) {var parent,index,siblings,source,computedStyle,attributes,node,_computedStyle$left,left,_computedStyle$top,top,_computedStyle$width,width,_computedStyle$height,height,childrens,i,v,_args3 = arguments;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:parent = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : {};index = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : 0;siblings = _args3.length > 3 && _args3[3] !== undefined ? _args3[3] : [];source = _args3.length > 4 ? _args3[4] : undefined;
+                computedStyle = Object.assign({}, this.getComputedStyle(element, parent, index));_context3.next = 7;return (
+                  this.getAttributes(element));case 7:attributes = _context3.sent;
+                node = {
+                  id: id++,
+                  parent: parent,
+                  computedStyle: computedStyle,
+                  rules: element.rules,
+                  attributes: Object.assign({}, attributes),
+                  name: (element === null || element === void 0 ? void 0 : element.type) || 'view' };
+
+                if (JSON.stringify(parent) === '{}' && !element.type) {_computedStyle$left =
+                  computedStyle.left, left = _computedStyle$left === void 0 ? 0 : _computedStyle$left, _computedStyle$top = computedStyle.top, top = _computedStyle$top === void 0 ? 0 : _computedStyle$top, _computedStyle$width = computedStyle.width, width = _computedStyle$width === void 0 ? 0 : _computedStyle$width, _computedStyle$height = computedStyle.height, height = _computedStyle$height === void 0 ? 0 : _computedStyle$height;
+                  node.layoutBox = { left: left, top: top, width: width, height: height };
+                } else {
+                  node.layoutBox = Object.assign({ left: 0, top: 0 }, this.getLayoutBox(node, parent, index, siblings, source));
+                }if (!(
+
+                element === null || element === void 0 ? void 0 : element.views)) {_context3.next = 25;break;}
+                childrens = [];
+                node.children = [];
+                i = 0;case 14:if (!(i < element.views.length)) {_context3.next = 24;break;}
+                v = element.views[i];_context3.t0 =
+                childrens;_context3.next = 19;return this.findNode(v, node, i, childrens, element);case 19:_context3.t1 = _context3.sent;_context3.t0.push.call(_context3.t0, _context3.t1);case 21:i++;_context3.next = 14;break;case 24:
+
+                node.children = childrens;case 25:return _context3.abrupt("return",
+
+                node);case 26:case "end":return _context3.stop();}}}, _callee3, this);}));function findNode(_x5) {return _findNode.apply(this, arguments);}return findNode;}() }, { key: "getComputedStyle", value: function getComputedStyle(
+
+    element) {var parent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var style = {};
+      var node = JSON.stringify(parent) == '{}' && !element.type ? element : element.css;
+      if (parent.computedStyle) {
+        for (var _i4 = 0, _Object$keys = Object.keys(parent.computedStyle); _i4 < _Object$keys.length; _i4++) {var value = _Object$keys[_i4];
+          var item = parent.computedStyle[value];
+          if (['color', 'fontSize', 'lineHeight', 'verticalAlign', 'fontWeight', 'textAlign'].includes(value)) {
+            style[value] = /em|px$/.test(item) ? (0, _utils.toPx)(item, node === null || node === void 0 ? void 0 : node.fontSize) : item;
+          }
+        }
+      }
+      if (!node) return style;var _loop = function _loop() {
+        var value = _Object$keys2[_i5];
+        var item = node[value];
+        if (value == 'views') {
+          return "continue";
+        }
+        if (['boxShadow', 'shadow'].includes(value)) {
+          var shadows = item.split(' ').map(function (v) {return /^\d/.test(v) ? (0, _utils.toPx)(v) : v;});
+          style.boxShadow = shadows;
+          return "continue";
+        }
+        if (value.includes('border') && !value.includes('adius')) {
+          var prefix = value.match(/^border([BTRLa-z]+)?/)[0];
+          var type = value.match(/[W|S|C][a-z]+/);
+          var v = item.split(' ').map(function (v) {return /^\d/.test(v) ? (0, _utils.toPx)(v) : v;});
+
+          if (v.length > 1) {var _style$prefix;
+            style[prefix] = (_style$prefix = {}, _defineProperty(_style$prefix,
+            prefix + 'Width', v[0] || 1), _defineProperty(_style$prefix,
+            prefix + 'Style', v[1] || 'solid'), _defineProperty(_style$prefix,
+            prefix + 'Color', v[2] || 'black'), _style$prefix);
+
+          } else {var _style$prefix2;
+            style[prefix] = (_style$prefix2 = {}, _defineProperty(_style$prefix2,
+            prefix + 'Width', 1), _defineProperty(_style$prefix2,
+            prefix + 'Style', 'solid'), _defineProperty(_style$prefix2,
+            prefix + 'Color', 'black'), _style$prefix2);
+
+            style[prefix][prefix + type[0]] = v[0];
+          }
+          return "continue";
+        }
+        if (['background', 'backgroundColor'].includes(value)) {
+          style['backgroundColor'] = item;
+          return "continue";
+        }
+        if (value.includes('padding') || value.includes('margin') || value.includes('adius')) {
+          var isRadius = value.includes('adius');
+          var _prefix = isRadius ? 'borderRadius' : value.match(/[a-z]+/)[0];
+          var pre = [0, 0, 0, 0].map(function (item, i) {return isRadius ? ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'][i] : [_prefix + 'Top', _prefix + 'Right', _prefix + 'Bottom', _prefix + 'Left'][i];});
+          if (value === 'padding' || value === 'margin' || value === 'radius' || value === 'borderRadius') {
+            var _v = (item === null || item === void 0 ? void 0 : item.split(' ').map(function (item) {return /^\d/.test(item) && (0, _utils.toPx)(item, node['width']);}, [])) || [0];
+            var _type = isRadius ? 'borderRadius' : value;
+            if (_v.length == 1) {
+              style[_type] = _v[0];
+            } else {var _style$_type;var _v2 = _slicedToArray(
+              _v, 4),t = _v2[0],r = _v2[1],b = _v2[2],l = _v2[3];
+              style[_type] = (_style$_type = {}, _defineProperty(_style$_type,
+              pre[0], t), _defineProperty(_style$_type,
+              pre[1], (0, _utils.isNumber)(r) ? r : t), _defineProperty(_style$_type,
+              pre[2], (0, _utils.isNumber)(b) ? b : t), _defineProperty(_style$_type,
+              pre[3], (0, _utils.isNumber)(l) ? l : r), _style$_type);
+
+            }
+          } else {
+            if (typeof style[_prefix] === 'object') {
+              style[_prefix][value] = (0, _utils.toPx)(item, node['width']);
+            } else {var _style$_prefix;
+              style[_prefix] = (_style$_prefix = {}, _defineProperty(_style$_prefix,
+              pre[0], style[_prefix] || 0), _defineProperty(_style$_prefix,
+              pre[1], style[_prefix] || 0), _defineProperty(_style$_prefix,
+              pre[2], style[_prefix] || 0), _defineProperty(_style$_prefix,
+              pre[3], style[_prefix] || 0), _style$_prefix);
+
+              style[_prefix][value] = (0, _utils.toPx)(item, node['width']);
+            }
+          }
+          return "continue";
+        }
+        if (value.includes('width') || value.includes('height')) {
+          if (/%$/.test(item)) {
+            style[value] = (0, _utils.toPx)(item, parent.layoutBox[value]);
+          } else {
+            style[value] = /px|rpx$/.test(item) ? (0, _utils.toPx)(item) : item;
+          }
+          return "continue";
+        }
+        if (value.includes('transform')) {
+          style[value] = {};
+          item.replace(/([a-zA-Z]+)\(([0-9,-\.%rpxdeg\s]+)\)/g, function (g1, g2, g3) {
+            var v = g3.split(',').map(function (k) {return k.replace(/(^\s*)|(\s*$)/g, '');});
+            var transform = function transform(v, r) {
+              return v.includes('deg') ? v * 1 : (0, _utils.toPx)(v, r);
+            };
+            if (g2.includes('matrix')) {
+              style[value][g2] = v.map(function (v) {return v * 1;});
+            } else if (g2.includes('rotate')) {
+              style[value][g2] = g3.match(/\d+/)[0] * 1;
+            } else if (/[X, Y]/.test(g2)) {
+              style[value][g2] = /[X]/.test(g2) ? transform(v[0], node['width']) : transform(v[0], node['height']);
+            } else {
+              style[value][g2 + 'X'] = transform(v[0], node['width']);
+              style[value][g2 + 'Y'] = transform(v[1] || v[0], node['height']);
+            }
+          });
+          return "continue";
+        }
+        if (/em$/.test(item) && !value.includes('lineHeight')) {
+          style[value] = Math.ceil(parseFloat(item.replace('em')) * (0, _utils.toPx)(node['fontSize'] || 14));
+        } else {
+          style[value] = /%|px|rpx$/.test(item) ? (0, _utils.toPx)(item, node['width']) : item;
+        }};for (var _i5 = 0, _Object$keys2 = Object.keys(node); _i5 < _Object$keys2.length; _i5++) {var _ret = _loop();if (_ret === "continue") continue;
+      }
+      if ((element.name == 'image' || element.type == 'image') && !style.mode) {
+        style.mode = 'aspectFill';
+        if ((!node.width || node.width == 'auto') && (!node.height || node.width == 'auto')) {
+          style.mode = '';
+        }
+      }
+      return style;
+    } }, { key: "getLayoutBox", value: function getLayoutBox(
+    element) {var _this4 = this;var parent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;var siblings = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];var source = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+      var box = {};var _ref17 =
+      element || {},name = _ref17.name,cstyle = _ref17.computedStyle,layoutBox = _ref17.layoutBox,attributes = _ref17.attributes;
+      if (!name) return box;var
+      ctx = this.ctx;
+      var pbox = parent.layoutBox || this.root;
+      var pstyle = parent.computedStyle;var
+
+      v =
+
+
+
+
+
+
+
+
+
+
+
+      cstyle.verticalAlign,x = cstyle.left,y = cstyle.top,w = cstyle.width,h = cstyle.height,_cstyle$fontSize = cstyle.fontSize,fontSize = _cstyle$fontSize === void 0 ? 14 : _cstyle$fontSize,_cstyle$lineHeight = cstyle.lineHeight,lineHeight = _cstyle$lineHeight === void 0 ? '1.4em' : _cstyle$lineHeight,fontWeight = cstyle.fontWeight,fontFamily = cstyle.fontFamily,textStyle = cstyle.textStyle,position = cstyle.position,display = cstyle.display;var _ref18 =
+
+      cstyle.padding || {},_ref18$paddingTop = _ref18.paddingTop,pt = _ref18$paddingTop === void 0 ? 0 : _ref18$paddingTop,_ref18$paddingRight = _ref18.paddingRight,pr = _ref18$paddingRight === void 0 ? 0 : _ref18$paddingRight,_ref18$paddingBottom = _ref18.paddingBottom,pb = _ref18$paddingBottom === void 0 ? 0 : _ref18$paddingBottom,_ref18$paddingLeft = _ref18.paddingLeft,pl = _ref18$paddingLeft === void 0 ? 0 : _ref18$paddingLeft;var _ref19 =
+      cstyle.margin || {},_ref19$marginTop = _ref19.marginTop,mt = _ref19$marginTop === void 0 ? 0 : _ref19$marginTop,_ref19$marginRight = _ref19.marginRight,mr = _ref19$marginRight === void 0 ? 0 : _ref19$marginRight,_ref19$marginBottom = _ref19.marginBottom,mb = _ref19$marginBottom === void 0 ? 0 : _ref19$marginBottom,_ref19$marginLeft = _ref19.marginLeft,ml = _ref19$marginLeft === void 0 ? 0 : _ref19$marginLeft;
+
+      if (position == 'relative') {
+        x += pbox.left;
+        y += pbox.top;
+      }
+      if (name === 'text') {
+        var text = attributes.text || '';
+        lineHeight = (0, _utils.toPx)(lineHeight, fontSize);
+        ctx.save();
+        this.setFont({ fontFamily: fontFamily, fontSize: fontSize, fontWeight: fontWeight, textStyle: textStyle });var _ref20 =
+        siblings[index - 1] || {},lbox = _ref20.layoutBox,ls = _ref20.computedStyle;var _ref21 =
+        siblings[index + 1] || {},rbox = _ref21.layoutBox,rs = _ref21.computedStyle;
+        var isLeft = index == 0;
+        var isblock = display === 'block' || (ls === null || ls === void 0 ? void 0 : ls.display) === 'block';
+        var isOnly = isLeft && !rbox || !(parent === null || parent === void 0 ? void 0 : parent.id);
+        var lboxR = isLeft || isblock ? 0 : lbox.offsetRight || 0;
+        var texts = text.split('\n');
+        var lineIndex = 1;
+        var line = '';
+        var textIndent = cstyle.textIndent || 0;
+        if (!isOnly) {
+          texts.map(function (t, i) {
+            lineIndex += i;
+            var chars = t.split('');
+            for (var j = 0; j < chars.length; j++) {
+              var ch = chars[j];
+              var textline = line + ch;
+              var testWidth = _this4.measureText(textline, fontSize);
+              if (lineIndex == 1) {
+                testWidth = testWidth + (isblock ? 0 : lboxR) + textIndent;
+              }
+              if (testWidth > pbox.width) {
+                lineIndex++;
+                line = ch;
+              } else {
+                line = textline;
+              }
+            }
+          });
+        } else {
+          line = text;
+          lineIndex = texts.length;
+        }
+        box.offsetLeft = ((0, _utils.isNumber)(x) || isblock || isOnly ? textIndent : lboxR) + pl + ml;
+        // 剩下的字宽度
+        var remain = this.measureText(line, fontSize);
+        var width = lineIndex > 1 ? pbox.width : remain + box.offsetLeft;
+        box.offsetRight = box.offsetLeft + (w ? w : isblock ? pbox.width : remain) + pr + mr;
+
+
+        var _getLeft = function _getLeft() {
+          return x || pbox.left;
+        };
+        var _getWidth = function _getWidth() {
+          return w || (isblock ? pbox.width : width > pbox.width - box.left || lineIndex > 1 ? pbox.width - box.left : width);
+        };
+        var _getHeight = function _getHeight() {
+          if (lineIndex > 1) {
+            return lineIndex * lineHeight + pt + pb + mt + mb;
+          } else {
+            return lineHeight + pt + pb + mt + mb;
+          }
+        };
+        var _getTop = function _getTop() {
+          var _y = y;
+          if (_y) {
+            return _y + pt + mt;
+          }
+          if (isLeft) {
+            _y = pbox.top;
+          } else if (lbox.width < pbox.width) {
+            _y = lbox.top;
+          } else {
+            _y = lbox.top + lbox.height - ((ls === null || ls === void 0 ? void 0 : ls.lineHeight) || 0);
+          }
+          if (v === 'bottom') {
+            _y = pbox.top + (pbox.height - box.height || 0);
+          }
+          if (v === 'middle') {
+            _y = pbox.top + (pbox.height - box.height || 0) / 2;
+          }
+          return _y + pt + mt + (isblock && (ls === null || ls === void 0 ? void 0 : ls.lineHeight) || 0);
+        };
+        box.left = _getLeft();
+        box.width = _getWidth();
+        box.height = _getHeight();
+        box.top = _getTop();
+        ctx.restore();
+      } else if (['view', 'qrcode'].includes(name)) {
+        box.left = x || pbox.left;
+        box.width = (w || (pbox === null || pbox === void 0 ? void 0 : pbox.width)) - pl - pr;
+        box.height = h || 0;
+        box.top = y || pbox.top;
+      } else if (name === 'image') {
+        box.left = x || pbox.left;
+        box.width = (w || (pbox === null || pbox === void 0 ? void 0 : pbox.width)) - pl - pr;var
+
+        rWidth =
+
+        attributes.width,rHeight = attributes.height;
+        box.height = h || box.width * rHeight / rWidth;
+        box.top = y || pbox.top;
+      }
+      return box;
+    } }, { key: "getAttributes", value: function () {var _getAttributes = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(
+      element) {var arr, _ref22, _ref22$width, width, _ref22$height, height, src;return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:
+                arr = {};if (!(
+                (element === null || element === void 0 ? void 0 : element.url) || (element === null || element === void 0 ? void 0 : element.src))) {_context4.next = 15;break;}
+                arr.src = element.url || (element === null || element === void 0 ? void 0 : element.src);_context4.next = 5;return (
+                  (0, _utils.getImageInfo)(arr.src, this.isH5PathToBase64));case 5:_context4.t0 = _context4.sent;if (_context4.t0) {_context4.next = 8;break;}_context4.t0 = {};case 8:_ref22 = _context4.t0;_ref22$width = _ref22.width;width = _ref22$width === void 0 ? 0 : _ref22$width;_ref22$height = _ref22.height;height = _ref22$height === void 0 ? 0 : _ref22$height;src = _ref22.path;
+                arr = Object.assign({}, arr, { width: width, height: height, src: src });case 15:
+
+                if (element === null || element === void 0 ? void 0 : element.text) {
+                  arr.text = element.text;
+                }return _context4.abrupt("return",
+                arr);case 17:case "end":return _context4.stop();}}}, _callee4, this);}));function getAttributes(_x6) {return _getAttributes.apply(this, arguments);}return getAttributes;}() }, { key: "drawBoard", value: function () {var _drawBoard = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5(
+
+      element) {var node;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_context5.next = 2;return (
+                  this.findNode(element));case 2:node = _context5.sent;return _context5.abrupt("return",
+                this.drawNode(node));case 4:case "end":return _context5.stop();}}}, _callee5, this);}));function drawBoard(_x7) {return _drawBoard.apply(this, arguments);}return drawBoard;}() }, { key: "drawNode", value: function () {var _drawNode = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6(
+
+      element) {var layoutBox, computedStyle, name, rules, _element$attributes, src, text, childs, _iterator, _step, child;return _regenerator.default.wrap(function _callee6$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:
+
+                layoutBox =
+
+
+
+                element.layoutBox, computedStyle = element.computedStyle, name = element.name, rules = element.rules;_element$attributes =
+
+
+
+                element.attributes, src = _element$attributes.src, text = _element$attributes.text;if (!(
+                name === 'view')) {_context6.next = 6;break;}
+                this.drawView(layoutBox, computedStyle);_context6.next = 12;break;case 6:if (!(
+                name === 'image' && src)) {_context6.next = 11;break;}_context6.next = 9;return (
+                  this.drawImage(element.attributes, layoutBox, computedStyle, false));case 9:_context6.next = 12;break;case 11:
+                if (name === 'text') {
+                  this.drawText(text, layoutBox, computedStyle);
+                } else if (name === 'qrcode') {
+                  _qrcode.default.api.draw(text, this, layoutBox, computedStyle);
+                }case 12:if (
+                element.children) {_context6.next = 14;break;}return _context6.abrupt("return");case 14:
+                childs = Object.values ? Object.values(element.children) : Object.keys(element.children).map(function (key) {return element.children[key];});_iterator = _createForOfIteratorHelper(
+                childs);_context6.prev = 16;_iterator.s();case 18:if ((_step = _iterator.n()).done) {_context6.next = 24;break;}child = _step.value;_context6.next = 22;return (
+                  this.drawNode(child));case 22:_context6.next = 18;break;case 24:_context6.next = 29;break;case 26:_context6.prev = 26;_context6.t0 = _context6["catch"](16);_iterator.e(_context6.t0);case 29:_context6.prev = 29;_iterator.f();return _context6.finish(29);case 32:case "end":return _context6.stop();}}}, _callee6, this, [[16, 26, 29, 32]]);}));function drawNode(_x8) {return _drawNode.apply(this, arguments);}return drawNode;}() }]);return Draw;}();exports.Draw = Draw;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 480:
+/*!*********************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/lime-painter/gradient.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.GD = void 0;function _createForOfIteratorHelper(o, allowArrayLike) {var it;if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e) {throw _e;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e2) {didErr = true;err = _e2;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;} /* eslint-disable */
+
+var GD = {
+  isGradient: function isGradient(bg) {
+    if (bg && (bg.startsWith('linear') || bg.startsWith('radial'))) {
+      return true;
+    }
+    return false;
+  },
+  doGradient: function doGradient(bg, width, height, ctx) {
+    if (bg.startsWith('linear')) {
+      linearEffect(width, height, bg, ctx);
+    } else if (bg.startsWith('radial')) {
+      radialEffect(width, height, bg, ctx);
+    }
+  } };exports.GD = GD;
+
+
+function analizeGrad(string) {
+  var colorPercents = string.substring(0, string.length - 1).split("%,");
+  var colors = [];
+  var percents = [];var _iterator = _createForOfIteratorHelper(
+  colorPercents),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var colorPercent = _step.value;
+      colors.push(colorPercent.substring(0, colorPercent.lastIndexOf(" ")).trim());
+      percents.push(colorPercent.substring(colorPercent.lastIndexOf(" "), colorPercent.length) / 100);
+    }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
+  return {
+    colors: colors,
+    percents: percents };
+
+}
+
+function radialEffect(width, height, bg, ctx) {
+  var colorPer = analizeGrad(bg.match(/radial-gradient\((.+)\)/)[1]);
+  var grd = ctx.createCircularGradient(0, 0, width < height ? height / 2 : width / 2);
+  for (var i = 0; i < colorPer.colors.length; i++) {
+    grd.addColorStop(colorPer.percents[i], colorPer.colors[i]);
+  }
+  ctx.setFillStyle(grd);
+}
+
+function analizeLinear(bg, width, height) {
+  var direction = bg.match(/([-]?\d{1,3})deg/);
+  var dir = direction && direction[1] ? parseFloat(direction[1]) : 0;
+  var coordinate;
+  switch (dir) {
+    case 0:
+      coordinate = [0, -height / 2, 0, height / 2];
+      break;
+    case 90:
+      coordinate = [width / 2, 0, -width / 2, 0];
+      break;
+    case -90:
+      coordinate = [-width / 2, 0, width / 2, 0];
+      break;
+    case 180:
+      coordinate = [0, height / 2, 0, -height / 2];
+      break;
+    case -180:
+      coordinate = [0, -height / 2, 0, height / 2];
+      break;
+    default:
+      var x1 = 0;
+      var y1 = 0;
+      var x2 = 0;
+      var y2 = 0;
+      if (direction[1] > 0 && direction[1] < 90) {
+        x1 = width / 2 - (width / 2 * Math.tan((90 - direction[1]) * Math.PI * 2 / 360) - height / 2) * Math.sin(2 * (
+        90 - direction[1]) * Math.PI * 2 / 360) / 2;
+        y2 = Math.tan((90 - direction[1]) * Math.PI * 2 / 360) * x1;
+        x2 = -x1;
+        y1 = -y2;
+      } else if (direction[1] > -180 && direction[1] < -90) {
+        x1 = -(width / 2) + (width / 2 * Math.tan((90 - direction[1]) * Math.PI * 2 / 360) - height / 2) * Math.sin(2 * (
+        90 - direction[1]) * Math.PI * 2 / 360) / 2;
+        y2 = Math.tan((90 - direction[1]) * Math.PI * 2 / 360) * x1;
+        x2 = -x1;
+        y1 = -y2;
+      } else if (direction[1] > 90 && direction[1] < 180) {
+        x1 = width / 2 + (-(width / 2) * Math.tan((90 - direction[1]) * Math.PI * 2 / 360) - height / 2) * Math.sin(2 * (
+        90 - direction[1]) * Math.PI * 2 / 360) / 2;
+        y2 = Math.tan((90 - direction[1]) * Math.PI * 2 / 360) * x1;
+        x2 = -x1;
+        y1 = -y2;
+      } else {
+        x1 = -(width / 2) - (-(width / 2) * Math.tan((90 - direction[1]) * Math.PI * 2 / 360) - height / 2) * Math.sin(2 * (
+        90 - direction[1]) * Math.PI * 2 / 360) / 2;
+        y2 = Math.tan((90 - direction[1]) * Math.PI * 2 / 360) * x1;
+        x2 = -x1;
+        y1 = -y2;
+      }
+      coordinate = [x1, y1, x2, y2];
+      break;}
+
+  return coordinate;
+}
+
+function linearEffect(width, height, bg, ctx) {
+  var param = analizeLinear(bg, width, height);
+  var grd = ctx.createLinearGradient(param[0], param[1], param[2], param[3]);
+  var content = bg.match(/linear-gradient\((.+)\)/)[1];
+  var colorPer = analizeGrad(content.substring(content.indexOf(',') + 1));
+  for (var i = 0; i < colorPer.colors.length; i++) {
+    grd.addColorStop(colorPer.percents[i], colorPer.colors[i]);
+  }
+  ctx.setFillStyle(grd);
+}
+
+/***/ }),
+
+/***/ 481:
+/*!*******************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/lime-painter/qrcode.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// 请去下载覆盖：https://gitee.com/liangei/lime-painter/blob/master/qrcode.js
+
+/***/ }),
+
+/***/ 482:
+/*!*******************************************************************************!*\
+  !*** /Users/fangzq/Documents/fang/fzq-mall/components/lime-painter/canvas.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.adaptor = adaptor;function adaptor(ctx) {
+  return Object.assign(ctx, {
+    setStrokeStyle: function setStrokeStyle(val) {
+      ctx.strokeStyle = val;
+    },
+    setLineWidth: function setLineWidth(val) {
+      ctx.lineWidth = val;
+    },
+    setLineCap: function setLineCap(val) {
+      ctx.lineCap = val;
+    },
+    setFillStyle: function setFillStyle(val) {
+      ctx.fillStyle = val;
+    },
+    setFontSize: function setFontSize(val) {
+      ctx.font = String(val);
+    },
+    setGlobalAlpha: function setGlobalAlpha(val) {
+      ctx.globalAlpha = val;
+    },
+    setLineJoin: function setLineJoin(val) {
+      ctx.lineJoin = val;
+    },
+    setTextAlign: function setTextAlign(val) {
+      ctx.textAlign = val;
+    },
+    setMiterLimit: function setMiterLimit(val) {
+      ctx.miterLimit = val;
+    },
+    setShadow: function setShadow(offsetX, offsetY, blur, color) {
+      ctx.shadowOffsetX = offsetX;
+      ctx.shadowOffsetY = offsetY;
+      ctx.shadowBlur = blur;
+      ctx.shadowColor = color;
+    },
+    setTextBaseline: function setTextBaseline(val) {
+      ctx.textBaseline = val;
+    },
+    createCircularGradient: function createCircularGradient() {},
+    draw: function draw() {} });
+
+}
+
+/***/ }),
+
 /***/ 5:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!

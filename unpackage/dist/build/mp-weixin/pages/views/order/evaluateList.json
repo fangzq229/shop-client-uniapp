@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "评价中心",
-  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
   "usingComponents": {
     "tabs": "/pages/commponent/public/tabs",
     "loading": "/pages/commponent/public/loading",

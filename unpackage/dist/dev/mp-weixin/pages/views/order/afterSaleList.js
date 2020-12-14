@@ -205,6 +205,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 var app = getApp();var tabs = function tabs() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/tabs */ "pages/commponent/public/tabs").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/tabs */ 451));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var loading = function loading() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/loading */ "pages/commponent/public/loading").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/loading */ 414));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var navBar = function navBar() {__webpack_require__.e(/*! require.ensure | pages/commponent/public/navBar */ "pages/commponent/public/navBar").then((function () {return resolve(__webpack_require__(/*! ../../commponent/public/navBar.vue */ 344));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<canvas class="mycanvas" canvas-id="mycanvas" :style="'width:' + (windowWidth - 60) + 'px;height:520px'"></canvas>
+		<lpainter ref="painter" width="680rpx" isRenderImage @success="painterSuccess(e)" height="1050rpx" />
 		<!-- #ifdef H5 -->
 		<block><image class="imgs" :style="'width:' + (windowWidth - 60) + 'px;height:520px'" :src="imgUrl" mode=""></image></block>
 		<!-- #endif -->
@@ -16,6 +16,7 @@
 <script>
 var app = getApp();
 import loading from '../../commponent/public/loading';
+import lpainter from '../../../components/lime-painter';
 import { getUserInfo } from '@/utils/auth';
 export default {
 	data() {
@@ -23,17 +24,14 @@ export default {
 			windowWidth: '',
 			windowHeight: '',
 			colors: '',
-			ctx: '',
 			imgUrl: '',
-			userInfo: {
-				name: '反转',
-				logo: '/static/images/face.jpg'
-			}
+			userInfo: {}
 		};
 	},
 
 	components: {
-		loading
+		loading,
+		lpainter
 	},
 	props: {
 		posterData: {
@@ -41,11 +39,14 @@ export default {
 		}
 	},
 	created() {
+		this.userInfo = getUserInfo();
 		this.getSystem();
 		this.setData({
 			colors: app.globalData.newColor
 		});
-		this.setPoster();
+		this.$nextTick(() => {
+			this.createImg();
+		});
 	},
 	/**
 	 * 页面上拉触底事件的处理函数
@@ -56,12 +57,13 @@ export default {
 	 * 用户点击右上角分享
 	 */
 	onShareAppMessage: function() {},
+
 	methods: {
+		// 获取系统宽高
 		getSystem() {
 			let that = this;
 			uni.getSystemInfo({
 				success: function(res) {
-					console.log(res);
 					that.setData({
 						windowHeight: res.windowHeight,
 						windowWidth: res.windowWidth
@@ -69,198 +71,92 @@ export default {
 				}
 			});
 		},
-
-		async setPoster() {
-			this.userInfo = getUserInfo() || {};
-			uni.showLoading({
-				title: '海报生成中...'
+		// 成功分享图片
+		async createImg() {
+			const painter = this.$refs.painter;
+			painter.render({
+				width: '680rpx',
+				height: '1050rpx',
+				background: '#FFFFFF',
+				borderRadius: '10rpx',
+				views: [
+					{
+						type: 'image',
+						src: this.userInfo.avatarUrl,
+						css: {
+							left: '40rpx',
+							top: '20rpx',
+							width: '120rpx',
+							height: '120rpx'
+						}
+					},
+					{
+						type: 'text',
+						text: this.userInfo.nickName,
+						css: {
+							left: '160rpx',
+							top: '50rpx',
+							fontSize: '36rpx',
+							color: '#535353',
+							lineHeight: '36rpx'
+						}
+					},
+					{
+						type: 'text',
+						text: '精品好物，值得推荐，爱你呦',
+						css: {
+							left: '160rpx',
+							top: '100rpx',
+							fontSize: '32rpx',
+							color: '#787779',
+							lineHeight: '36rpx'
+						}
+					},
+					{
+						type: 'image',
+						src: this.posterData.smallImg,
+						css: {
+							left: '50rpx',
+							top: '180rpx',
+							width: '580rpx',
+							height: '580rpx',
+							borderRadius: '6rpx'
+						}
+					},
+					{
+						type: 'text',
+						text: this.posterData.name + ' ' + this.posterData.subhead,
+						css: {
+							maxLines: 2,
+							width: '390rpx',
+							color: '#535353',
+							left: '30rpx',
+							top: '820rpx',
+							fontSize: '36rpx',
+							lineHeight: '50rpx'
+						}
+					},
+					{
+						type: 'image',
+						src: '../../../static/images/ewm.png',
+						css: {
+							left: '440rpx',
+							top: '800rpx',
+							width: '178rpx',
+							height: '178rpx',
+							borderRadius: '6rpx'
+						}
+					},
+				]
 			});
-			let ctx = uni.createCanvasContext('mycanvas', this); // 绘制背景
-			ctx.fillStyle = '#FFFFFF';
-			ctx.fillRect(0, 0, this.windowWidth - 60, 520);
-			// 绘制文字
-			this.setText(ctx, 14, '#333', 85, 35, this.userInfo.nickName);
-			this.setText(ctx, 12, '#999', 85, 58, '为您精心挑选了一个好礼物');
-			ctx.save();
-			/**
-			 * 绘制头像
-			 */
-			ctx.beginPath();
-			let avatar_width = 60; //头像宽度
-			let avatar_height = 60; //头像高度
-			let avatar_x = 15; //头像的x坐标
-			let avatar_y = 15; //头像的y坐标
-			let radius = 8; //头像的圆角弧度
-			// 绘制圆角头像
-			this.setRadius(ctx, avatar_width, avatar_height, avatar_x, avatar_y, radius);
-			ctx.fill()
-			// 绘制圆形图片
-			// this.setCircular(ctx, avatar_width, avatar_height, avatar_x, avatar_y)
-
-			// 绘制商品图片
-			ctx.beginPath();
-			await this.setGoodsImg(ctx);
-			ctx.fill()
-
-			// 绘制商品价格
-			ctx.beginPath();
-			let pirce = '￥ ' + (this.posterData.skus[0].activityPrice || this.posterData.skus[0].salePrice);
-			this.setText(ctx, 20, this.colors, 15, 420, pirce);
-			ctx.fill()
-			// 绘制商品名称
-			ctx.beginPath();
-			this.setGoodsName(ctx);
-			ctx.fill()
-			// 绘制二维码
-			ctx.beginPath();
-			this.setEwm(ctx);
-			ctx.fill()
 		},
-
-		setEwm(ctx) {
-			console.log('生成二维码');
-			let code_widht = 100; //二维码宽度
-			let code_height = 100; //二维码高度
-			let x = this.windowWidth - 170;
-			ctx.drawImage('/static/images/ewm.png', x, 410, code_widht, code_height);
-			setTimeout(() => {
-				//必须延时执行 不然h5不显示
-				ctx.save();
-				ctx.draw(false, () => {
-					setTimeout(() => {
-						uni.canvasToTempFilePath(
-							{
-								canvasId: 'mycanvas',
-								success: res => {
-									console.log('---------------');
-									console.log(res);
-									this.imgUrl = res.tempFilePath;
-								}
-							},
-							this
-						);
-					}, 200);
-				});
-				uni.hideLoading();
-			}, 1000);
-		},
-		async setRadius(ctx, avatar_width, avatar_height, avatar_x, avatar_y, radius) {
-			/**
-			 * 绘制圆角
-			 */
-			ctx.arc(avatar_x + radius, avatar_y + radius, radius, Math.PI, (Math.PI * 3) / 2);
-			ctx.lineTo(avatar_width - radius + avatar_x, avatar_y);
-			ctx.arc(avatar_width - radius + avatar_x, radius + avatar_y, radius, (Math.PI * 3) / 2, Math.PI * 2);
-			ctx.lineTo(avatar_width + avatar_x, avatar_height + avatar_y - radius);
-			ctx.arc(avatar_width - radius + avatar_x, avatar_height - radius + avatar_y, radius, 0, (Math.PI * 1) / 2);
-			ctx.lineTo(radius + avatar_x, avatar_height + avatar_y);
-			ctx.arc(radius + avatar_x, avatar_height - radius + avatar_y, radius, (Math.PI * 1) / 2, Math.PI);
-			// 开始填充
-			ctx.strokeStyle = '#fff';
-			ctx.fill(); //保证图片无bug填充
-			ctx.clip(); //画了圆 再剪切  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
-			let tempFilePath = await this.downloadFile(this.userInfo.avatarUrl);
-			ctx.drawImage(tempFilePath, avatar_x, avatar_y, avatar_width, avatar_height);
-			ctx.closePath();
-			ctx.restore();
-		},
-		setCircular(ctx, avatar_width, avatar_height, avatar_x, avatar_y) {
-			//绘制圆形图片
-			/**
-			 * 绘制圆形
-			 */
-			//先画个圆   前两个参数确定了圆心 （x,y） 坐标  第三个参数是圆的半径  四参数是绘图方向  默认是false，即顺时针
-			ctx.arc(avatar_width / 2 + avatar_x, avatar_height / 2 + avatar_y, avatar_width / 2, 0, Math.PI * 2, false); //画圆
-			// 开始填充
-			ctx.strokeStyle = '#fff';
-			ctx.fill(); //保证图片无bug填充
-			ctx.clip(); //画了圆 再剪切  原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
-
-			ctx.drawImage(this.userInfo.logo, avatar_x, avatar_y, avatar_width, avatar_height);
-			ctx.closePath();
-			ctx.restore();
-		},
-		async setGoodsImg(ctx) {
-			//绘制中间商品图片
-			let width = this.windowWidth - 120;
-			const path = await this.downloadFile(this.posterData.bigImg[0]);
-			ctx.drawImage(path, 30, 95, width, width);
-			ctx.save();
-		},
-		setText(ctx, fs, color, x, y, c, bold) {
-			//绘制商品价格
-			ctx.setFillStyle(color);
-			ctx.setTextAlign('left');
-			if (bold) {
-				ctx.font = 'normal bold 20px Arial,sans-serif';
-			} else {
-				ctx.font = 'normal 20px Arial,sans-serif';
-			}
-			ctx.setFontSize(fs);
-			ctx.fillText(c, x, y);
-			ctx.restore();
-		},
-		setGoodsName(ctx) {
-			//绘制商品名称
-			let obj = {
-				x: 20, //绘制文本的左上角x坐标位置
-				y: 440, //绘制文本的左上角y坐标位置
-				width: 180,
-				height: 20,
-				line: 3,
-				color: '#333333',
-				size: 14, //字体的字号
-				align: 'left',
-				baseline: 'top',
-				text: `${this.posterData.name} ${this.posterData.subhead}`,
-				bold: true
-			};
-			var td = Math.ceil(obj.width / obj.size);
-			var tr = Math.ceil(obj.text.length / td);
-			for (var i = 0; i < tr; i++) {
-				var txt = {
-					x: obj.x,
-					y: obj.y + i * obj.height,
-					color: obj.color,
-					size: obj.size,
-					align: obj.align,
-					baseline: obj.baseline,
-					text: obj.text.substring(i * td, (i + 1) * td),
-					bold: obj.bold
-				};
-				if (i < obj.line) {
-					if (i == obj.line - 1) {
-						txt.text = txt.text.substring(0, txt.text.length - 3) + '......';
-					}
-					this.drawText(ctx, txt);
-				}
-			}
-		},
-		/**
-		 * 渲染文字
-		 *
-		 * @param {Object} obj
-		 */
-		drawText: function(ctx, obj) {
-			console.log('渲染文字', obj);
-			ctx.save();
-			ctx.setFillStyle(obj.color);
-			ctx.setFontSize(obj.size);
-			ctx.setTextAlign(obj.align);
-			ctx.setTextBaseline(obj.baseline);
-			if (obj.bold) {
-				console.log('字体加粗');
-				ctx.fillText(obj.text, obj.x, obj.y - 0.1);
-				ctx.fillText(obj.text, obj.x - 0.1, obj.y);
-			}
-			ctx.fillText(obj.text, obj.x, obj.y);
-			if (obj.bold) {
-				ctx.fillText(obj.text, obj.x, obj.y + 0.1);
-				ctx.fillText(obj.text, obj.x + 0.1, obj.y);
-			}
-			ctx.restore();
-		},
+		// 成功
+		painterSuccess(e) {
+			console.log(e);
+		}, 
+		// 保存图片到本地
 		saveImg() {
+			console.log(this.imgUrl);
 			//保存图片
 			uni.showLoading({
 				title: '保存中...'
@@ -299,21 +195,6 @@ export default {
 						}, 1000);
 					}
 				}
-			});
-		},
-		async downloadFile(url) {
-			// return url;
-			// #ifdef H5
-			return url;
-			// #endif
-			return new Promise(resolve => {
-				uni.downloadFile({
-					url: url,
-					success: function(res) {
-						console.log(res.tempFilePath);
-						resolve(res.tempFilePath);
-					}
-				});
 			});
 		}
 	}
