@@ -89,7 +89,7 @@ export default {
 	opacity: 0.8;
 }
 .server_list text {
-	font-size: 56upx;
+	font-size: 46upx;
 	line-height: 60upx;
 	display: inline-block;
 }

@@ -87,27 +87,28 @@ export default {
 							left: '40rpx',
 							top: '20rpx',
 							width: '120rpx',
-							height: '120rpx'
+							height: '120rpx',
+							radius: '50%'
 						}
 					},
 					{
 						type: 'text',
 						text: this.userInfo.nickName,
 						css: {
-							left: '160rpx',
-							top: '50rpx',
+							left: '180rpx',
+							top: '45rpx',
 							fontSize: '36rpx',
-							color: '#535353',
+							color: '#333333',
 							lineHeight: '36rpx'
 						}
 					},
 					{
 						type: 'text',
-						text: '精品好物，值得推荐，爱你呦',
+						text: '正品美妆，值得推荐',
 						css: {
-							left: '160rpx',
+							left: '180rpx',
 							top: '100rpx',
-							fontSize: '32rpx',
+							fontSize: '28rpx',
 							color: '#787779',
 							lineHeight: '36rpx'
 						}
@@ -120,7 +121,6 @@ export default {
 							top: '180rpx',
 							width: '580rpx',
 							height: '580rpx',
-							borderRadius: '6rpx'
 						}
 					},
 					{
@@ -132,7 +132,7 @@ export default {
 							color: '#535353',
 							left: '30rpx',
 							top: '820rpx',
-							fontSize: '36rpx',
+							fontSize: '32rpx',
 							lineHeight: '50rpx'
 						}
 					},
@@ -144,7 +144,6 @@ export default {
 							top: '800rpx',
 							width: '178rpx',
 							height: '178rpx',
-							borderRadius: '6rpx'
 						}
 					},
 				]

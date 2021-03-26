@@ -6,7 +6,7 @@
 			<view class="nav">
 				<view class="user" @click="onLogin">
 					<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
-					<image src="../../../static/images/face.jpg" v-else></image>
+					<image src="../../../static/images/face.jpeg" v-else></image>
 					<text>{{ userdata.nickName || '登录' }}</text>
 				</view>
 			</view>
@@ -35,7 +35,7 @@
 		>
 			<image src="/static/images/user/arc.png" class="arc"></image>
 			<!-- 我的账户 -->
-			<!-- <my-account :colors="colors"></my-account> -->
+			<my-account :colors="colors"></my-account>
 			<!-- 全部订单 -->
 			<my-order :orderText="orderText" :colors="colors"></my-order>
 			<!-- 我的足迹 -->
@@ -55,7 +55,7 @@
 		>
 			<image src="/static/images/user/arc.png" class="arc"></image>
 			<!-- 我的账户 -->
-			<!-- <my-account :colors="colors"></my-account> -->
+			<my-account :colors="colors"></my-account>
 		</view>
 		<view class="place">
 			<!-- 全部订单 -->
@@ -155,20 +155,20 @@ export default {
 				// 	id: 6,
 				// 	elseUrl: ''
 				// },
-				{
-					name: '分享',
-					icon: 'icon-fenxiang1',
-					url: '/pages/views/user/extension',
-					id: 7,
-					elseUrl: ''
-				},
+				// {
+				// 	name: '分享',
+				// 	icon: 'icon-fenxiang1',
+				// 	url: '/pages/views/user/extension',
+				// 	id: 7,
+				// 	elseUrl: ''
+				// },
 				{
 					name: '联系我们',
 					icon: 'icon-kefu1',
 					url: '',
 					id: 8,
 					elseUrl: '',
-					phoneNumber: '18811126599'
+					phoneNumber: '18511780604'
 				},
 				{
 					name: '设置',

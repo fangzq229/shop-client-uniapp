@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "评价中心",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "tabs": "/pages/commponent/public/tabs",
-    "loading": "/pages/commponent/public/loading",
-    "nav-bar": "/pages/commponent/public/navBar"
-  }
-}

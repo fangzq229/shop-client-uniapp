@@ -9,13 +9,7 @@ Vue.mixin({
 	methods: {
 		async setTabBarBadge() {
 			//设置购物车角标
-			const res = await uni.$ajax('/api/cart/count',).catch((err) => {
-				return uni.showToast({
-					title: err,
-					icon: 'none'
-				});
-			});
-			console.log(res);
+			const res = await uni.$ajax('/api/cart/count',);
 			if (res.count == 0) {
 				uni.removeTabBarBadge({
 					index: 2

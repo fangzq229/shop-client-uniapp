@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "提现明细",
-  "usingComponents": {
-    "loading": "/pages/commponent/public/loading"
-  }
-}

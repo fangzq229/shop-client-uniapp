@@ -63,11 +63,11 @@ export default {
     } else {
       //如果不存在主题 使用默认主题
       let fristColor = {};
-      fristColor.color = '#fa436a';
-      fristColor.name = "default";
+      fristColor.color = '#e50011';
+      fristColor.name = "red";
       setConfig(fristColor);
       uni.setTabBarStyle({
-        selectedColor: '#fa436a'
+        selectedColor: '#e50011'
       });
     }
   },
@@ -75,7 +75,7 @@ export default {
     userInfo: null,
     statusHeight: '20', //状态栏高度
     toBar: '44', //标题栏高度
-    newColor: nowColor || '#fa436a', //小程序主题颜色
+    newColor: nowColor || '#e50011', //小程序主题颜色
     config: myconfig.themeList  //主题图标
   },
   methods: {} 

@@ -26,7 +26,7 @@ export default {
   methods: {
 	  goto(item) {
 		  uni.navigateTo({
-		    url: '/pages/views/home/classList?id=' + item.id
+		    url: '/pages/views/home/classList?recommendId=' + item.id
 		  });
 	  }
   }

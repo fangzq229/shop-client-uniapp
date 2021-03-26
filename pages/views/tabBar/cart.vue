@@ -140,6 +140,7 @@
 			});
 			if(!getToken()) {
 				this.isLogin = false;
+				this.cartList = [];
 				return;
 			}
 			this.isLogin = true;

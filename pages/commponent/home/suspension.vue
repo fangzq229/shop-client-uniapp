@@ -25,7 +25,7 @@ export default {
 					icon: 'icon-kefu',
 					name: '客服',
 					link: '',
-					tel: '18811126599'
+					tel: '18511780604'
 				}
 			]
 		};

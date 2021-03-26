@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "我的积分",
-  "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "loading": "/pages/commponent/public/loading"
-  }
-}

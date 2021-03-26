@@ -2,10 +2,28 @@
 	height: 100vw;
 	width: 100vw;
 	position: absolute;
-	top: 0upx;
-	left: 0;
+	top: 0rpx;
+	left: 0rpx;
 	overflow: hidden;
 	z-index: 10;
+}
+.carousel-mark {
+	position: absolute;
+	top: 280rpx;
+	left: 280rpx;
+	z-index: 99;
+	background-color: rgba($color: #000000, $alpha: 0.5);
+	width: 200rpx;
+	height: 200rpx;
+	border-radius: 50%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.carousel-mark text {
+	font-size: 42rpx;
+	color: #FFFFFF;
 }
 
 .carousel swiper {
@@ -218,6 +236,8 @@
 	width: 65%;
 	color: #999;
 	font-size: 24upx;
+	text-align: right;
+	padding-right: 20rpx;
 }
 
 .cell image {
@@ -242,7 +262,7 @@
 	margin-top: 30upx;
 }
 .details_content image {
-	margin-top: -6upx;
+	margin-top: -8upx;
 }
 
 .operation {

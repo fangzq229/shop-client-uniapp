@@ -47,11 +47,11 @@ export default {
 			noticeList: [
 				{
 					id: 1,
-					title: '甜品港湾,恬美生活'
+					title: '在这里，变美是件很容易的事情'
 				},
 				{
 					id: 2,
-					title: '将来有太多未知的甜等待你去尝试'
+					title: '保真，正品，值得美丽的你拥有'
 				}
 			]
 		};
@@ -102,7 +102,13 @@ export default {
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
-	onShow: function() {},
+	onShow: function() {
+		if(!getToken()) {
+			uni.removeTabBarBadge({
+				index: 2
+			})
+		}
+	},
 
 	/**
 	 * 生命周期函数--监听页面隐藏

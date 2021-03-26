@@ -7,7 +7,7 @@
       <text class="iconfont icon-chenggong" :style="'color:' + colors"></text>
     </view>
     <view class="texts">支付成功</view>
-    <view class="moneys">￥35.9</view>
+    <view class="moneys">{{ orderDetails.payPrice }}</view>
     <view class="wancheng" @tap="onsuccess" :style="'color:' + colors + ';border-color:' + colors">完成</view>
     <view class="ewm" @tap="jumpUser">返回个人中心>>></view>
   </view>
@@ -20,7 +20,11 @@ var app = getApp();
 export default {
   data() {
     return {
-      colors: ""
+      colors: "",
+			orderDetails: {
+				payPrice: ''
+			},
+			orderId: ''
     };
   },
 
@@ -34,6 +38,7 @@ export default {
     this.setData({
       colors: app.globalData.newColor
     });
+		this.orderId = options.orderId;
   },
 
   /**
@@ -44,7 +49,10 @@ export default {
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () {
+		// 获取订单信息
+		this.getOrderInfo();
+	},
 
   /**
    * 生命周期函数--监听页面隐藏
@@ -81,7 +89,17 @@ export default {
       uni.switchTab({
         url: '/pages/views/tabBar/user'
       });
-    }
+    },
+		getOrderInfo() {
+			uni.$ajax('/api/order/detail', {id: this.orderId}).then((result) => {
+				this.orderDetails = result;
+			}).catch((err) => {
+				uni.showToast({
+					title: err,
+					icon: 'none'
+				});
+			});
+		}
 
   }
 };

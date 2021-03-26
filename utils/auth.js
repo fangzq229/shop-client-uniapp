@@ -12,6 +12,7 @@ export function getToken() {
 }
 export function removeToken() {
 	uni.removeStorageSync('token');
+	uni.removeStorageSync('userinfo');
 }
 /**
  * 操作用户信息
@@ -41,14 +42,13 @@ export function setConfig(value) {
 	try {
 		let config = JSON.stringify(value);
 		uni.setStorageSync('config', config);
-		console.log('存储主题成功');
 	} catch (e) {
 		return;
 	}
 }
 export function getConfig() {
 	let config = uni.getStorageSync('config');
-
+	console.log('------' + config);
 	if (config) {
 		return JSON.parse(config);
 	}

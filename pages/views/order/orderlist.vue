@@ -20,7 +20,7 @@
 						<image :src="row.smallImage" mode="aspectFill"></image>
 						<view class="top_right">
 							<view class="order_name">{{row.name}} {{ row.subhead }}</view>
-							<view class="sku">规格：{{ formatAttr(row.attributeJson) }}</view>
+							<view class="sku" v-if="row.attributeJson !== '[]'">规格：{{ formatAttr(row.attributeJson) }}</view>
 							<view class="price">
 								<view class="t1">￥{{row.salePrice}}</view>
 								<view class="t3">
@@ -99,7 +99,9 @@
 				isShow: true,
 				colors: "",
 				page: 1,
-				pageSize: 10
+				pageSize: 10,
+				key: 0,
+				isMore: true
 			};
 		},
 			
@@ -138,7 +140,9 @@
 		onShow: function() {
 			this.orderList = [];
 			this.page = 1;
-			this.getOrderList(this.active);
+			this.key = this.active;
+			this.isMore = true;
+			this.getOrderList();
 		},
 
 		/**
@@ -161,9 +165,7 @@
 		/**
 		 * 页面上拉触底事件的处理函数
 		 */
-		onReachBottom: function() {
-			console.log('-------');
-		},
+		onReachBottom: function() {},
 
 		/**
 		 * 用户点击右上角分享
@@ -173,20 +175,26 @@
 			// tab选择
 			setTabs(item, index) {
 				this.orderList = [];
+				this.page = 1;
+				this.key = index;
+				this.isMore = true;
 				this.setData({
 					active: item.id
 				});
-				this.getOrderList(index);
+				this.getOrderList();
 			},
 			// 获取订单列表
 			getOrderList(key) {
 				uni.$ajax('/api/order/list', {
-					status: key,
+					status: this.key,
 					page: this.page,
 					pageSize: this.pageSize
 				}).then(res => {
-					console.log(res);
-					this.orderList = this.orderList.concat(res.items);
+					if(res.items.length > 0 ) {
+						this.orderList = this.orderList.concat(res.items);
+					} else {
+						this.isMore = false;
+					}
 				}).catch((err)=> {
 					return uni.showToast({
 						title: err,
@@ -272,7 +280,10 @@
 			},
 			ongetMoreList() { 
 				//上拉获取更多商品列表
-				console.log('触发事件')
+				if(this.isMore) {
+					this.page = this.page + 1;
+					this.getOrderList();
+				}
 			},
 			// 格式化属性
 			formatAttr(attrs) {
@@ -295,7 +306,6 @@
 				if(item.status == 50  && item.payStatus == 20 && item.deliverStatus == 40) {
 					text = '已完成'
 				}
-				
 				return text;
 			}
 		}

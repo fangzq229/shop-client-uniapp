@@ -6,9 +6,9 @@ export default {
     color: '#fa436a',
     tabList: ["/static/images/tabBar/home-default.png", "/static/images/tabBar/class-default.png", "/static/images/tabBar/cart-default.png", "/static/images/tabBar/user-default.png"]
   }, {
-    title: '嫣红',
+    title: '大红',
     name: 'red',
-    color: '#e54d42',
+    color: '#e50011',
     tabList: ["/static/images/tabBar/tab-home-red.png", "/static/images/tabBar/tab-cate-red.png", "/static/images/tabBar/tab-cart-red.png", "/static/images/tabBar/tab-user-red.png"]
   }, {
     title: '桔橙',

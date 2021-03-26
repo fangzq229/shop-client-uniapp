@@ -23,20 +23,13 @@
 					<image :src="item.smallImage" mode="aspectFill"></image>
 					<view class="goods_title">
 						<view class="g_name">{{ item.name }} {{ item.subhead }}</view>
-						<view class="goods_sku">规格: {{ item.goods_sku_text }}</view>
+						<view class="goods_sku" v-if="item.goods_sku_text">规格: {{ item.goods_sku_text }}</view>
 						<view class="price">
 							<view class="t1" :style="'color:' + colors">￥{{ item.salePrice }}</view>
 							<view class="t3">x{{ item.quantity }}</view>
 						</view>
 					</view>
 				</view>
-				<!-- <view class="morelist" style="border-bottom:none">
-					<view class="title">
-						<text class="quan" :style="'background:' + colors">券</text>
-						<text>优惠券</text>
-					</view>
-					<view class="right_title" :style="'color:' + colors + ';font-size:24upx'">减20</view>
-				</view> -->
 				<!-- 单商品操作按钮 在订单状态为待评价时才会显示-->
 				<view class="goods_btns">
 					<!-- <view v-if="item.status == 10 && orderDetails.status == 50" class="btns" @click="onafterSale(item)">申请售后</view> -->
@@ -60,6 +53,13 @@
 						<text>运费</text>
 					</view>
 					<view class="right_title">￥0</view>
+				</view>
+				<view class="morelist" style="border-bottom:none">
+					<view class="title">
+						<text class="quan" :style="'background:' + colors">券</text>
+						<text>优惠券</text>
+					</view>
+					<view class="right_title" :style="'color:' + colors + ';font-size:24upx'">-¥ {{ orderDetails.discountPrice }}</view>
 				</view>
 				<view class="morelist">
 					<text class="title">实付款</text>
@@ -101,7 +101,7 @@
 						<text :style="'color:' + colors + ';'">￥{{ orderDetails.payPrice }}</text>
 					</view>
 					<view class="btns" :style="'color:' + colors + ';border:1upx solid ' + colors + ';margin-right:20upx'" @tap="cencalOrder">取消订单</view>
-					<view class="btns" :style="'background:' + colors + ';'">继续支付</view>
+					<view class="btns" :style="'background:' + colors + ';'" @tap="pay">继续支付</view>
 				</block>
 				<!-- <block v-if="orderDetails.payStatus == 20 && orderDetails.deliverStatus == 10 && orderDetails.status == 10">
 					<view class="btns" :style="'color:' + colors + ';border:1upx solid ' + colors + ';margin-right:20upx'" @tap="onRefund">申请退款</view>
@@ -271,16 +271,29 @@ export default {
 		},
 		//复制订单号
 		onCopy(value) {
-			var input = document.createElement('input'); // 直接构建input
-			input.value = value; // 设置内容
+			// #ifndef H5
+			uni.setClipboardData({
+			    data: value,
+			    success: function () {
+						uni.showToast({
+							title: '复制成功',
+							icon: 'none'
+						});
+			    }
+			});
+			// #endif
+			// #ifdef H5
+			const input = document.createElement('input'); // 直接构建input
+			input.value = valule; // 设置内容
 			document.body.appendChild(input); // 添加临时实例
 			input.select(); // 选择实例内容
 			document.execCommand('Copy'); // 执行复制
 			document.body.removeChild(input); // 删除临时实例
 			uni.showToast({
-				title: '复制成功~',
+				title: '复制成功',
 				icon: 'none'
 			});
+			// #endif
 		},
 		//申请售后
 		onafterSale(item) {
@@ -315,6 +328,34 @@ export default {
 			uni.switchTab({
 				url: '/pages/views/tabBar/cart'
 			});
+		},
+		// 立即支付
+		pay(){
+			const _this = this;
+			uni.$ajax('/api/pay/wx-xcx',{orderId: _this.orderId },'post').then((payParamRes) => {
+				uni.requestPayment({
+						provider: 'wxpay',
+						...payParamRes,
+						success: function (payRes) {
+								// 支付成功
+								console.log(payRes);
+								uni.navigateTo({
+									url: '/pages/views/order/success?orderId='+ _this.orderId
+								});
+						},
+						fail: function (err) {
+							return uni.showToast({
+								title: '支付失败',
+								icon: 'none'
+							});
+						}
+				});
+			}).catch((err) => {
+				return uni.showToast({
+					title: '支付繁忙',
+					icon: 'none'
+				});
+			})
 		},
 		// 获取订单信息
 		getOrderDetails() {

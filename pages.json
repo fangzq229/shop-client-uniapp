@@ -44,6 +44,7 @@
 			"style": {
 				"navigationBarTitleText": "我的",
 				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
 				"onReachBottomDistance": 50,
 				"app-plus": {
 					"bounce": "none",

@@ -33,7 +33,7 @@
 				shows:false,
 				userInfo: {
 					name: '反转',
-					logo: '/static/images/face.jpg',
+					logo: '/static/images/face.jpeg',
 					goodsImg: '/static/images/goods/one.jpg',
 					price: '3599.00',
 					goodsName: '魅族17 8GB+128GB 十七度灰 骁龙865 旗舰5G手机 30W快充 6400W后置主摄 90Hz屏幕 支持NFC 智能拍照游戏手机'

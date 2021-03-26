@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "设置",
-  "usingComponents": {
-    "item-cell": "/pages/commponent/setting/item-cell"
-  }
-}

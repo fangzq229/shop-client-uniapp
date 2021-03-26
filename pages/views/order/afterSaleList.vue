@@ -97,64 +97,65 @@
 					id: 2
 				}],
 				active: 0,
-				orderList: [{
-						goods: [{
-								title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-								type: 1,
-								goods_id: 201,
-								number: 1,
-								goods_sku_text: '醇黑巧克力【20枚】',
-								img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-								money: '175.78',
-							},
-							{
-								title: '农谣人 原味火山石烤肠1000g/约16根台式原味肠地道肠纯肉肠热狗肠台湾烤肠香肠烧烤肠半熟食火腿肠 台式原味地道肠1kg',
-								type: 1,
-								goods_id: 204,
-								number: 1,
-								goods_sku_text: '台式原味地道肠1kg',
-								img: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
-								money: '52.00 '
-							},
-						],
-						type: 1,
-						status: 0,
-						order_No: 'AQWEAD45648974974456',
-						shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
-					},
-					{
-						goods: [{
-							title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-							img: '/static/images/goods/there.jpg',
-							goods_id: 203,
-							money: '152.00 ',
-							sku: '',
-							number: 1,
-						}, ],
-						type: 1,
-						status: 0,
-						order_No: 'AQWEAD45648974974456',
-						shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
-					},
-				],
-				afterList: [{
-						title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
-						type: 1,
-						goods_id: 201,
-						number: 1,
-						goods_sku_text: '醇黑巧克力【20枚】',
-						img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
-						money: '175.78',
-					},
-					{
-						title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
-						img: '/static/images/goods/there.jpg',
-						goods_id: 203,
-						money: '152.00 ',
-						sku: '',
-						number: 1,
-					},
-				],
+				// orderList: [{
+				// 		goods: [{
+				// 				title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
+				// 				type: 1,
+				// 				goods_id: 201,
+				// 				number: 1,
+				// 				goods_sku_text: '醇黑巧克力【20枚】',
+				// 				img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
+				// 				money: '175.78',
+				// 			},
+				// 			{
+				// 				title: '农谣人 原味火山石烤肠1000g/约16根台式原味肠地道肠纯肉肠热狗肠台湾烤肠香肠烧烤肠半熟食火腿肠 台式原味地道肠1kg',
+				// 				type: 1,
+				// 				goods_id: 204,
+				// 				number: 1,
+				// 				goods_sku_text: '台式原味地道肠1kg',
+				// 				img: 'http://img10.360buyimg.com/n1/jfs/t1/118993/11/329/175715/5e8ac0afE94234346/3ceb1344cf34d655.jpg',
+				// 				money: '52.00 '
+				// 			},
+				// 		],
+				// 		type: 1,
+				// 		status: 0,
+				// 		order_No: 'AQWEAD45648974974456',
+				// 		shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
+				// 	},
+				// 	{
+				// 		goods: [{
+				// 			title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
+				// 			img: '/static/images/goods/there.jpg',
+				// 			goods_id: 203,
+				// 			money: '152.00 ',
+				// 			sku: '',
+				// 			number: 1,
+				// 		}, ],
+				// 		type: 1,
+				// 		status: 0,
+				// 		order_No: 'AQWEAD45648974974456',
+				// 		shopp_Address: '北京市海淀区苏家坨乡前沙涧村'
+				// 	},
+				// ],
+				// afterList: [{
+				// 		title: 'DUNKINDONUTS唐恩都乐美国甜甜圈6个礼盒装 随机搭配6款',
+				// 		type: 1,
+				// 		goods_id: 201,
+				// 		number: 1,
+				// 		goods_sku_text: '醇黑巧克力【20枚】',
+				// 		img: 'http://img10.360buyimg.com/n1/jfs/t1/86401/35/12206/357766/5e43b59cE5a7aa4dd/0753be765166c195.jpg',
+				// 		money: '175.78',
+				// 	},
+				// 	{
+				// 		title: '钟薛高 钟意你系列 特牛乳*4片 丝绒可可*4片 半巧主义*2 冰淇淋生鲜雪糕 10片装',
+				// 		img: '/static/images/goods/there.jpg',
+				// 		goods_id: 203,
+				// 		money: '152.00 ',
+				// 		sku: '',
+				// 		number: 1,
+				// 	},
+				// ],
+				orderList : [],
 				isShow: true,
 				colors: ""
 			};

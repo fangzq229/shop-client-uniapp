@@ -16,7 +16,7 @@
 								<image class="cover" :src="row.smallImage" mode="aspectFill"></image>
 								<view class="top_right">
 									<view class="order_name">{{row.name}} {{ row.subhead }}</view>
-									<view class="sku">规格：{{ formatAttr(row.attributeJson) }}</view>
+									<view class="sku" v-if="row.attributeJson != '[]'">规格：{{ formatAttr(row.attributeJson) }}</view>
 									<view class="price">
 										<view class="t1">￥{{row.salePrice}}</view>
 										<view class="t3">
