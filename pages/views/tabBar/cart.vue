@@ -3,8 +3,8 @@
 		<block v-if="cartList.length !== 0">
 			<view class="clearCart" :style="'color:' + colors" @click="clearInvalid">清空失效商品</view>
 			<view class="cart_box">
-				<view v-for="(item, index) in cartList" :key="index" class="cart_list" @longpress.stop="onshowDel(item,index)"
-				 @touchend="ontouchend">
+				<view v-for="(item, index) in cartList" :key="index" class="cart_list"
+					@longpress.stop="onshowDel(item,index)" @touchend="ontouchend">
 					<view class="checkbox-box" @tap="setCurrent(item,index)">
 						<view class="checkbox" :style="'border-color:' + colors" v-if="!item.failure">
 							<view :class="item.current == true ? 'on':''" :style="'background-color:' + colors"></view>
@@ -35,7 +35,8 @@
 								￥{{(Number((item.activityPrice || item.salePrice)) * item.quantity).toFixed(2)}}
 							</text>
 							<view class="right_btn">
-								<view class="sub" @tap="onsub(item,index)" :style="'color:' + (item.num == 1?'#ccc':'')">-</view>
+								<view class="sub" @tap="onsub(item,index)"
+									:style="'color:' + (item.num == 1?'#ccc':'')">-</view>
 								<view class="input">
 									<input :value="item.quantity" maxlength="2" disabled></input>
 								</view>
@@ -44,10 +45,12 @@
 						</view>
 					</view>
 					<!-- 删除的遮罩层 长按触发 -->
-					<view class="del_mask" v-if="current == index" :style="'z-index:' + (current == index ?'99':'-21')" @tap="oncencal">
+					<view class="del_mask" v-if="current == index" :style="'z-index:' + (current == index ?'99':'-21')"
+						@tap="oncencal">
 
 					</view>
-					<view class="dask_del" :style="'opacity:' + (current == index ?'1':'0') + ';z-index:' + (current == index ?'100':'-20')+';left:'+(current == index?'0':'-100%')">
+					<view class="dask_del"
+						:style="'opacity:' + (current == index ?'1':'0') + ';z-index:' + (current == index ?'100':'-20')+';left:'+(current == index?'0':'-100%')">
 						<text class="del" @tap="delItem(item,index)">删除</text>
 						<text class="cencal" @tap="oncencal">取消</text>
 					</view>
@@ -63,7 +66,8 @@
 						</view>
 						<view class="text">全选</view>
 					</view>
-					<view class="delAll" @click="delectAll" :style="'border-color:' + colors + ';color:' + colors" v-if="allCurrent == true">删除</view>
+					<view class="delAll" @click="delectAll" :style="'border-color:' + colors + ';color:' + colors"
+						v-if="allCurrent == true">删除</view>
 				</view>
 				<view class="rights">
 					<view class="jiesuan" :style="'background-color:' + colors" @click="settlement">结算({{sum}})</view>
@@ -138,7 +142,7 @@
 				sum: 0,
 				sumPrice: 0
 			});
-			if(!getToken()) {
+			if (!getToken()) {
 				this.isLogin = false;
 				this.cartList = [];
 				return;
@@ -180,23 +184,23 @@
 			getCart() {
 				return uni.$ajax('/api/cart/list').catch((res) => {
 					return res;
-				}) .catch((err) => {
+				}).catch((err) => {
 					return uni.showToast({
 						title: err,
 						icon: 'none'
 					});
 				});
 			},
-			
+
 			// 格式化属性
 			formatAttr(attrs) {
 				return JSON.parse(attrs).map(i => {
 					return i.val
 				}).join(' | ')
 			},
-			
+
 			setCurrent(item, index) {
-				if (item.failure) { 
+				if (item.failure) {
 					//商品已经失效
 					return
 				}
@@ -233,7 +237,9 @@
 
 			async delItem(item, index) {
 				//点击删除 模拟删除本地数据
-				await uni.$ajax('/api/cart/del', {ids: [item.id]}, 'post').catch((err)=>{
+				await uni.$ajax('/api/cart/del', {
+					ids: [item.id]
+				}, 'post').catch((err) => {
 					return uni.showToast({
 						title: err,
 						icon: 'none'
@@ -266,9 +272,9 @@
 				//增加
 				const res = await uni.$ajax('/api/cart/add', {
 					productId: item.productId,
-				    productSkuId: item.productSkuId,
-				    quantity: -1,
-				    type: 1
+					productSkuId: item.productSkuId,
+					quantity: -1,
+					type: 1
 				}, 'post').catch((err) => {
 					return uni.showToast({
 						title: err,
@@ -289,9 +295,9 @@
 				//增加
 				const res = await uni.$ajax('/api/cart/add', {
 					productId: item.productId,
-				    productSkuId: item.productSkuId,
-				    quantity: 1,
-				    type: 1
+					productSkuId: item.productSkuId,
+					quantity: 1,
+					type: 1
 				}, 'post').catch((err) => {
 					return uni.showToast({
 						title: err,
@@ -303,7 +309,7 @@
 				this.getSumprice() //计算总价
 				this.setTabBarBadge()
 			},
-			
+
 			setAllCurrent() {
 				//设置全选
 				let that = this
@@ -347,7 +353,8 @@
 				let length = count.length;
 				for (var i = 0; i < length; i++) { //计算总价
 					var data = count[i];
-					sumPrice = (Number(sumPrice) + Number(Number(data.activityPrice || data.salePrice) * data.quantity)).toFixed(2)
+					sumPrice = (Number(sumPrice) + Number(Number(data.activityPrice || data.salePrice) * data.quantity))
+						.toFixed(2)
 				}
 				that.sum = length
 				that.sumPrice = sumPrice
@@ -361,9 +368,9 @@
 					}, 100);
 				}
 			},
-			
+
 			//清空失效商品  根据商品的failure值来判断商品状态
-			async clearInvalid() { 
+			async clearInvalid() {
 				let ids = [];
 				let spliceArr = []
 				this.cartList.forEach((e, index) => {
@@ -373,16 +380,18 @@
 					}
 					e.current = false
 				})
-				if(ids.length < 1) {
+				if (ids.length < 1) {
 					return false;
 				}
-				await uni.$ajax('/api/cart/del', {ids: ids}, 'post').catch((err)=>{
+				await uni.$ajax('/api/cart/del', {
+					ids: ids
+				}, 'post').catch((err) => {
 					return uni.showToast({
 						title: err,
 						icon: 'none'
 					});
 				});
-				
+
 				uni.showToast({
 					title: '清空成功~',
 					icon: 'none'
@@ -417,7 +426,7 @@
 					}
 				})
 				console.log(arr);
-				setGoodsData(arr)  //存储商品信息去支付
+				setGoodsData(arr) //存储商品信息去支付
 				setTimeout(() => {
 					uni.hideLoading()
 					uni.navigateTo({
@@ -430,7 +439,7 @@
 					url: '/pages/views/tabBar/category'
 				});
 			},
-			
+
 			goLogin() {
 				uni.navigateTo({
 					url: '/pages/login/login'
@@ -822,16 +831,18 @@
 		color: #999;
 		margin-top: 20rpx;
 	}
+
 	.nocart .title {
 		font-size: 28upx;
 		color: #535353;
 	}
+
 	.nocart .go-login {
 		width: 240upx;
 		height: 70upx;
 		border-radius: 45upx;
 		margin: 0 auto;
-		line-height:  70upx;
+		line-height: 70upx;
 		font-size: 28upx;
 		color: #FFFFFF;
 		margin-top: 30upx;

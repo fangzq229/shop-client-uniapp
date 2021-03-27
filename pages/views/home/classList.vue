@@ -235,13 +235,31 @@
 		 */
 		onShareAppMessage: function() {},
 		methods: {
-			// 获取搜索商品信息
 			getProductList() {
-				uni.$ajax('/api/product/list', {
+				const option = {
 					page: this.page,
 					pageSize: this.pageSize,
 					[this.optionKey]: this.optionVal
-				}).then((result) => {
+				}
+				if (this.searchKeyword) {
+					Object.assign(option, {
+						search: this.searchKeyword
+					});
+				}
+				if (this.onscreen > 0) {
+					Object.assign(option, {
+						sortKey: 'salePrice',
+						sortVal: this.onscreen == 1 ? 'asc' : 'desc'
+					});
+				}
+				if(this.current > 0) {
+					Object.assign(option, {
+						sortKey: 'virtualSales',
+						sortVal: 'desc'
+					});
+				}
+
+				uni.$ajax('/api/product/list', option).then((result) => {
 					if (result.list.length === 0 || result.list.length < this.pageSize) {
 						this.loading = false;
 					}
@@ -264,18 +282,19 @@
 				this.dataList = [];
 				this.getProductList();
 			},
-
+			// 销量
 			setCurrent(e) {
-				console.log(e);
 				let index = e.currentTarget.dataset.index;
 				this.setData({
 					current: index
 				});
+				this.page = 1;
+				this.dataList = [];
+				this.getProductList();
 			},
 
 			openScreen(e) {
 				let index = e.currentTarget.dataset.index;
-				console.log(e)
 				this.setData({
 					current: index,
 					isMaskShow: !this.isMaskShow
@@ -293,13 +312,16 @@
 					modes: !this.modes
 				});
 			},
-
+			// 价格排序
 			setScreen(item, index) {
 				this.setData({
 					onscreen: index,
 					screenName: item.name,
 					isMaskShow: false
 				});
+				this.page = 1;
+				this.dataList = [];
+				this.getProductList();
 			},
 
 			openPop() {

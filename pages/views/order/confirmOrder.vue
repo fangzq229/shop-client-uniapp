@@ -84,7 +84,7 @@
 		</view>
 		<!-- 优惠券弹出层 -->
 		<view class="mask" catchtouchmove="preventTouchMove" v-if="couponshow == true" @tap="hidecoupon"></view>
-		<view class="coupon" :style="'bottom:' + (couponshow == true ? '0upx' : '')">
+		<view class="coupon" :style="'bottom:' + (couponshow == true ? '0px' : '')">
 			<scroll-view class="scrolls" scroll-y>
 				<coupon :couponList="couponList" @onReceive="onReceive"></coupon>
 			</scroll-view>
@@ -175,13 +175,15 @@
 			getCheckOrder() {
 				const res = getGoodsData();
 				const products = res.map(i => {
-					const data =  {
+					const data = {
 						productId: i.productId,
 						productSkuId: i.productSkuId,
 						quantity: i.quantity
 					}
-					if(i.id) {
-						Object.assign(data, {id: i.id});
+					if (i.id) {
+						Object.assign(data, {
+							id: i.id
+						});
 					}
 					return data;
 				})
@@ -229,7 +231,7 @@
 				let sumprice = 0;
 				let discountAmount = 0;
 				// 全局优惠劵 价格
-				
+
 				this.goodsList.forEach(e => {
 					const price = e.activityPrice || e.salePrice;
 					sumprice = sumprice + (price * 100 * e.quantity) / 100;
@@ -334,14 +336,15 @@
 					this.nowprice = (Number(this.nowprice) + item.discountAmount).toFixed(2);
 					this.discountPrice = (Number(this.discountPrice) - item.discountAmount).toFixed(2);
 				} else {
-					if(product) {
+					if (product) {
 						this.couponList = this.couponList.map(i => {
-							  if(i.products[0] && i.products[0].productSkuId == product.productSkuId && i.isCheck == true) {
-									this.nowprice = (Number(this.nowprice) + i.discountAmount).toFixed(2);
-									this.discountPrice = (Number(this.discountPrice) - i.discountAmount).toFixed(2);
-									i.isCheck = false
-								}
-								return i;
+							if (i.products[0] && i.products[0].productSkuId == product.productSkuId && i.isCheck ==
+								true) {
+								this.nowprice = (Number(this.nowprice) + i.discountAmount).toFixed(2);
+								this.discountPrice = (Number(this.discountPrice) - i.discountAmount).toFixed(2);
+								i.isCheck = false
+							}
+							return i;
 						});
 					}
 					this.nowprice = (Number(this.nowprice) - item.discountAmount).toFixed(2);

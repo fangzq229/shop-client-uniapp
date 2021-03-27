@@ -249,7 +249,8 @@
 				// 评论
 				goodsEva: [],
 				commentCount: 0, // 评论总数
-				scrollShow: false
+				scrollShow: false,
+				productId: null
 			};
 		},
 
@@ -271,10 +272,9 @@
 				//设置主题颜色
 				colors: app.globalData.newColor
 			});
+			this.productId = options.productId;
 			this.getLocation(); //获取位置信息
 			// this.setFrom(this.descriptionStr); //处理商品详情
-			this.getProductInfo(options.productId); // 获取商品信息
-			this.getProductComment(options.productId); // 获取评论id
 			setTimeout(() => {
 				this.setData({
 					isShow: false
@@ -288,13 +288,15 @@
 		onReady: function() {
 			this.videoContext = uni.createVideoContext('myVideo');
 			this.nowVideo = uni.createVideoContext('nowVideo');
-			console.log(this.videoContext);
 		},
 
 		/**
 		 * 生命周期函数--监听页面显示
 		 */
-		onShow: function() {},
+		onShow: function() {
+			this.getProductInfo(this.productId); // 获取商品信息
+			this.getProductComment(this.productId); // 获取评论id
+		},
 
 		/**
 		 * 生命周期函数--监听页面隐藏
