@@ -55,7 +55,7 @@
 		>
 			<image src="/static/images/user/arc.png" class="arc"></image>
 			<!-- 我的账户 -->
-			<my-account :colors="colors"></my-account>
+			<my-account :coupon="couponCount" :colors="colors"></my-account>
 		</view>
 		<view class="place">
 			<!-- 全部订单 -->
@@ -179,7 +179,8 @@ export default {
 				}
 			],
 			oldcolor: '',
-			userdata: {}
+			userdata: {},
+			couponCount: 0
 		};
 	},
 
@@ -230,6 +231,21 @@ export default {
 					});
 				}
 			}
+		}
+
+		if (getUserInfo()) {
+			uni.$ajax('/api/user/count')
+				.then(result => {
+					this.couponCount = result.couponCount;
+				})
+				.catch(err => {
+					uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+		} else {
+			this.couponCount = 0;
 		}
 	},
 

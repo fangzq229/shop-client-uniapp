@@ -88,9 +88,10 @@
 		},
 		watch: {
 			skuList(value) {
+				console.log(this.currentArr);
 				//监听商品规格变化 来清空之前所选的规格
 				this.currentArr = value.skuArr.length > 0 ? [ ...value.skuArr[0] ] : [];
-				this.nowList = value // 商品对象
+				this.nowList = value; // 商品对象
 			},
 			// 选择的数组
 			currentArr: { 
@@ -119,6 +120,7 @@
 			
 			// 切换选择
 			setTag(attribute) {
+				this.$emit('onSelect', {attr: JSON.stringify(attribute)});
 				this.currentArr = attribute;
 			},
 			

@@ -114,17 +114,8 @@
 		},
 		methods: {
 			setDataList(newVal) {
-				console.log(newVal);
-				const newList = [].concat(...Array.from(newVal.reduce((total, cur, index) => { //瀑布流处理
-					total[index % 2].push(cur);
-					return total;
-				}, {
-					0: [],
-					1: [],
-					length: 2
-				})));
 				this.setData({
-					newList: newList
+					newList: newVal
 				});
 			},
 			onhide() {
@@ -132,7 +123,6 @@
 			},
 			addCart(item) {
 				//加入购物车弹出对话框
-				console.log('点击了', item)
 				this.showModal = true
 				this.nowList = item
 			},

@@ -8,7 +8,8 @@
 					<text class="hui_name" v-if="item.type === 2">满{{item.limitAmount}}减{{item.discountAmount}}</text>
 				</view>
 				<view class="left_bottom">
-					<text>有效日期：{{item.startDate}} - {{ item.endDate }}</text>
+					<text v-if="!item.vaildDay">有效日期：{{item.startDate}} - {{ item.endDate }}</text>
+					<text v-else>有效日期：{{item.vaildDay}} 天</text>
 				</view>
 				<image src="/static/images/goods/yxz.png" v-if="item.isCheck" class="ylq"></image>
 				<image src="/static/images/goods/ylq.png" v-if="item.isused" class="ylq"></image>

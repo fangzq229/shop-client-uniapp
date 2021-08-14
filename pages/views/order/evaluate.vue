@@ -24,7 +24,7 @@
 			<view class="img_box">
 				<view class="img_list" v-for="(item, index) in imgUrl" :key="index">
 					<image :src="item" class="imgs" mode="aspectFit"></image>
-					<image src="/static/images/close1.png" mode="aspectFit" class="close" @tap="delImg(index)"></image>
+					<image src="/static/images/close1.png" mode="aspectFill" class="close" @tap="delImg(index)"></image>
 				</view>
 				<view class="addImg" @tap="addImg" v-if="imgUrl.length < 3">
 					<image src="/static/images/shexiang.png" mode=""></image>
@@ -71,6 +71,7 @@ export default {
 			//删除图片
 			this.imgUrl.splice(index, 1);
 			this.updataImg.splice(index, 1);
+			this.urls.splice(index, 1);
 		},
 		addImg() {
 			let that = this;
@@ -85,8 +86,9 @@ export default {
 							title: '上传中...'
 						});
 						for (let item of res.tempFiles) {
-							let name = item.name;
-							let names = item.name.split('.');
+							console.log(item);
+							let name = item.path;
+							let names = item.path.split('.');
 							let leng = names.length;
 							let suffix = names[leng - 1];
 							if (suffix != 'png' && suffix != 'jpg' && suffix != 'jpeg') {

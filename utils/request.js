@@ -33,13 +33,16 @@ async function request(mehtod, params, type, callBack) {
 			...http,
 			success: (result) => {
 				if (result.statusCode === 200) {
-					if (result.data.status === 0) {
-						resolve(result.data.data);
-					}
-					reject(result.data.message);
-				} else {
-					reject(result.data.message);
+					resolve(result.data);
 				}
+				if(result.statusCode === 412) {
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "/pages/login/login",
+						})
+					}, 1000);
+				}
+				reject(result.data.message || '服务异常');
 			},
 			fail: (err) => {
 				reject(err);

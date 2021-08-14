@@ -1,7 +1,7 @@
 {
-    "name" : "美易优品",
+    "name" : "益妆亦美",
     "appid" : "__UNI__1EBAD2F",
-    "description" : "美妆商城",
+    "description" : "全球美妆，正品保真！妆益美，你亦美！",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -51,7 +51,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wxfb10363f38659541",
+        "appid" : "wx32177d6eb5d7570f",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
@@ -91,7 +91,7 @@
             "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
-                    "target" : "http://0.0.0.0:9919", //目标接口域名
+                    "target" : "http://0.0.0.0:9902", //目标接口域名
                     "changeOrigin" : true, //是否跨域
                     "secure" : false // 设置支持https协议的代理
                 }
