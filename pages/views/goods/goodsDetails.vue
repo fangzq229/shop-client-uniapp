@@ -56,23 +56,23 @@
 			<p>销量:{{ goodsSkuData.virtualSales }}</p>
 		</view>
 		<!-- 分享按钮 -->
-		<!-- <view class="share" :style="'transform: translateY(-' + toBar + ');'"> -->
-		<!-- <view class="tips" style="color: #666;">
+		<view class="share" :style="'transform: translateY(-' + toBar + ');'">
+			<view class="tips" style="color: #666;">
 				<text class="iconfont icon-zuanshi" style="color: #FF546E;font-size: 38upx;font-weight: 600;"></text>
 				好物爱分享
-			</view> -->
-		<!-- #ifdef MP -->
-		<!-- <view class="onshare" style="color: #FF546E;">
+			</view>
+			<!-- #ifdef MP -->
+			<view class="onshare" style="color: #FF546E;">
 				<text class="iconfont icon-fenxiang"></text>
 				<button open-type="share" class="share_btn">1</button>
 				立即分享
-			</view> -->
-		<!-- #endif -->
-		<!-- <view class="poster" style="color: #FF546E;" @tap="openPoster">
+			</view>
+			<!-- #endif -->
+			<!-- <view class="poster" style="color: #FF546E;" @tap="openPoster">
 				<text class="iconfont icon-CombinedShape"></text>
 				生成海报
 			</view> -->
-		<!-- </view> -->
+		</view>
 		<!-- 店铺信息 -->
 		<!-- <view class="shop" :style="'transform: translateY(-' + toBar + ');'">
 			<image class="shop_img" src="/static/images/log.png" mode="aspectFill"></image>
@@ -102,7 +102,7 @@
 		<view class="sku_pon" :style="'transform: translateY(-' + toBar + ');'">
 			<view class="cell" @tap="openSku" v-if="goodsData.skuArr.length > 0">
 				<text class="text1">已选规格：</text>
-				<text class="text2" :style="{ color: colors }">{{ formatAttr(JSON.parse(goodsSkuData.attributeJson))  }}</text>
+				<text class="text2" :style="{ color: colors }">{{ formatAttr(JSON.parse(goodsSkuData.attributeJson)) }}</text>
 				<image src="/static/images/home/right.png"></image>
 			</view>
 			<view class="cell" style="border:none" @tap="opencoupon" v-if="couponList.length > 0">
@@ -228,7 +228,7 @@ export default {
 			goodsData: {
 				bigImg: [],
 				skus: [{}],
-				skuArr: [],
+				skuArr: []
 			},
 			goodsSkuData: {},
 			showModal: false,
@@ -628,10 +628,12 @@ export default {
 			this.getCoupon();
 		},
 		formatAttr(attrs) {
-			return attrs.map(i => {
-				return i.val
-			}).join(' | ')
-		},
+			return attrs
+				.map(i => {
+					return i.val;
+				})
+				.join(' | ');
+		}
 	}
 };
 </script>

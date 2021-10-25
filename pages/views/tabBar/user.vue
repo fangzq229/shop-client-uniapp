@@ -6,8 +6,8 @@
 			<view class="nav">
 				<view class="user" @click="onLogin">
 					<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
-					<image src="../../../static/images/face.jpeg" v-else></image>
-					<text>{{ userdata.nickName || '登录' }}</text>
+					<image src="../../../static/images/default-avatar.png" v-else></image>
+					<text>{{ !isLogin ?  '登陆' : (userdata.nickName || '未知') }}</text>
 				</view>
 			</view>
 			<!-- <view class="vip">
@@ -66,6 +66,7 @@
 			<my-server :serverList="serverList" :colors="colors"></my-server>
 		</view>
 		<!-- #endif -->
+		<getUserProfile :colors="colors" :showModal="showUserProfile" @onhide="showUserProfile = false" @success="getUserInfo()"></getUserProfile>
 	</view>
 </template>
 
@@ -77,10 +78,13 @@ import listCell from '../../commponent/user/list-cell';
 import myOrder from '../../commponent/user/my-order';
 import myFootprint from '../../commponent/user/my-footprint';
 import myServer from '../../commponent/user/my-server';
+import getUserProfile from '../../commponent/public/get-user-profile'
 
 export default {
 	data() {
 		return {
+			showUserProfile: false,
+			isLogin: false,
 			colors: '',
 			startY: 0,
 			//原始坐标
@@ -189,7 +193,8 @@ export default {
 		listCell,
 		myOrder,
 		myFootprint,
-		myServer
+		myServer,
+		getUserProfile
 	},
 	props: {},
 
@@ -209,10 +214,8 @@ export default {
 	onShow: function() {
 		let colors = app.globalData.newColor;
 		let oldcolor = this.colors;
-		let userdata = getUserInfo() || {};
 		this.setData({
-			colors: colors,
-			userdata: userdata
+			colors: colors
 		});
 		if (oldcolor !== colors) {
 			//如果旧颜色不等于新颜色
@@ -232,8 +235,9 @@ export default {
 				}
 			}
 		}
-
-		if (getUserInfo()) {
+		
+		if (getToken()) {
+			this.isLogin = true;
 			uni.$ajax('/api/user/count')
 				.then(result => {
 					this.couponCount = result.couponCount;
@@ -244,6 +248,7 @@ export default {
 						icon: 'none'
 					});
 				});
+			this.getUserInfo();
 		} else {
 			this.couponCount = 0;
 		}
@@ -331,7 +336,20 @@ export default {
 				moving: false,
 				coverTransition: 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)'
 			});
-		}
+		},
+		getUserInfo() {
+			const userInfo = getUserInfo();
+			console.log(userInfo);
+			if(!userInfo.avatarUrl || !userInfo.nickName) {
+				this.showUserProfile = true;
+				return;
+			}
+			this.setData({
+				userdata: userInfo
+			});
+		},
+		
+		
 	}
 };
 </script>
@@ -371,7 +389,6 @@ export default {
 .user image {
 	width: 130upx;
 	height: 130upx;
-	border: 5upx solid #fff;
 	border-radius: 50%;
 }
 

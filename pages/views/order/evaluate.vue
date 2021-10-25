@@ -33,14 +33,19 @@
 			</view>
 		</view>
 		<view class="btns" :style="{ background: colors }" @tap="submit()">提交评价</view>
+		<getUserProfile :colors="colors" :showModal="showUserProfile" @onhide="showUserProfile = false" @success="isUserProfile = true"></getUserProfile>
 	</view>
 </template>
 <script>
 var app = getApp();
 import { pathToBase64, base64ToPath } from '@/utils/image-tools.js'
+import { getUserInfo } from '@/utils/auth.js';
+import getUserProfile  from '@/pages/commponent/public/get-user-profile';
 export default {
 	data() {
 		return {
+			isUserProfile: false,
+			showUserProfile: false,
 			value: 5,
 			comment: '',
 			updataImg: [],
@@ -142,6 +147,10 @@ export default {
 		},
 		// 提交评价
 		submit() {
+			if(!this.isUserProfile) {
+				this.showUserProfile = true;
+				return;
+			}
 			if(!this.comment.length) {
 				return uni.showToast({
 					title: '评论内容不能为空',
@@ -187,7 +196,15 @@ export default {
 				});
 		}
 	},
-	onShow() {}
+	onShow() {
+		const userInfo = getUserInfo();
+		if(userInfo.nickName && userInfo.avatarUrl) {
+			this.isUserProfile = true;
+		}
+	},
+	components: {
+		getUserProfile
+	}
 };
 </script>
 

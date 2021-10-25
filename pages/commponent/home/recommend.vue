@@ -12,12 +12,12 @@
 						<view class="goods_name" @tap="jumpDetails(item)">
 							{{item.name}} {{ item.subhead }}
 						</view>
-						<view class="price">
+						<view class="price"  @tap="jumpDetails(item)">
 							<text class="text1">￥ {{item.skus[0].salePrice}}</text>
 							<text class="text2">￥ {{item.skus[0].marketPrice}}</text>
 						</view>
 						<view class="goumai">
-							<view class="g_left">
+							<view class="g_left" @tap="jumpDetails(item)">
 								<text v-for="(l, index) in item.label" :key="index">
 									{{ l.name }}
 								</text>
@@ -39,14 +39,14 @@
 					<!-- <image class="tags" :src="tagImg[item.type-1]"></image> -->
 					<view class="goods_right">
 						<view class="goods_name" @tap="jumpDetails(item)">{{item.name}} {{ item.subhead }}</view>
-						<view class="numbers">
+						<view class="numbers" @tap="jumpDetails(item)">
 							<text v-for="(l, index) in item.label" :key="index">
 								{{ l.name }}
 							</text>
 						</view>
 						<view class="price">
-							<text class="money">￥ {{item.skus[0].salePrice}}</text>
-							<text class="hx_money">￥ {{item.skus[0].marketPrice}}</text>
+							<text class="money" @tap="jumpDetails(item)">￥ {{item.skus[0].salePrice}}</text>
+							<text class="hx_money" @tap="jumpDetails(item)">￥ {{item.skus[0].marketPrice}}</text>
 							<text class="iconfont icon-gouwuche gouwuche" @tap="addCart(item)"></text>
 						</view>
 					</view>

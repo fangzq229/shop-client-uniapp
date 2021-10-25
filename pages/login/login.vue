@@ -15,9 +15,8 @@
 			<!-- #endif -->
 			<!-- #ifdef MP-WEIXIN -->
 			<view class="login_from">
-				<!-- <button class="login_btn" open-type="getPhoneNumber" :style="'background:' + colors"
-					@getphonenumber="getphonenumber">授权登录</button> -->
-				<button class="login_btn" open-type="getUserInfo" :style="'background:' + colors" @getuserinfo="getUserInfo">授权登录</button>
+				<button class="login_btn" open-type="getPhoneNumber" :style="'background:' + colors"
+					@getphonenumber="getphonenumber">授权登录</button>
 			</view>
 			<!-- #endif -->
 			<view class="explain">
@@ -104,83 +103,41 @@ export default {
 	 */
 	onShareAppMessage: function() {},
 	methods: {
-		async getUserInfo() {
-			// const _this = this;
-			// if(e.detail.encryptedData) {
-
-			// 	uni.$ajax('/api/login/wx', {
-			// 		openid: _this.openid,
-			// 		encryptedData: e.detail.encryptedData,
-			// 		iv: e.detail.iv
-			// 	}, 'post').then((res) => {
-			// 		// 保存token
-			// 		setToken(res.token);
-			// 		//存储用户信息
-			// 		let user = {
-			// 			avatarUrl: res.avatar ||
-			// 				'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg',
-			// 			nickName: res.nickname || '木木'
-			// 		}
-			// 		setUserInfo(user)
-			// 		uni.hideLoading()
-			// 		uni.showToast({
-			// 			title: '登陆成功'
-			// 		})
-			// 		setTimeout(() => {
-			// 			uni.navigateBack()
-			// 		}, 300)
-			// 	}).catch(err => {
-			// 		return uni.showToast({
-			// 			title: err,
-			// 			icon: 'none'
-			// 		});
-			// 	});
-			// } else {
-			// 	return uni.showToast({
-			// 		title: '授权登陆失败',
-			// 		icon: 'none'
-			// 	});
-			// }
-			let _this = this;
-			uni.getUserInfo({
-				provider: 'weixin',
-				success: function(infoRes) {
-					console.log(infoRes);
-					uni.$ajax(
-						'/api/login/wx',
-						{
-							openid: _this.openid,
-							encryptedData: infoRes.encryptedData,
-							iv: infoRes.iv
-						},
-						'post'
-					)
-						.then(res => {
-							// 保存token
-							setToken(res.token);
-							//存储用户信息
-							let user = {
-								avatarUrl: res.avatar || 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1635355620,1019286978&fm=26&gp=0.jpg',
-								nickName: res.nickname || '木木'
-							};
-							setUserInfo(user);
-							uni.hideLoading();
-							uni.showToast({
-								title: '登陆成功'
-							});
-							setTimeout(() => {
-								uni.navigateBack();
-							}, 300);
-						})
-						.catch(err => {
-							return uni.showToast({
-								title: err,
-								icon: 'none'
-							});
-						});
-				},
-				fail(res) {}
-			});
+		async getphonenumber(e) {
+			const _this = this;
+			if(e.detail.encryptedData) {
+				uni.$ajax('/api/login/wx', {
+					openid: _this.openid,
+					encryptedData: e.detail.encryptedData,
+					iv: e.detail.iv
+				}, 'post').then((res) => {
+					// 保存token
+					setToken(res.token);
+					//存储用户信息
+					let user = {
+						avatarUrl: res.avatar || '',
+						nickName: res.nickname || ''
+					}
+					setUserInfo(user)
+					uni.hideLoading()
+					uni.showToast({
+						title: '登陆成功'
+					})
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 300)
+				}).catch(err => {
+					return uni.showToast({
+						title: err,
+						icon: 'none'
+					});
+				});
+			} else {
+				return uni.showToast({
+					title: '授权登陆失败',
+					icon: 'none'
+				});
+			}
 		},
 		async onlogin() {
 			if (!this.tel || !this.smscode) {
