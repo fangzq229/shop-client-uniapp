@@ -2,7 +2,12 @@
 	<view>
 		<navBar :showLeft="true" leftBg="#FFFFFF" :showTitle="false"></navBar>
 		<view class="login">
-			<view class="logo"><image src="../../static/images/login-log.png"></image></view>
+			<view class="logo">
+				<view class="title">
+					<text>农源农产品</text>
+				</view>
+				<!-- <image src="../../static/images/login-log.png"></image> -->
+			</view>
 			<!-- #ifdef H5 -->
 			<view class="login_from">
 				<input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #515151" />
@@ -14,13 +19,10 @@
 			</view>
 			<!-- #endif -->
 			<!-- #ifdef MP-WEIXIN -->
-			<view class="login_from">
-				<button class="login_btn" open-type="getPhoneNumber" :style="'background:' + colors"
-					@getphonenumber="getphonenumber">授权登录</button>
-			</view>
+			<view class="login_from"><button class="login_btn" open-type="getPhoneNumber" :style="'background:' + colors" @getphonenumber="getphonenumber">授权登录</button></view>
 			<!-- #endif -->
 			<view class="explain">
-				<text>全球美妆，保真优购</text>
+				<text>遵化本地，新鲜水果</text>
 				<!-- 登录即同意
 				<view class="">
 					<text :style="'color:' + colors">《用户服务协议》</text>
@@ -105,33 +107,39 @@ export default {
 	methods: {
 		async getphonenumber(e) {
 			const _this = this;
-			if(e.detail.encryptedData) {
-				uni.$ajax('/api/login/wx', {
-					openid: _this.openid,
-					encryptedData: e.detail.encryptedData,
-					iv: e.detail.iv
-				}, 'post').then((res) => {
-					// 保存token
-					setToken(res.token);
-					//存储用户信息
-					let user = {
-						avatarUrl: res.avatar || '',
-						nickName: res.nickname || ''
-					}
-					setUserInfo(user)
-					uni.hideLoading()
-					uni.showToast({
-						title: '登陆成功'
+			if (e.detail.encryptedData) {
+				uni.$ajax(
+					'/api/login/wx',
+					{
+						openid: _this.openid,
+						encryptedData: e.detail.encryptedData,
+						iv: e.detail.iv
+					},
+					'post'
+				)
+					.then(res => {
+						// 保存token
+						setToken(res.token);
+						//存储用户信息
+						let user = {
+							avatarUrl: res.avatar || '',
+							nickName: res.nickname || ''
+						};
+						setUserInfo(user);
+						uni.hideLoading();
+						uni.showToast({
+							title: '登陆成功'
+						});
+						setTimeout(() => {
+							uni.navigateBack();
+						}, 300);
 					})
-					setTimeout(() => {
-						uni.navigateBack()
-					}, 300)
-				}).catch(err => {
-					return uni.showToast({
-						title: err,
-						icon: 'none'
+					.catch(err => {
+						return uni.showToast({
+							title: err,
+							icon: 'none'
+						});
 					});
-				});
 			} else {
 				return uni.showToast({
 					title: '授权登陆失败',
@@ -389,5 +397,15 @@ export default {
 	color: #999999;
 	position: absolute;
 	bottom: 60upx;
+}
+.title {
+	width: 100%;
+	height: 900upx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text {
+		font-size: 42upx;
+	}
 }
 </style>

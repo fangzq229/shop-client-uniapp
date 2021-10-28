@@ -10,9 +10,9 @@
 				<view class="p1">{{coupon}}</view>
 				<view class="p2">优惠券</view>
 			</view>
-			<view class="menu_btns" @tap="padding">
-				<view class="p1" style="color: #CCCCCC;">{{integral}}</view>
-				<view class="p2" style="color: #CCCCCC;">积分</view>
+			<view class="menu_btns" @tap="nextPage('/pages/views/user/mypoints')">
+				<view class="p1">{{integral}}</view>
+				<view class="p2">积分</view>
 			</view>
 		</view>
 	</view>

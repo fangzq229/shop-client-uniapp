@@ -172,15 +172,15 @@ export default {
 					url: '',
 					id: 8,
 					elseUrl: '',
-					phoneNumber: '18511780604'
+					phoneNumber: '18811126599'
 				},
-				{
-					name: '设置',
-					icon: 'icon-shezhi2',
-					url: '../setting/index',
-					id: 9,
-					elseUrl: ''
-				}
+				// {
+				// 	name: '设置',
+				// 	icon: 'icon-shezhi2',
+				// 	url: '../setting/index',
+				// 	id: 9,
+				// 	elseUrl: ''
+				// }
 			],
 			oldcolor: '',
 			userdata: {},

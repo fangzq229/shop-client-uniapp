@@ -3,7 +3,7 @@
 			"path": "pages/views/tabBar/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor": "#fa436a",
+				"navigationBarBackgroundColor": "#39b54a",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false
@@ -256,25 +256,25 @@
 		"list": [{
 				"pagePath": "pages/views/tabBar/home",
 				"iconPath": "/static/images/tabBar/home.png",
-				"selectedIconPath": "/static/images/tabBar/home-default.png",
+				"selectedIconPath": "/static/images/tabBar/tab-home-green.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/views/tabBar/category",
 				"iconPath": "/static/images/tabBar/class.png",
-				"selectedIconPath": "/static/images/tabBar/class-default.png",
+				"selectedIconPath": "/static/images/tabBar/tab-cate-green.png",
 				"text": "分类"
 			},
 			{
 				"pagePath": "pages/views/tabBar/cart",
 				"iconPath": "/static/images/tabBar/cart.png",
-				"selectedIconPath": "/static/images/tabBar/cart-default.png",
+				"selectedIconPath": "/static/images/tabBar/tab-cart-green.png",
 				"text": "购物车"
 			},
 			{
 				"pagePath": "pages/views/tabBar/user",
 				"iconPath": "/static/images/tabBar/user.png",
-				"selectedIconPath": "/static/images/tabBar/user-default.png",
+				"selectedIconPath": "/static/images/tabBar/tab-user-green.png",
 				"text": "我的"
 			}
 		]

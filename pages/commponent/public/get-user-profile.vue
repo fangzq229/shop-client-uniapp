@@ -35,13 +35,19 @@
 					desc: '用于完善会员资料',
 					lang: 'zh_CN',
 					success: (res) => {
-						uni.$ajax('/api/user/updated', {
+						const params = {
 							avatar: res.userInfo.avatarUrl,
 							nickname: res.userInfo.nickName,
 							gender: res.userInfo.gender,
 							province: res.userInfo.province,
 							city: res.userInfo.city,
-						}, 'post')
+						}
+						for(let key in params) {
+							if(!params[key]) {
+								delete params[key]
+							}
+						}
+						uni.$ajax('/api/user/updated', params, 'post')
 							.then(result => {
 								if(result) {
 									const userInfo = {

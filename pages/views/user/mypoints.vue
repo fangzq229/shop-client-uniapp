@@ -4,7 +4,7 @@
   <view class="top_box" :style="'background:' + colors">
     <view class="left">
       <view class="p1">总积分</view>
-      <view class="p2">1273</view>
+      <view class="p2">0</view>
     </view>
     <view class="right">
       <view @tap="onexchange">
@@ -41,31 +41,16 @@ import loading from "../../commponent/public/loading";
 export default {
   data() {
     return {
-      logList: [{
-        name: '购买商品',
-        type: 0,
-        number: 18
-      }, {
-        name: '兑换商品',
-        type: 1,
-        number: 18
-      }, {
-        name: '兑换商品',
-        type: 1,
-        number: 18
-      }, {
-        name: '兑换商品',
-        type: 1,
-        number: 18
-      }, {
-        name: '兑换商品',
-        type: 1,
-        number: 18
-      }, {
-        name: '兑换商品',
-        type: 1,
-        number: 18
-      }],
+      // logList: [{
+      //   name: '购买商品',
+      //   type: 0,
+      //   number: 18
+      // }, {
+      //   name: '兑换商品',
+      //   type: 1,
+      //   number: 18
+      // }],
+	  logList:[],
       isShow: true,
       colors: ""
     };

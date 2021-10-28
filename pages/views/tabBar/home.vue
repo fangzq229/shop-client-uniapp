@@ -3,11 +3,11 @@
 		<!-- 顶部 -->
 		<headers :colors="colors" :locations="locations" :swiperList="swiperList"></headers>
 		<!-- 推荐分类菜单 与tab分类中不同 -->
-		<classList :categoryList="categoryList"></classList>
+		<classList v-if="categoryList.length > 0" :categoryList="categoryList"></classList>
 		<!-- 公告 -->
 		<notice :colors="colors" :noticeList="noticeList"></notice>
 		<!-- 栏目专题 -->
-		<column :dataList="columnList"></column>
+		<column v-if="columnList.length > 0" :dataList="columnList"></column>
 		<!-- 广告图 -->
 		<!-- <banner></banner> -->
 		<!-- 热门标题 -->
@@ -15,7 +15,7 @@
 		<!-- 推荐商品列表 -->
 		<recommend :colors="colors" :modes="false" :dataList="dataList" :loading="loading" bottoms="100"></recommend>
 		<!-- 右侧悬浮菜单栏 -->
-		<suspension :scrollShow="scrollShow" :colors="colors"></suspension>
+		<!-- <suspension :scrollShow="scrollShow" :colors="colors"></suspension> -->
 	</view>
 </template>
 
@@ -47,11 +47,11 @@ export default {
 			noticeList: [
 				{
 					id: 1,
-					title: '在这里，变美是件很容易的事情'
+					title: '遵化本地，优质水果'
 				},
 				{
 					id: 2,
-					title: '保真，正品，值得美丽的你拥有'
+					title: '绿色健康，遵化特产'
 				}
 			]
 		};
